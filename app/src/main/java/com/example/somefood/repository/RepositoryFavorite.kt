@@ -7,8 +7,8 @@ class RepositoryFavorite(
     private val favorite: DaoFavorite
 ) {
 
-    fun addFoodToFavorite(uuid: String, id: String) {
-        val model = FavoriteFoods(idFood = uuid, idUser = id)
+    fun addFoodToFavorite(idFood: String, idUser: String) {
+        val model = FavoriteFoods(idFood = idFood, idUser = idUser)
         favorite.addFoodToFavorite(model)
     }
 

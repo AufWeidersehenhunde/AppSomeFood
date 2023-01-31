@@ -8,7 +8,7 @@ import com.example.appsomefood.databinding.RecyclerViewItemForLastestBinding
 import com.example.appsomefood.Orders.OrdersModel
 
 
-class RecyclerVIewAdapterLastestOrders:
+class RecyclerVIewAdapterLastestOrders :
     RecyclerView.Adapter<RecyclerVIewAdapterLastestOrders.MyViewHolder>() {
     var item: List<OrdersModel?> = emptyList()
 
@@ -49,7 +49,6 @@ class RecyclerVIewAdapterLastestOrders:
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         item[position]?.let { holder.bind(it) }
-
     }
 
     override fun getItemCount(): Int {

@@ -49,12 +49,12 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
         with(viewBinding) {
             btnPerson.setOnCheckedChangeListener { _, it ->
                 if (it) {
-                    noncreator.isInvisible
-                    creator.isVisible
+                    noncreator.isVisible = false
+                    creator.isVisible = true
 
                 } else {
-                    creator.isInvisible
-                    noncreator.isVisible
+                    creator.isVisible = false
+                    noncreator.isVisible = true
 
                 }
             }
@@ -79,8 +79,8 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
     }
     private fun isEmailValid(email:String): Boolean {
         val expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
-        val pattern:Pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
-        val matcher:Matcher = pattern.matcher(email);
+        val pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        val matcher = pattern.matcher(email);
         return matcher.matches()
     }
 }
