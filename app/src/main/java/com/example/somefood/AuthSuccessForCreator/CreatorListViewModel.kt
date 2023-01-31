@@ -10,12 +10,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class CreatorListViewModel (
-    private val repositoryOrders: RepositoryOrders,
-    preference:Reference
+    private val repositoryOrders: RepositoryOrders
 ) : ViewModel() {
     private val _listOrdersForRecycler = MutableStateFlow<List<OrdersModel>?>(null)
     val listOrdersForRecycler:MutableStateFlow<List<OrdersModel>?> = _listOrdersForRecycler
-    val user = preference.getValue("pref").toString()
 
     init {
         takeAllOrders()

@@ -14,7 +14,7 @@ class RepositoryFavorite(
 
     suspend fun checkFavoriteFood(uuid: String, id: String) = favorite.checkFavoriteFood(uuid, id)
 
-    fun takeFavorite() = favorite.leftJoinForFavorite()
+    fun takeFavorite() = favorite.observeFavorite()
 
     suspend fun deleteFavoriteFood(model: FavoriteFoods) = favorite.deleteFavoriteFood(model)
 }

@@ -2,6 +2,7 @@ package com.example.appsomefood.fragmentContainer
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -17,8 +18,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class ContainerFragment : Fragment(R.layout.fragment_child) {
     private val viewModelContainer: ContainerViewModel by viewModel()
     private val viewBinding: FragmentChildBinding by viewBinding()
-    private val navigatorHolder2 by this.inject<NavigatorHolder>()
-    private val navigator2 by lazy {
+    private val navigatorHolder by this.inject<NavigatorHolder>()
+    private val navigator by lazy {
         AppNavigator(
             requireActivity(),
             R.id.host_child,
@@ -38,7 +39,7 @@ class ContainerFragment : Fragment(R.layout.fragment_child) {
 
     private fun initView() {
         if (viewModelContainer.user == null) {
-            viewBinding.bottomNavigationViewHome.visibility = View.INVISIBLE
+            viewBinding.bottomNavigationViewHome.isInvisible
         }
         with(viewBinding) {
             this.bottomNavigationViewHome.setOnItemSelectedListener {
@@ -91,12 +92,12 @@ class ContainerFragment : Fragment(R.layout.fragment_child) {
 
     override fun onResume() {
         super.onResume()
-        navigatorHolder2.removeNavigator()
-        navigatorHolder2.setNavigator(navigator2)
+        navigatorHolder.removeNavigator()
+        navigatorHolder.setNavigator(navigator)
     }
 
     override fun onPause() {
-        navigatorHolder2.removeNavigator()
+        navigatorHolder.removeNavigator()
         super.onPause()
     }
 

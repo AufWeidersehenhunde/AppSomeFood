@@ -3,22 +3,18 @@ package com.example.appsomefood.repository
 import com.example.appsomefood.Dao.DaoProfileInfo
 
 class RepositoryProfileData (
-    private val data: DaoProfileInfo
+    private val profileData: DaoProfileInfo
 ){
 
-    suspend fun updateName(name:String, uuid: String) = data.updateName(name, uuid)
+    suspend fun updateName(name:String, uuid: String) = profileData.updateName(name, uuid)
 
-    suspend fun updateDescription(des:String, uuid: String) = data.updateDescription(des, uuid)
+    suspend fun updateDescription(des:String, uuid: String) = profileData.updateDescription(des, uuid)
 
-    suspend fun updateAddress(address:String, uuid: String) = data.updateAddress(address, uuid)
+    suspend fun updateAddress(address:String, uuid: String) = profileData.updateAddress(address, uuid)
 
-    fun setStatus(login: String, creator: Boolean?) = data.setStatus(login, creator)
+    fun changeStatus(uuid:String, creatorStatus: Boolean?) = profileData.changeStatus(uuid, creatorStatus)
 
-    fun changeStatus(uuid:String, creatorStatus: Boolean) = data.changeStatus(uuid, creatorStatus)
-
-    fun checkAccountForStatus(it:String) = data.checkAccountForStatus(it)
-
-    fun takeFeedback(idUser: String) = data.takeFeedback(idUser)
+    fun checkAccountForStatus(it:String) = profileData.observeAccountStatus(it)
 
 
 }

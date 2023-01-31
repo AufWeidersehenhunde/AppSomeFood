@@ -13,17 +13,17 @@ interface DaoUser {
     @Insert
     fun registerUser(usersDb: UsersDb)
 
-    @Query("SELECT login FROM users WHERE login =:log")
-    suspend fun checkLogin(log: String): String
+    @Query("SELECT login FROM users WHERE login =:login")
+    suspend fun checkLogin(login: String): String
 
-    @Query("SELECT* FROM users WHERE login =:log AND password=:pass")
-    suspend fun checkAccount(log: String, pass: String): UsersDb?
+    @Query("SELECT* FROM users WHERE login =:login AND password=:pass")
+    suspend fun checkAccount(login: String, pass: String): UsersDb?
 
     @Query("SELECT*FROM users WHERE uuid=:UUID")
     fun checkStatus(UUID: String): UsersDb?
 
     @Query("SELECT*FROM users WHERE uuid=:uuid")
-    fun takeProfileInfo(uuid: String): Flow<UsersDb>
+    fun observeProfileInfo(uuid: String): Flow<UsersDb>
 
     @Query("UPDATE users SET icon = :newPhoto WHERE uuid = :userId")
     suspend fun setPhoto(userId: String, newPhoto: String)

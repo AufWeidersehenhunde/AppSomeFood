@@ -25,12 +25,13 @@ class OrdersFragment : Fragment(R.layout.fragment_orders) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (savedInstanceState == null) {
+            //onSaveInstanceState()
             observeElement()
-            initView()
+            initViews()
         }
     }
 
-    private fun initView(){
+    private fun initViews(){
         viewModelOrders.takeOrders()
         adapterOrders =
             RecyclerViewAdapterOrders ( {

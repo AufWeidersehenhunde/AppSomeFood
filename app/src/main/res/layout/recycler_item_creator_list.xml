@@ -92,7 +92,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/timer"
+            android:id="@+id/timerCard"
             android:layout_width="50dp"
             android:layout_height="80dp"
             android:layout_gravity="end|center"

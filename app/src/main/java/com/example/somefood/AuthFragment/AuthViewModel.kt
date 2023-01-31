@@ -1,13 +1,12 @@
 package com.example.appsomefood.AuthFragment
 
-import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.appsomefood.DBandProvider.UsersDb
 import com.example.appsomefood.Screens
 import com.example.appsomefood.repository.Reference
 import com.example.appsomefood.repository.RepositoryProfileData
-import com.example.appsomefood.repository.RepositorySQL
+import com.example.appsomefood.repository.RepositoryUser
 import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,9 +14,9 @@ import kotlinx.coroutines.launch
 
 class AuthViewModel(
     private val router: Router,
-    private val repositorySQL: RepositorySQL,
+    private val repositoryUser: RepositoryUser,
     private val repositoryProfileData: RepositoryProfileData,
-    private val preference:Reference
+    private val preference: Reference
 ) : ViewModel() {
     private val _auth = MutableStateFlow<Boolean?>(null)
     val auth: MutableStateFlow<Boolean?> = _auth
@@ -25,11 +24,16 @@ class AuthViewModel(
     fun routeToBack() {
         router.backTo(Screens.routeToHomeFragment())
     }
-    
-    fun authentication(model: UsersDb) {
+
+    fun authentication(log:String, pass:String, status:Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryProfileData.setStatus(model.login, model.isCreator)
-            val check = repositorySQL.checkAccount(model.login, model.password)
+            val model = UsersDb(
+                login = log,
+                password = pass,
+                isCreator = status
+            )
+            repositoryProfileData.changeStatus(model.uuid, model.isCreator)
+            val check = repositoryUser.checkAccount(model.login, model.password)
             if (check != null )  {
                 _auth.value = true
                     preference.save("pref", check.uuid)

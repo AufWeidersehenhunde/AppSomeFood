@@ -41,14 +41,14 @@ val appModule = module {
     viewModel { ClientListViewModel(get(), get(), get()) }
     viewModel { ProfileViewModel(get(), get(), get(), get(), get()) }
     viewModel { FavoriteViewModel(get(), get()) }
-    viewModel { ContainerViewModel(get(), get(), get(), get()) }
+    viewModel { ContainerViewModel(get(), get(), get()) }
     viewModel { OrdersViewModel(get(), get()) }
     viewModel { BottomSheetViewModel(get(), get()) }
-    viewModel { CreatorListViewModel(get(), get()) }
+    viewModel { CreatorListViewModel(get()) }
     viewModel { DialogViewModel(get()) }
-    viewModel { DialogForTakeOrderViewModel(get(), get(), get()) }
-    viewModel { OrdersInWorkViewModel(get(), get(), get()) }
-    viewModel { FeedbackDialogViewModel(get(), get(), get()) }
+    viewModel { DialogForTakeOrderViewModel(get(), get()) }
+    viewModel { OrdersInWorkViewModel(get(), get()) }
+    viewModel { FeedbackDialogViewModel(get(), get()) }
 
     single {
         Room.databaseBuilder(
@@ -75,13 +75,13 @@ val appModule = module {
     single { get<DBprovider>().DaoFavorite() }
     single { get<DBprovider>().DaoProfileInfo() }
     single { get<DBprovider>().DaoBottomSheet() }
-    single { RepositorySQL(get(), get(), get()) }
-    single { RepositoryOrders(get()) }
-    single { RepositoryProfileData(get()) }
-    single { RepositoryFavorite(get()) }
-    single { RepositoryBottomSheet(get()) }
-    single { RepositoryFood(get()) }
-    single {Reference(get())}
+    single { RepositoryUser ( get(), get(), get()) }
+    single { RepositoryOrders ( get()) }
+    single { RepositoryProfileData ( get()) }
+    single { RepositoryFavorite ( get()) }
+    single { RepositoryBottomSheet ( get()) }
+    single { RepositoryFood ( get()) }
+    single { Reference ( get()) }
 }
 
 fun getFoods(): List<FoodDb> {

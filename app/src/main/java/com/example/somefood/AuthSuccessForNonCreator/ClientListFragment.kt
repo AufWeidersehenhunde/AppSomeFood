@@ -24,11 +24,11 @@ class ClientListFragment : Fragment(R.layout.fragment_list) {
         super.onViewCreated(view, savedInstanceState)
         if (savedInstanceState == null) {
             observeElement()
-            initView()
+            initViews()
         }
     }
 
-    private fun initView() {
+    private fun initViews() {
         adapterHome =
             RecyclerViewAdapterForNonCreator({
                     viewListViewModel.putFoodToFavorite(it.idFood)}, {
@@ -52,4 +52,6 @@ class ClientListFragment : Fragment(R.layout.fragment_list) {
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
+
 }
+

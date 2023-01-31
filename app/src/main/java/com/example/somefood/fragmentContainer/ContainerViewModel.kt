@@ -6,7 +6,7 @@ import com.example.appsomefood.DBandProvider.UsersDb
 import com.example.appsomefood.Screens
 import com.example.appsomefood.repository.Reference
 import com.example.appsomefood.repository.RepositoryProfileData
-import com.example.appsomefood.repository.RepositorySQL
+import com.example.appsomefood.repository.RepositoryUser
 import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,16 +15,15 @@ import kotlinx.coroutines.launch
 
 class ContainerViewModel(
     private val router: Router,
-    private val repositorySQL: RepositorySQL,
-    private val repositoryProfileData: RepositoryProfileData,
-    preference: Reference
+    private val repositoryUser: RepositoryUser,
+    private val repositoryProfileData: RepositoryProfileData
 ) : ViewModel() {
     val statusProfile = MutableStateFlow<UsersDb?>(null)
-    val user = preference.getValue("pref").toString()
+    val user = repositoryUser.pref
 
     fun create() {
         viewModelScope.launch(Dispatchers.IO) {
-            if (repositorySQL.checkStatus(user)?.isCreator == true) {
+            if (repositoryUser.checkStatus(repositoryUser.pref)?.isCreator == true) {
                 router.newRootScreen(Screens.routeToCreatorList())
             }else{
                 router.newRootScreen(Screens.routeToListFragment())
@@ -34,7 +33,7 @@ class ContainerViewModel(
 
     fun checkAccount(){
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryProfileData.checkAccountForStatus(user)?.filterNotNull()?.collect{
+            repositoryProfileData.checkAccountForStatus(repositoryUser.pref)?.filterNotNull()?.collect{
                     statusProfile.value = it
             }
         }

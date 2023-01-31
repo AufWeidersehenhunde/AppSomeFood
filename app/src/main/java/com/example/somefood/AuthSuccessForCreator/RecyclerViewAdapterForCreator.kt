@@ -3,12 +3,13 @@ package com.example.appsomefood.AuthSuccessForCreator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.appsomefood.databinding.RecyclerItemCreatorListBinding
 import com.example.appsomefood.Orders.OrdersModel
 
-class RecyclerViewAdapterForCreator (private val forOrder:(OrdersModel)->Unit): RecyclerView.Adapter<RecyclerViewAdapterForCreator.MyViewHolder>() {
+class RecyclerViewAdapterForCreator (private val AddOrderClick:(OrdersModel)->Unit): RecyclerView.Adapter<RecyclerViewAdapterForCreator.MyViewHolder>() {
     var item: List<OrdersModel> = emptyList()
 
     fun set(items: List<OrdersModel>) {
@@ -21,7 +22,7 @@ class RecyclerViewAdapterForCreator (private val forOrder:(OrdersModel)->Unit): 
         RecyclerView.ViewHolder(itemBinding.root) {
         private val binding = itemBinding
         fun bind(order: OrdersModel,
-                 forOrder:(OrdersModel)->Unit){
+                 AddOrderClick:(OrdersModel)->Unit){
             binding.apply {
                 nameFood.text = order.name
                 Glide.with(imageViewFood.context)
@@ -30,9 +31,9 @@ class RecyclerViewAdapterForCreator (private val forOrder:(OrdersModel)->Unit): 
                 timerMinute.text = order.time
                 volumeOrderCreator.text = order.volume.toString()
                 btnDoneOrder.setOnClickListener {
-                    forOrder(order)
+                    AddOrderClick(order)
                 }
-                btnDelOrder.visibility = View.INVISIBLE
+                btnDelOrder.isInvisible
             }
         }
     }
@@ -45,7 +46,7 @@ class RecyclerViewAdapterForCreator (private val forOrder:(OrdersModel)->Unit): 
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        item[position].let { holder.bind(it, forOrder) }
+        holder.bind(item[position], AddOrderClick)
     }
 
     override fun getItemCount(): Int {

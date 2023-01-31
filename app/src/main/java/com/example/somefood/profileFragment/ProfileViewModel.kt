@@ -1,75 +1,67 @@
 package com.example.appsomefood.profileFragment
 
-import android.content.Intent
-import android.content.SharedPreferences
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.appsomefood.DBandProvider.Feedback
 import com.example.appsomefood.DBandProvider.FoodDb
-import com.example.appsomefood.DBandProvider.Orders
 import com.example.appsomefood.DBandProvider.UsersDb
-import com.example.appsomefood.MainActivity.MainActivity
 import com.example.appsomefood.Orders.OrdersModel
 import com.example.appsomefood.Orders.Status
-import com.example.appsomefood.Screens
 import com.example.appsomefood.repository.*
-import com.github.terrakok.cicerone.NavigatorHolder
-import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
-import org.koin.java.KoinJavaComponent.inject
 
 class ProfileViewModel(
     private val repositoryProfileData: RepositoryProfileData,
-    private val repositorySQL: RepositorySQL,
+    private val repositoryUser: RepositoryUser,
     private val repositoryOrders: RepositoryOrders,
     private val repositoryFood: RepositoryFood,
     private val preference: Reference
 ) : ViewModel() {
-    val user = preference.getValue("pref").toString()
     private val _profile = MutableStateFlow<UsersDb?>(null)
     val profile: MutableStateFlow<UsersDb?> = _profile
     private val _ordersCount = MutableStateFlow<OrdersCount?>(null)
     val ordersCount: MutableStateFlow<OrdersCount?> = _ordersCount
-    val listFoodsForRecycler = MutableStateFlow<List<OrdersModel>?>(null)
-    var userFeedback = MutableStateFlow<ProfileForFeedback?>(null)
+    private val _listFoodsForRecycler = MutableStateFlow<List<OrdersModel>?>(null)
+    val listFoodsForRecycler: MutableStateFlow<List<OrdersModel>?> = _listFoodsForRecycler
+    private var _userFeedback = MutableStateFlow<ProfileForFeedback?>(null)
+    var userFeedback: MutableStateFlow<ProfileForFeedback?> = _userFeedback
     private val feedbackProfile = MutableStateFlow<UsersDb?>(null)
-    var averageMark = MutableStateFlow<Double>(0.00)
-    val ratingFeedback = MutableStateFlow<Double>(0.00)
+    private var _averageMark = MutableStateFlow<Double>(0.00)
+    var averageMark: MutableStateFlow<Double> = _averageMark
+    private val _ratingFeedback = MutableStateFlow<Double>(0.00)
+    val ratingFeedback: MutableStateFlow<Double> = _ratingFeedback
 
     private fun takeFeedbackProfile(it: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            repositorySQL.takeProfileInfo(it).collect {
+            repositoryUser.takeProfileInfo(it).collect {
                 feedbackProfile.value = it
                 takeRatingForFeedback()
-                repositoryOrders.takeForRVLastest(user, status = Status.ARCHIVE).collect {
-                    listFoodsForRecycler.value = it
+                repositoryOrders.takeForRVLastest(repositoryUser.pref, status = Status.ARCHIVE).collect {
+                    _listFoodsForRecycler.value = it
                 }
             }
         }
     }
 
     private fun takeRatingForFeedback() {
-        val stat = userFeedback.value?.id?.value?.isCreator
+        val stat = _userFeedback.value?.id?.value?.isCreator
         viewModelScope.launch(Dispatchers.IO) {
             if (stat == true) {
-                repositoryOrders.takeRatingForFeedbackByCreator(userFeedback.value?.id?.value?.uuid.toString())
+                repositoryOrders.takeRatingForFeedbackByCreator(_userFeedback.value?.id?.value?.uuid.toString())
                     .collect {
                         val list = it?.map { it.markForClient }
                         if (list != null) {
-                            ratingFeedback.value = list.filterNotNull().average()
+                            _ratingFeedback.value = list.filterNotNull().average()
                         }
                     }
             } else if (stat == false) {
-                repositoryOrders.takeRatingForFeedbackByClient(userFeedback.value?.id?.value?.uuid.toString())
+                repositoryOrders.takeRatingForFeedbackByClient(_userFeedback.value?.id?.value?.uuid.toString())
                     .collect {
                         val list = it?.map { it.markForCreator }
                         if (list != null) {
-                            ratingFeedback.value = list.filterNotNull().average()
+                            _ratingFeedback.value = list.filterNotNull().average()
                         }
                     }
             }
@@ -78,10 +70,10 @@ class ProfileViewModel(
 
     private fun takeMarksForProfileCreator() {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryOrders.takeMarksForCreator(user).collect {
+            repositoryOrders.takeMarksForCreator(repositoryUser.pref).collect {
                 val list = it?.map { it.markForCreator }
                 if (list != null) {
-                    averageMark.value = list.filterNotNull().average()
+                    _averageMark.value = list.filterNotNull().average()
                 }
             }
         }
@@ -89,22 +81,22 @@ class ProfileViewModel(
 
     private fun setPhotoProfile(profilePhoto: String) {
         viewModelScope.launch {
-            repositorySQL.setPhoto(user, profilePhoto)
+            repositoryUser.setPhoto(repositoryUser.pref, profilePhoto)
         }
     }
 
     fun savePhoto(newUri: Uri?) {
         viewModelScope.launch {
-            setPhotoProfile(repositorySQL.savePhoto(newUri))
+            setPhotoProfile(repositoryUser.savePhoto(newUri))
         }
     }
 
     private fun takeMarksForProfileClient() {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryOrders.takeMarksForClient(user).collect {
+            repositoryOrders.takeMarksForClient(repositoryUser.pref).collect {
                 val list = it?.map { it.markForClient }
                 if (list != null) {
-                    averageMark.value = list.filterNotNull().average()
+                    _averageMark.value = list.filterNotNull().average()
                 }
             }
         }
@@ -116,34 +108,34 @@ class ProfileViewModel(
 
     fun setName(name: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryProfileData.updateName(name, user)
+            repositoryProfileData.updateName(name, repositoryUser.pref)
         }
     }
 
 
     fun setDescription(des: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryProfileData.updateDescription(des, user)
+            repositoryProfileData.updateDescription(des, repositoryUser.pref)
         }
     }
 
     fun setAddress(address: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryProfileData.updateAddress(address, user)
+            repositoryProfileData.updateAddress(address, repositoryUser.pref)
         }
     }
 
     fun takeProfileInfo() {
         viewModelScope.launch(Dispatchers.IO) {
-            repositorySQL.takeProfileInfo(user).collect {
+            repositoryUser.takeProfileInfo(repositoryUser.pref).collect {
                 _profile.value = it
                 if (it.isCreator == true) {
                     takeMarksForProfileCreator()
-                    repositoryOrders.takeFeedbackForCreator(user).collect {
+                    repositoryOrders.takeFeedbackForCreator(repositoryUser.pref).collect {
                         if (it != null) {
                             takeFeedbackProfile(it.idUser)
                         }
-                        userFeedback.value =
+                        _userFeedback.value =
                             ProfileForFeedback(
                                 feedbackProfile,
                                 it?.textForCreator,
@@ -152,9 +144,9 @@ class ProfileViewModel(
                     }
                 } else {
                     takeMarksForProfileClient()
-                    repositoryOrders.takeFeedbackForClient(user).collect {
+                    repositoryOrders.takeFeedbackForClient(repositoryUser.pref).collect {
                         it?.idCreator?.let { it1 -> takeFeedbackProfile(it1) }
-                        userFeedback.value =
+                        _userFeedback.value =
                             ProfileForFeedback(
                                 feedbackProfile,
                                 it?.textForClient,
@@ -169,16 +161,16 @@ class ProfileViewModel(
 
     fun changeStatus(creatorStatus: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryProfileData.changeStatus(user, creatorStatus)
+            repositoryProfileData.changeStatus(repositoryUser.pref, creatorStatus)
         }
     }
 
     fun takeAllOrdersForMost() {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryOrders.takeAllOrders(user, Status.ARCHIVE).collect {
+            repositoryOrders.takeAllOrders(repositoryUser.pref, Status.ARCHIVE).collect {
                 if (it != null) {
                     if (it.isNotEmpty()) {
-                        mostCommon(user, it.map { it.name })
+                        mostCommon(repositoryUser.pref, it.map { it.name })
                     }
                 }
             }

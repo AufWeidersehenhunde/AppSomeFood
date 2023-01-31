@@ -46,9 +46,6 @@ class FeedbackDialogFragment : DialogFragment() {
     private fun initView() {
         viewModelDialog.checkStatus()
         val idOrder = arguments?.getString(number)
-        viewBindingDialog.ratingBarIndicator.setOnRatingBarChangeListener { _, f1, _ ->
-            numberRating = f1.toDouble()
-        }
 
         viewBindingDialog.sendFeedback.setOnClickListener {
             numberRating = viewBindingDialog.ratingBarIndicator.rating.toDouble()
@@ -63,5 +60,4 @@ class FeedbackDialogFragment : DialogFragment() {
             }
         }
     }
-
 }

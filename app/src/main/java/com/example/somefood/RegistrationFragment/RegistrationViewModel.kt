@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.appsomefood.DBandProvider.UsersDb
 import com.example.appsomefood.Screens
 import com.example.appsomefood.repository.Reference
-import com.example.appsomefood.repository.RepositorySQL
+import com.example.appsomefood.repository.RepositoryUser
 import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 
 class RegistrationViewModel(
     private val router: Router,
-    private val repositorySQL: RepositorySQL,
+    private val repositoryUser: RepositoryUser,
     private val preference: Reference
 ) : ViewModel() {
 
@@ -25,13 +25,18 @@ class RegistrationViewModel(
     }
 
 
-    fun register(model: UsersDb) {
+    fun register(log:String, pass:String, status:Boolean) {
         _regBoolean.value = false
+        val model = UsersDb(
+            login = log,
+            password = pass,
+            isCreator = status
+        )
         viewModelScope.launch(Dispatchers.IO) {
-            if (repositorySQL.checkLogin(model.login) == model.login) {
+            if (repositoryUser.checkLogin(model.login) == model.login) {
                 _regBoolean.value = true
             } else {
-                repositorySQL.registerUser(model)
+                repositoryUser.registerUser(model)
                 preference.save("pref", model.uuid)
                 router.newRootScreen(Screens.routeToFragmentContainer() )
             }

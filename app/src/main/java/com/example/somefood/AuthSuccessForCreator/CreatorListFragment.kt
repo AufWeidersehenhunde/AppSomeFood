@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.appsomefood.R
 import com.example.appsomefood.databinding.FragmentCreatorListBinding
@@ -33,9 +34,8 @@ class CreatorListFragment : Fragment(R.layout.fragment_creator_list) {
             }
 
         with(viewBinding.recyclerViewCreator) {
-            layoutManager = GridLayoutManager(
-                context,
-                1
+            layoutManager = LinearLayoutManager(
+                context
             )
             adapter = adapterHomeCreator
         }

@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.appsomefood.R
 import com.example.appsomefood.databinding.FragmentOrdersInWorkBinding
@@ -23,23 +24,22 @@ class OrdersInWorkFragment : Fragment(R.layout.fragment_orders_in_work) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeElement()
-        initView()
+        initViews()
     }
 
-    private fun initView(){
+    private fun initViews(){
         adapterWorkCreator =
             AdapterForOrdersInWork ({
                 it.idUser?.let { it1 ->
                         viewOrdersWorkListViewModel.orderDone(it.number)
                 }
-            }, {uiThreadIsDown(it)})
+            }, {feedbackDialog(it)})
 
 
 
         with(viewBinding.recyclerViewOrdersInWork) {
-            layoutManager = GridLayoutManager(
-                context,
-                1
+            layoutManager = LinearLayoutManager(
+                context
             )
             adapter = adapterWorkCreator
         }
@@ -51,7 +51,7 @@ class OrdersInWorkFragment : Fragment(R.layout.fragment_orders_in_work) {
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
-    private fun uiThreadIsDown(it:OrdersModel){
+    private fun feedbackDialog(it:OrdersModel){
         it.idUser?.let { it1 ->
             FeedbackDialogFragment.getInstance(it.number, it1)
                 .show(childFragmentManager, FeedbackDialogFragment.TAG)

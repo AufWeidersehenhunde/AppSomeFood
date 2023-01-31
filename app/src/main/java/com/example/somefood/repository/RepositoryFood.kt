@@ -6,6 +6,6 @@ class RepositoryFood(
     private val food: DaoFood
 ) {
 
-    fun takeIt() = food.takeIt()
+    fun takeIt() = food.observeFood()
     suspend fun takeFoodForMustOrder(it:String) = food.takeFoodForMustOrder(it)
 }

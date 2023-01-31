@@ -92,7 +92,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/timer"
+            android:id="@+id/timerCard"
             android:layout_width="50dp"
             android:layout_height="80dp"
             android:layout_gravity="end|center"
@@ -103,7 +103,7 @@
             app:cardElevation="8dp">
 
             <TextView
-                android:id="@+id/timer2"
+                android:id="@+id/timerMinutes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|center"
@@ -113,7 +113,7 @@
                 android:text="10"
                 />
             <TextView
-                android:id="@+id/timer3"
+                android:id="@+id/timerSeconds"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

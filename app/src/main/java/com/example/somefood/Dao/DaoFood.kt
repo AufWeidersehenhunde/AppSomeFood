@@ -9,11 +9,11 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface DaoFood {
     @Query("SELECT*FROM food")
-    fun takeIt(): Flow<List<FoodDb>>
+    fun observeFood(): Flow<List<FoodDb>>
 
     @Insert
     fun insertFoods(list: List<FoodDb>)
 
     @Query("SELECT*FROM food WHERE name=:it")
-     suspend fun takeFoodForMustOrder(it:String): FoodDb?
+    suspend fun takeFoodForMustOrder(it: String): FoodDb?
 }

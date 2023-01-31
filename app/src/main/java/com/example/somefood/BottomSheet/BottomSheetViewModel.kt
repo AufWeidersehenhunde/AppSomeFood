@@ -5,15 +5,15 @@ import androidx.lifecycle.viewModelScope
 import com.example.appsomefood.DBandProvider.FoodDb
 import com.example.appsomefood.repository.Reference
 import com.example.appsomefood.repository.RepositoryBottomSheet
+import com.example.appsomefood.repository.RepositoryUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class BottomSheetViewModel (
     private val repositoryBottomSheet: RepositoryBottomSheet,
-    private val preference:Reference
+    private val repositoryUser: RepositoryUser
 ) : ViewModel() {
-    val user = preference.getValue("pref").toString()
     private val _number = MutableStateFlow<Int>(1)
     val number: MutableStateFlow<Int> = _number
     private val _food = MutableStateFlow<FoodDb?>(null)
@@ -40,7 +40,7 @@ class BottomSheetViewModel (
 
     fun putInOrder(idFood:String, time:String, volume:Int){
         viewModelScope.launch(Dispatchers.IO)  {
-            repositoryBottomSheet.addFoodToOrder(idFood,user, time, volume)
+            repositoryBottomSheet.addFoodToOrder(idFood,repositoryUser.pref, time, volume)
         }
     }
 }

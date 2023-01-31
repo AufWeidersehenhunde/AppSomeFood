@@ -13,6 +13,8 @@ import com.example.appsomefood.databinding.FragmentRegistrationBinding
 import com.example.appsomefood.DBandProvider.UsersDb
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 class RegistrationFragment : Fragment(R.layout.fragment_registration) {
     private val viewModelRegistrationFragment: RegistrationViewModel by viewModel()
@@ -21,7 +23,7 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView()
+        initViews()
     }
 
     private fun View.hideKeyboard() {
@@ -29,7 +31,7 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
         imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
-    private suspend fun forToast(){
+    private suspend fun initObservers(){
         viewModelRegistrationFragment.regBoolean.collect{
             if(it){
                 Toast.makeText(context, "Такой логин уже занят!", Toast.LENGTH_SHORT).show()
@@ -37,7 +39,7 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
         }
     }
 
-    private fun initView(){
+    private fun initViews(){
         with(viewBinding){
             btnBack.setOnClickListener {
                 it.hideKeyboard()
@@ -47,22 +49,25 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
                 viewLifecycleOwner.lifecycleScope.launch {
                     if (viewBinding.passReg.text.toString() == "") {
                         Toast.makeText(context, "Введите пароль!!!", Toast.LENGTH_SHORT).show()
+                    } else if(!isEmailValid(viewBinding.loginReg.text.toString())){
+                        Toast.makeText(context, "Email is not valid!!!", Toast.LENGTH_SHORT).show()
                     }
                     else if (viewBinding.passReg.text.toString() != viewBinding.secondPassReg.text.toString())
                     {
                         Toast.makeText(context, "Пароли не совпадают", Toast.LENGTH_SHORT).show()
                     }
                     else {
-                        val model = UsersDb(
-                            login = viewBinding.loginReg.text.toString(),
-                            password = viewBinding.passReg.text.toString(),
-                            isCreator = false
-                        )
-                        viewModelRegistrationFragment.register(model)
-                        forToast()
+                        viewModelRegistrationFragment.register(viewBinding.loginReg.text.toString(),viewBinding.passReg.text.toString(),false)
+                        initObservers()
                     }
                 }
             }
         }
+    }
+    private fun isEmailValid(email:String): Boolean {
+        val expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        val pattern: Pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        val matcher: Matcher = pattern.matcher(email);
+        return matcher.matches()
     }
 }

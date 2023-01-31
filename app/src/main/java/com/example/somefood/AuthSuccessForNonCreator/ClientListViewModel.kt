@@ -6,6 +6,7 @@ import com.example.appsomefood.DBandProvider.FoodDb
 import com.example.appsomefood.repository.Reference
 import com.example.appsomefood.repository.RepositoryFavorite
 import com.example.appsomefood.repository.RepositoryFood
+import com.example.appsomefood.repository.RepositoryUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -13,11 +14,10 @@ import kotlinx.coroutines.launch
 class ClientListViewModel(
     private val repositoryFavorite: RepositoryFavorite,
     private val repositoryFood: RepositoryFood,
-    private val preference:Reference
+    private val repositoryUser: RepositoryUser
 ) : ViewModel() {
     private val _listFoods = MutableStateFlow<List<FoodDb>>(emptyList())
     val listFoods:MutableStateFlow<List<FoodDb>> = _listFoods
-    val user = preference.getValue("pref").toString()
 
 
     init {
@@ -27,11 +27,11 @@ class ClientListViewModel(
 
     fun putFoodToFavorite(uuid:String){
         viewModelScope.launch(Dispatchers.IO) {
-            val check = repositoryFavorite.checkFavoriteFood(uuid, user)
+            val check = repositoryFavorite.checkFavoriteFood(uuid, repositoryUser.pref)
             if (check != null) {
                 repositoryFavorite.deleteFavoriteFood(check)
             } else {
-                repositoryFavorite.addFoodToFavorite(uuid, user)
+                repositoryFavorite.addFoodToFavorite(uuid, repositoryUser.pref)
             }
         }
     }

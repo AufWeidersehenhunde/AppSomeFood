@@ -7,13 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.appsomefood.databinding.RecyclerViewItemFavoriteBinding
 import com.example.appsomefood.DBandProvider.FoodDb
 import com.example.appsomefood.DBandProvider.Orders
 
-class RecyclerViewAdapterOrders(private val delOrder: (OrdersModel) -> Unit,private val acceptOrder: (OrdersModel) -> Unit, private val dialog:(OrdersModel)->Unit) :
+class RecyclerViewAdapterOrders(
+    private val delOrder: (OrdersModel) -> Unit,
+    private val acceptOrder: (OrdersModel) -> Unit,
+    private val dialog: (OrdersModel) -> Unit
+) :
     RecyclerView.Adapter<RecyclerViewAdapterOrders.MyViewHolder>() {
     var item: List<OrdersModel?> = emptyList()
 
@@ -34,7 +40,7 @@ class RecyclerViewAdapterOrders(private val delOrder: (OrdersModel) -> Unit,priv
             food: OrdersModel,
             delOrder: (OrdersModel) -> Unit,
             acceptOrder: (OrdersModel) -> Unit,
-            dialog:(OrdersModel)->Unit
+            dialog: (OrdersModel) -> Unit
         ) {
             binding.apply {
                 val name = food.name
@@ -44,26 +50,32 @@ class RecyclerViewAdapterOrders(private val delOrder: (OrdersModel) -> Unit,priv
                     .load(image)
                     .into(imageViewFavorite)
                 volumeOrder.text = food.volume.toString()
-                timer2.text = food.time
+                timerMinutes.text = food.time
 
 
-                when(food.status){
+                when (food.status) {
                     Status.FREE -> {
                         statusOrder.text = "Not recruited yet"
                         statusOrder.setTextColor(Color.WHITE)
-                        btnDone.visibility = View.INVISIBLE}
+                        btnDone.isInvisible
+                    }
                     Status.WORK -> {
                         statusOrder.text = "In work"
                         statusOrder.setTextColor(Color.RED)
-                        btnDone.visibility = View.INVISIBLE
+                        btnDone.isInvisible
                     }
                     Status.DONE -> {
                         statusOrder.text = "Done"
                         statusOrder.setTextColor(Color.GREEN)
-                        btnDone.visibility = View.VISIBLE
-                        btnDelOrder.visibility = View.INVISIBLE
+                        btnDone.isVisible
+                        btnDelOrder.isInvisible
                     }
-                    else -> {}
+                    else -> {
+                        statusOrder.text = "Wait"
+                        statusOrder.setTextColor(Color.WHITE)
+                        btnDone.isInvisible
+                        btnDelOrder.isVisible
+                    }
                 }
                 creatorFood.text = food.nameCreator
 
@@ -78,18 +90,17 @@ class RecyclerViewAdapterOrders(private val delOrder: (OrdersModel) -> Unit,priv
                     time?.cancel()
                     time = object : CountDownTimer(15000L, 200L) {
                         override fun onTick(p0: Long) {
-                            timer2.text = p0.toString()
+                            timerMinutes.text = p0.toString()
                         }
 
                         override fun onFinish() {
-                            timer2.text = "0"
+                            timerMinutes.text = "0"
                         }
                     }.start()
                 }
             }
         }
     }
-
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {

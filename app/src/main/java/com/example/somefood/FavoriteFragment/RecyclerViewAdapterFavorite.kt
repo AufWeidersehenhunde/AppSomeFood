@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.appsomefood.databinding.RecyclerViewItemBinding
@@ -30,7 +31,7 @@ class RecyclerViewAdapterFavorite(private val delFavorite: (FavoriteModel) -> Un
                 btnAddToFavourite.setOnClickListener {
                     delFavorite(food)
                 }
-                btnAdd.visibility = View.INVISIBLE
+                btnAdd.isInvisible
             }
         }
     }

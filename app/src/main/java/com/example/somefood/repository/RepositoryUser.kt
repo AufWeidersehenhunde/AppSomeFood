@@ -7,30 +7,30 @@ import com.example.appsomefood.Dao.DaoUser
 import java.io.File
 import java.util.*
 
-class RepositorySQL (
-    private val User: DaoUser,
+class RepositoryUser (
+    private val user: DaoUser,
     private val context: Context,
-    preference:Reference
+    preference: Reference
 ){
 
     val pref = preference.getValue("pref").toString()
 
-    fun registerUser(usersDb:UsersDb) = User.registerUser(usersDb)
+    fun registerUser(usersDb:UsersDb) = user.registerUser(usersDb)
 
-    suspend fun checkLogin(log:String) = User.checkLogin(log)
+    suspend fun checkLogin(log:String) = user.checkLogin(log)
 
-    suspend fun checkAccount(log: String, pass:String) = User.checkAccount(log, pass)
+    suspend fun checkAccount(log: String, pass:String) = user.checkAccount(log, pass)
 
-    fun checkStatus(UUID:String) = User.checkStatus(UUID)
+    fun checkStatus(UUID:String) = user.checkStatus(UUID)
 
-    fun takeProfileInfo(uuid: String) = User.takeProfileInfo(uuid)
+    fun takeProfileInfo(uuid: String) = user.observeProfileInfo(uuid)
 
     suspend fun setPhoto(userID: String, profilePhoto: String) {
-        User.setPhoto(userID, profilePhoto)
+        user.setPhoto(userID, profilePhoto)
     }
 
     private suspend fun getUserPhoto(){
-        User.getUserPhoto(pref)
+        user.getUserPhoto(pref)
     }
 
     suspend fun savePhoto(newUri: Uri?): String {

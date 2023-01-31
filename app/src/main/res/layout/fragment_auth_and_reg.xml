@@ -5,7 +5,7 @@
     android:id="@+id/pngFace"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.somefood.AuthAndAuthorize.AuthAndRegFragment">
+    tools:context="com.example.appsomefood.AuthAndAuthorize.AuthAndRegFragment">
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"

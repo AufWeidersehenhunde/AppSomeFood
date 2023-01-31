@@ -20,8 +20,8 @@ object Screens {
     fun routeToProfileFragment() = FragmentScreen { ProfileFragment() }
     fun routeToFavoriteFragment() = FragmentScreen { FavoriteFragment() }
     fun routeToFragmentContainer() = FragmentScreen { ContainerFragment() }
-    fun routeToOrdersFragment() = FragmentScreen{OrdersFragment()}
-    fun routeToCreatorList() = FragmentScreen{CreatorListFragment()}
-    fun routeToOrdersWork() = FragmentScreen{OrdersInWorkFragment()}
+    fun routeToOrdersFragment() = FragmentScreen { OrdersFragment() }
+    fun routeToCreatorList() = FragmentScreen { CreatorListFragment() }
+    fun routeToOrdersWork() = FragmentScreen { OrdersInWorkFragment() }
 
     }

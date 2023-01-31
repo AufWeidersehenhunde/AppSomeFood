@@ -9,26 +9,19 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class FeedbackDialogViewModel(
-    preference: Reference,
-    private val repositorySQL: RepositorySQL,
+    private val repositoryUser: RepositoryUser,
     private val repositoryOrders: RepositoryOrders
 ) : ViewModel() {
-    val user = preference.getValue("pref").toString()
-    var profile = MutableStateFlow<UsersDb?>(null)
+    private val _profile = MutableStateFlow<UsersDb?>(null)
+    var profile: MutableStateFlow<UsersDb?> = _profile
 
 
     fun checkFeedback(id: String, text: String, mark: Double) {
         viewModelScope.launch(Dispatchers.IO) {
-            when (profile.value?.isCreator) {
-                false -> {
-                    repositoryOrders.insertFeedbackByClient(id, user, text, mark)
-                }
-                true -> {
-                    repositoryOrders.insertFeedbackByCreator(id, user, text, mark)
-                }
-                else -> {
-
-                }
+            if (_profile.value?.isCreator == false) {
+                repositoryOrders.insertFeedbackByClient(id, repositoryUser.pref, text, mark)
+            } else {
+                repositoryOrders.insertFeedbackByCreator(id, repositoryUser.pref, text, mark)
             }
         }
     }
@@ -36,8 +29,8 @@ class FeedbackDialogViewModel(
 
     fun checkStatus() {
         viewModelScope.launch(Dispatchers.IO) {
-            repositorySQL.takeProfileInfo(user).collect {
-                profile.value = it
+            repositoryUser.takeProfileInfo(repositoryUser.pref).collect {
+                _profile.value = it
             }
         }
     }

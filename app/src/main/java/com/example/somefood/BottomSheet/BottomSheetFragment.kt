@@ -25,7 +25,7 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
 
 
     companion object {
-        private const val FOOD = "UUID food"
+        private const val FOOD = "UUID_FOOD"
         fun getInstance(data: String) = BottomSheetFragment().apply {
             arguments = Bundle().apply {
                 putString(FOOD, data)

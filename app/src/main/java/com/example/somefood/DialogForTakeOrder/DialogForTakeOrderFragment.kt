@@ -10,14 +10,14 @@ import com.example.appsomefood.R
 import com.example.appsomefood.databinding.FragmentDialogForTakeOrderBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class DialogForTakeOrderFragment: DialogFragment() {
-    private val viewBindingDialogTake:FragmentDialogForTakeOrderBinding by viewBinding()
+class DialogForTakeOrderFragment : DialogFragment() {
+    private val viewBindingDialogTake: FragmentDialogForTakeOrderBinding by viewBinding()
     private val viewModelDialog: DialogForTakeOrderViewModel by viewModel()
 
 
     companion object {
-        const val number ="NUMBER"
-        fun getInstance(idOrder:String) = DialogForTakeOrderFragment().apply {
+        const val number = "NUMBER"
+        fun getInstance(idOrder: String) = DialogForTakeOrderFragment().apply {
             arguments = Bundle().apply {
                 putString(number, idOrder)
             }
@@ -35,10 +35,10 @@ class DialogForTakeOrderFragment: DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-       initView()
+        initView()
     }
 
-    private fun initView(){
+    private fun initView() {
         val idOrder = arguments?.getString(number)
         viewBindingDialogTake.btnCancelTake.setOnClickListener {
             dialog?.cancel()

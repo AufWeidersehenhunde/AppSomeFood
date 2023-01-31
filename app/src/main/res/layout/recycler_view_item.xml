@@ -12,7 +12,7 @@
 
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView2"
+        android:id="@+id/cardViewImageFood"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:translationZ="1dp"
@@ -36,7 +36,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView4"
+        android:id="@+id/cardViewFoodBody"
         android:layout_width="190dp"
         android:layout_height="200dp"
         android:layout_marginTop="65dp"
@@ -47,7 +47,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/cardView2" >
+        app:layout_constraintTop_toTopOf="@+id/cardViewImageFood" >
 
         <TextView
             android:id="@+id/name"

@@ -42,7 +42,7 @@ class RecyclerViewAdapterForNonCreator(
                 imageView.setOnClickListener {
                     info(food)
                 }
-                cardView4.setOnClickListener {
+                cardViewFoodBody.setOnClickListener {
                     info(food)
                 }
             }
