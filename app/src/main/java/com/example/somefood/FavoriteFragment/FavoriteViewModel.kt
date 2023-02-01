@@ -2,7 +2,6 @@ package com.example.appsomefood.FavoriteFragment
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.appsomefood.repository.Reference
 import com.example.appsomefood.repository.RepositoryFavorite
 import com.example.appsomefood.repository.RepositoryUser
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +21,7 @@ class FavoriteViewModel(
 
     fun delFoodInFavorite(uuid: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val check = repositoryFavorite.checkFavoriteFood(uuid, repositoryUser.pref)
+            val check = repositoryFavorite.checkFavoriteFood(uuid, repositoryUser.userID)
             if (check != null) {
                 repositoryFavorite.deleteFavoriteFood(check)
             }

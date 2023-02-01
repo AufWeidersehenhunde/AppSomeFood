@@ -12,7 +12,7 @@ class Reference(context: Context){
     fun save(KEY_NAME: String, value: String) {
         val editor: SharedPreferences.Editor = sharedPref.edit()
         editor.putString(KEY_NAME, value)
-        editor.commit()
+        editor.apply()
     }
 
     fun getValue(KEY_NAME: String): String? {
@@ -22,7 +22,7 @@ class Reference(context: Context){
     fun remove(KEY_NAME: String):String?{
         val editor: SharedPreferences.Editor = sharedPref.edit()
         editor.remove(KEY_NAME)
-        editor.commit()
+        editor.apply()
         return null
     }
 }

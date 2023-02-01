@@ -2,7 +2,6 @@ package com.example.appsomefood.Orders
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.appsomefood.repository.Reference
 import com.example.appsomefood.repository.RepositoryOrders
 import com.example.appsomefood.repository.RepositoryUser
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +17,7 @@ class OrdersViewModel(
 
     fun takeOrders() {
         viewModelScope.launch {
-            repositoryOrders.takeForRV(repositoryUser.pref, Status.ARCHIVE).collect {
+            repositoryOrders.takeForRV(repositoryUser.userID, Status.ARCHIVE).collect {
                 _listFoodsForRecycler.value = it
             }
         }

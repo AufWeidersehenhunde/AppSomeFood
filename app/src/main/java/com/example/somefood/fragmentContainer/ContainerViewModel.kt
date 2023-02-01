@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.appsomefood.DBandProvider.UsersDb
 import com.example.appsomefood.Screens
-import com.example.appsomefood.repository.Reference
 import com.example.appsomefood.repository.RepositoryProfileData
 import com.example.appsomefood.repository.RepositoryUser
 import com.github.terrakok.cicerone.Router
@@ -19,11 +18,12 @@ class ContainerViewModel(
     private val repositoryProfileData: RepositoryProfileData
 ) : ViewModel() {
     val statusProfile = MutableStateFlow<UsersDb?>(null)
-    val user = repositoryUser.pref
+    val user = repositoryUser.userID
 
     fun create() {
+        repositoryUser.getPreference()
         viewModelScope.launch(Dispatchers.IO) {
-            if (repositoryUser.checkStatus(repositoryUser.pref)?.isCreator == true) {
+            if (repositoryUser.checkStatus(repositoryUser.userID)?.isCreator == true) {
                 router.newRootScreen(Screens.routeToCreatorList())
             }else{
                 router.newRootScreen(Screens.routeToListFragment())
@@ -33,7 +33,7 @@ class ContainerViewModel(
 
     fun checkAccount(){
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryProfileData.checkAccountForStatus(repositoryUser.pref)?.filterNotNull()?.collect{
+            repositoryProfileData.checkAccountForStatus(repositoryUser.userID)?.filterNotNull()?.collect{
                     statusProfile.value = it
             }
         }

@@ -12,9 +12,11 @@ import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.appsomefood.R
 import com.example.appsomefood.databinding.FragmentAuthBinding
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -36,13 +38,39 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
     }
 
     private fun initObservers() {
-        viewModelAuth.auth.filterNotNull().onEach {
-            if (it) {
-                Toast.makeText(context, "Success!", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(context, "Wrong password or login!", Toast.LENGTH_SHORT).show()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModelAuth.toast.collect {
+                when (it) {
+                    toastAuth.PASS -> Toast.makeText(
+                        context,
+                        "Введите пароль!!!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    toastAuth.LOGIN -> Toast.makeText(
+                        context,
+                        "Введите логин!!!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    toastAuth.LOGININVALID -> Toast.makeText(
+                        context,
+                        "Email is not valid!!!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    else -> {}
+                }
+                viewModelAuth.auth.filterNotNull().onEach {
+                    if (it) {
+                        Toast.makeText(context, "Success!", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context, "Wrong password or login!", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }.launchIn(viewLifecycleOwner.lifecycleScope)
             }
-        }.launchIn(viewLifecycleOwner.lifecycleScope)
+        }
     }
 
     private fun initView() {
@@ -64,24 +92,16 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
                 it.hideKeyboard()
             }
 
+//            viewBinding.loginAuth.addTextChangedListener()
+
             btnSignin.setOnClickListener {
-                if (passAuth.text.toString().isEmpty()) {
-                    Toast.makeText(context, "Введите пароль!!!", Toast.LENGTH_SHORT).show()
-                } else if (loginAuth.text.toString().isEmpty()) {
-                    Toast.makeText(context, "Введите логин!!!", Toast.LENGTH_SHORT).show()
-                } else if(!isEmailValid(loginAuth.text.toString())){
-                    Toast.makeText(context, "Email is not valid!!!", Toast.LENGTH_SHORT).show()
-                }else {
-                    viewModelAuth.authentication(loginAuth.text.toString(),passAuth.text.toString(),btnPerson.isChecked)
-                }
+                viewModelAuth.checkInput(
+                    loginAuth.text.toString(),
+                    passAuth.text.toString(),
+                    btnPerson.isChecked
+                )
             }
         }
-    }
-    private fun isEmailValid(email:String): Boolean {
-        val expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
-        val pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
-        val matcher = pattern.matcher(email);
-        return matcher.matches()
     }
 }
 

@@ -10,10 +10,17 @@ import java.util.*
 class RepositoryUser (
     private val user: DaoUser,
     private val context: Context,
-    preference: Reference
+    private val preference: Reference
 ){
+    var userID:String = ""
 
-    val pref = preference.getValue("pref").toString()
+    fun getPreference(){
+        userID = preference.getValue("pref").toString()
+    }
+
+    fun delPref (){
+        userID = preference.getValue("pref").toString()
+        preference.remove("pref")}
 
     fun registerUser(usersDb:UsersDb) = user.registerUser(usersDb)
 
@@ -30,7 +37,7 @@ class RepositoryUser (
     }
 
     private suspend fun getUserPhoto(){
-        user.getUserPhoto(pref)
+        userID?.let { user.getUserPhoto(it) }
     }
 
     suspend fun savePhoto(newUri: Uri?): String {

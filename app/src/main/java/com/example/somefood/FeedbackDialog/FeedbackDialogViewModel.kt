@@ -19,9 +19,9 @@ class FeedbackDialogViewModel(
     fun checkFeedback(id: String, text: String, mark: Double) {
         viewModelScope.launch(Dispatchers.IO) {
             if (_profile.value?.isCreator == false) {
-                repositoryOrders.insertFeedbackByClient(id, repositoryUser.pref, text, mark)
+                repositoryOrders.insertFeedbackByClient(id, repositoryUser.userID, text, mark)
             } else {
-                repositoryOrders.insertFeedbackByCreator(id, repositoryUser.pref, text, mark)
+                repositoryOrders.insertFeedbackByCreator(id, repositoryUser.userID, text, mark)
             }
         }
     }
@@ -29,7 +29,7 @@ class FeedbackDialogViewModel(
 
     fun checkStatus() {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryUser.takeProfileInfo(repositoryUser.pref).collect {
+            repositoryUser.takeProfileInfo(repositoryUser.userID).collect {
                 _profile.value = it
             }
         }

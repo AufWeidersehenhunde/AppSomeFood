@@ -3,7 +3,6 @@ package com.example.appsomefood.BottomSheet
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.appsomefood.DBandProvider.FoodDb
-import com.example.appsomefood.repository.Reference
 import com.example.appsomefood.repository.RepositoryBottomSheet
 import com.example.appsomefood.repository.RepositoryUser
 import kotlinx.coroutines.Dispatchers
@@ -40,7 +39,7 @@ class BottomSheetViewModel (
 
     fun putInOrder(idFood:String, time:String, volume:Int){
         viewModelScope.launch(Dispatchers.IO)  {
-            repositoryBottomSheet.addFoodToOrder(idFood,repositoryUser.pref, time, volume)
+            repositoryBottomSheet.addFoodToOrder(idFood,repositoryUser.userID, time, volume)
         }
     }
 }

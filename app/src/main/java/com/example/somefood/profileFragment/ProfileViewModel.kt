@@ -1,6 +1,7 @@
 package com.example.appsomefood.profileFragment
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.appsomefood.DBandProvider.FoodDb
@@ -38,8 +39,10 @@ class ProfileViewModel(
             repositoryUser.takeProfileInfo(it).collect {
                 feedbackProfile.value = it
                 takeRatingForFeedback()
-                repositoryOrders.takeForRVLastest(repositoryUser.pref, status = Status.ARCHIVE).collect {
-                    _listFoodsForRecycler.value = it
+                repositoryUser.userID?.let { it1 ->
+                    repositoryOrders.takeForRVLastest(it1, status = Status.ARCHIVE).collect {
+                        _listFoodsForRecycler.value = it
+                    }
                 }
             }
         }
@@ -70,10 +73,12 @@ class ProfileViewModel(
 
     private fun takeMarksForProfileCreator() {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryOrders.takeMarksForCreator(repositoryUser.pref).collect {
-                val list = it?.map { it.markForCreator }
-                if (list != null) {
-                    _averageMark.value = list.filterNotNull().average()
+            repositoryUser.userID?.let {
+                repositoryOrders.takeMarksForCreator(it).collect {
+                    val list = it?.map { it.markForCreator }
+                    if (list != null) {
+                        _averageMark.value = list.filterNotNull().average()
+                    }
                 }
             }
         }
@@ -81,7 +86,7 @@ class ProfileViewModel(
 
     private fun setPhotoProfile(profilePhoto: String) {
         viewModelScope.launch {
-            repositoryUser.setPhoto(repositoryUser.pref, profilePhoto)
+            repositoryUser.setPhoto(repositoryUser.userID, profilePhoto)
         }
     }
 
@@ -93,45 +98,49 @@ class ProfileViewModel(
 
     private fun takeMarksForProfileClient() {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryOrders.takeMarksForClient(repositoryUser.pref).collect {
-                val list = it?.map { it.markForClient }
-                if (list != null) {
-                    _averageMark.value = list.filterNotNull().average()
+            repositoryUser.userID?.let {
+                repositoryOrders.takeMarksForClient(it).collect {
+                    val list = it?.map { it.markForClient }
+                    if (list != null) {
+                        _averageMark.value = list.filterNotNull().average()
+                    }
                 }
             }
         }
     }
 
     fun signOut() {
-        preference.remove("pref")
+        viewModelScope.launch(Dispatchers.IO) {
+            repositoryUser.delPref()
+        }
     }
 
     fun setName(name: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryProfileData.updateName(name, repositoryUser.pref)
+            repositoryProfileData.updateName(name, repositoryUser.userID)
         }
     }
 
 
     fun setDescription(des: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryProfileData.updateDescription(des, repositoryUser.pref)
+            repositoryProfileData.updateDescription(des, repositoryUser.userID)
         }
     }
 
     fun setAddress(address: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryProfileData.updateAddress(address, repositoryUser.pref)
+            repositoryProfileData.updateAddress(address, repositoryUser.userID)
         }
     }
 
     fun takeProfileInfo() {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryUser.takeProfileInfo(repositoryUser.pref).collect {
+            repositoryUser.takeProfileInfo(repositoryUser.userID).collect {
                 _profile.value = it
                 if (it.isCreator == true) {
                     takeMarksForProfileCreator()
-                    repositoryOrders.takeFeedbackForCreator(repositoryUser.pref).collect {
+                    repositoryOrders.takeFeedbackForCreator(repositoryUser.userID).collect {
                         if (it != null) {
                             takeFeedbackProfile(it.idUser)
                         }
@@ -144,7 +153,7 @@ class ProfileViewModel(
                     }
                 } else {
                     takeMarksForProfileClient()
-                    repositoryOrders.takeFeedbackForClient(repositoryUser.pref).collect {
+                    repositoryOrders.takeFeedbackForClient(repositoryUser.userID).collect {
                         it?.idCreator?.let { it1 -> takeFeedbackProfile(it1) }
                         _userFeedback.value =
                             ProfileForFeedback(
@@ -161,16 +170,16 @@ class ProfileViewModel(
 
     fun changeStatus(creatorStatus: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryProfileData.changeStatus(repositoryUser.pref, creatorStatus)
+            repositoryProfileData.changeStatus(repositoryUser.userID, creatorStatus)
         }
     }
 
     fun takeAllOrdersForMost() {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryOrders.takeAllOrders(repositoryUser.pref, Status.ARCHIVE).collect {
+            repositoryOrders.takeAllOrders(repositoryUser.userID, Status.ARCHIVE).collect {
                 if (it != null) {
                     if (it.isNotEmpty()) {
-                        mostCommon(repositoryUser.pref, it.map { it.name })
+                        mostCommon(repositoryUser.userID, it.map { it.name })
                     }
                 }
             }
