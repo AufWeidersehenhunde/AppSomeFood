@@ -28,8 +28,14 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
     private fun initView() {
         this.adapterFavorite =
             RecyclerViewAdapterFavorite {
-                it.idFood?.let { it1 -> viewModelFavorite.delFoodInFavorite(it1) }
-            }
+                when(it){
+                    is DeleteFavorite -> it.idFood?.let { it1 ->
+                        viewModelFavorite.delFoodInFavorite(
+                            it1
+                        )
+                    }
+                }
+              }
         with(viewBinding.recyclerViewFavorite) {
             layoutManager = GridLayoutManager(
                 context,

@@ -1,24 +1,18 @@
 package com.example.appsomefood.Orders
 
-import android.content.Context
 import android.graphics.Color
 import android.os.CountDownTimer
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.appsomefood.databinding.RecyclerViewItemFavoriteBinding
-import com.example.appsomefood.DBandProvider.FoodDb
-import com.example.appsomefood.DBandProvider.Orders
 
 class RecyclerViewAdapterOrders(
-    private val delOrder: (OrdersModel) -> Unit,
-    private val acceptOrder: (OrdersModel) -> Unit,
-    private val dialog: (OrdersModel) -> Unit
+    private val onClick: (click: ClickListenerOrdersUser) -> Unit
+
 ) :
     RecyclerView.Adapter<RecyclerViewAdapterOrders.MyViewHolder>() {
     var item: List<OrdersModel?> = emptyList()
@@ -37,23 +31,21 @@ class RecyclerViewAdapterOrders(
         private var time: CountDownTimer? = null
 
         fun bind(
-            food: OrdersModel,
-            delOrder: (OrdersModel) -> Unit,
-            acceptOrder: (OrdersModel) -> Unit,
-            dialog: (OrdersModel) -> Unit
+            food: OrdersModel?,
+            onClick: (ClickListenerOrdersUser) -> Unit
         ) {
             binding.apply {
-                val name = food.name
-                val image = food.image
+                val name = food?.name
+                val image = food?.image
                 nameFood.text = name
                 Glide.with(imageViewFavorite.context)
                     .load(image)
                     .into(imageViewFavorite)
-                volumeOrder.text = food.volume.toString()
-                timerMinutes.text = food.time
+                volumeOrder.text = food?.volume.toString()
+                timerMinutes.text = food?.time
 
 
-                when (food.status) {
+                when (food?.status) {
                     Status.FREE -> {
                         statusOrder.text = "Not recruited yet"
                         statusOrder.setTextColor(Color.WHITE)
@@ -77,16 +69,16 @@ class RecyclerViewAdapterOrders(
                         btnDelOrder.isVisible
                     }
                 }
-                creatorFood.text = food.nameCreator
+                creatorFood.text = food?.nameCreator
 
                 btnDelOrder.setOnClickListener {
-                    delOrder(food)
+                    onClick(DeleteOrder(food?.number))
                 }
                 btnDone.setOnClickListener {
-                    acceptOrder(food)
-                    dialog(food)
+                    onClick(AcceptOrder(food))
+                    onClick(Dialog(food?.number, food?.idUser))
                 }
-                if (food.status == Status.WORK) {
+                if (food?.status == Status.WORK) {
                     time?.cancel()
                     time = object : CountDownTimer(15000L, 200L) {
                         override fun onTick(p0: Long) {
@@ -114,14 +106,19 @@ class RecyclerViewAdapterOrders(
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        item[position]?.let { holder.bind(it, delOrder, acceptOrder, dialog) }
+        holder.bind(item[position], onClick)
 
     }
 
     override fun getItemCount(): Int {
         return item.size
     }
-
-
 }
 
+sealed class ClickListenerOrdersUser()
+
+class DeleteOrder(val idOrder: String?):ClickListenerOrdersUser()
+
+class AcceptOrder(val order: OrdersModel?):ClickListenerOrdersUser()
+
+class Dialog(val idOrder: String?, val userId:String?):ClickListenerOrdersUser()

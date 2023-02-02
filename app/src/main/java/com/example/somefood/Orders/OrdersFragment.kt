@@ -34,13 +34,25 @@ class OrdersFragment : Fragment(R.layout.fragment_orders) {
     private fun initViews(){
         viewModelOrders.takeOrders()
         adapterOrders =
-            RecyclerViewAdapterOrders ( {
-                DialogFragmentForCancel.getInstance(it.number).show(childFragmentManager, DialogFragmentForCancel.TAG)
-            }, {viewModelOrders.acceptOrder(it)}, { it.idUser?.let { it1 ->
-                FeedbackDialogFragment.getInstance(it.number,
-                    it1
-                ).show(childFragmentManager, FeedbackDialogFragment.TAG)
-            } })
+            RecyclerViewAdapterOrders {
+                when(it){
+                    is DeleteOrder -> it.idOrder?.let { it1 ->
+                        DialogFragmentForCancel.getInstance(
+                            it1
+                        ).show(childFragmentManager, DialogFragmentForCancel.TAG)
+                    }
+                    is AcceptOrder -> {
+                        it.order?.let { it1 -> viewModelOrders.acceptOrder(it1) }
+                    }
+                    is Dialog -> it.idOrder?.let { it1 ->
+                        it.userId?.let { it2 ->
+                            FeedbackDialogFragment.getInstance(
+                                it1, it2
+                            ).show(childFragmentManager, FeedbackDialogFragment.TAG)
+                        }
+                    }
+                }
+            }
 
         with(viewBinding.recyclerViewOrders) {
             layoutManager = LinearLayoutManager(
@@ -49,8 +61,6 @@ class OrdersFragment : Fragment(R.layout.fragment_orders) {
             adapter = adapterOrders
         }
     }
-
-
 
     private fun observeElement() {
         viewModelOrders.listFoodsForRecycler.filterNotNull().onEach {

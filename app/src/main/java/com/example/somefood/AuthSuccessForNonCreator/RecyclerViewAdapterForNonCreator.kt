@@ -6,11 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.appsomefood.databinding.RecyclerViewItemBinding
 import com.example.appsomefood.DBandProvider.FoodDb
+import com.example.appsomefood.FavoriteFragment.ClickListener
 
 class RecyclerViewAdapterForNonCreator(
-    private val favorite: (FoodDb) -> Unit,
-    private val bottomSheet: (FoodDb) -> Unit,
-    private val info:(FoodDb) -> Unit
+    private val listClient: (click: ClickListenerForList) -> Unit
 ) : RecyclerView.Adapter<RecyclerViewAdapterForNonCreator.MyViewHolder>() {
     var item: List<FoodDb> = listOf()
 
@@ -24,9 +23,7 @@ class RecyclerViewAdapterForNonCreator(
         private val binding = itemBinding
         fun bind(
             food: FoodDb,
-            favorite: (FoodDb) -> Unit,
-            bottomSheet: (FoodDb) -> Unit,
-            info: (FoodDb) -> Unit
+           listClient: (click: ClickListenerForList) -> Unit
         ) {
             binding.apply {
                 name.text = food.name
@@ -34,16 +31,16 @@ class RecyclerViewAdapterForNonCreator(
                     .load(food.image)
                     .into(imageView)
                 btnAddToFavourite.setOnClickListener {
-                    favorite(food)
+                    listClient(AddToFavorite(food.idFood))
                 }
                 btnAdd.setOnClickListener {
-                    bottomSheet(food)
+                    listClient(AddToOrder(food.idFood))
                 }
                 imageView.setOnClickListener {
-                    info(food)
+                    listClient(AddToOrder(food.idFood))
                 }
                 cardViewFoodBody.setOnClickListener {
-                    info(food)
+                    listClient(AddToOrder(food.idFood))
                 }
             }
         }
@@ -57,10 +54,16 @@ class RecyclerViewAdapterForNonCreator(
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bind(item[position], favorite, bottomSheet, info)
+        holder.bind(item[position], listClient)
     }
 
     override fun getItemCount(): Int {
         return item.size
     }
 }
+
+sealed class ClickListenerForList()
+
+class AddToFavorite(val idFood: String?): ClickListenerForList()
+
+class AddToOrder(val idFood: String?): ClickListenerForList()

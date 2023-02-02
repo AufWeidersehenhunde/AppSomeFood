@@ -6,10 +6,11 @@ import android.view.ViewGroup
 import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.appsomefood.AuthSuccessForNonCreator.ClickListenerForList
 import com.example.appsomefood.databinding.RecyclerItemCreatorListBinding
 import com.example.appsomefood.Orders.OrdersModel
 
-class RecyclerViewAdapterForCreator (private val AddOrderClick:(OrdersModel)->Unit): RecyclerView.Adapter<RecyclerViewAdapterForCreator.MyViewHolder>() {
+class RecyclerViewAdapterForCreator (private val onClick: (click: ClickListenerCreatorList) -> Unit): RecyclerView.Adapter<RecyclerViewAdapterForCreator.MyViewHolder>() {
     var item: List<OrdersModel> = emptyList()
 
     fun set(items: List<OrdersModel>) {
@@ -22,7 +23,7 @@ class RecyclerViewAdapterForCreator (private val AddOrderClick:(OrdersModel)->Un
         RecyclerView.ViewHolder(itemBinding.root) {
         private val binding = itemBinding
         fun bind(order: OrdersModel,
-                 AddOrderClick:(OrdersModel)->Unit){
+                 onClick:(ClickListenerCreatorList)->Unit){
             binding.apply {
                 nameFood.text = order.name
                 Glide.with(imageViewFood.context)
@@ -31,7 +32,7 @@ class RecyclerViewAdapterForCreator (private val AddOrderClick:(OrdersModel)->Un
                 timerMinute.text = order.time
                 volumeOrderCreator.text = order.volume.toString()
                 btnDoneOrder.setOnClickListener {
-                    AddOrderClick(order)
+                    onClick(TakeOrder(order.number))
                 }
                 btnDelOrder.isInvisible
             }
@@ -46,10 +47,14 @@ class RecyclerViewAdapterForCreator (private val AddOrderClick:(OrdersModel)->Un
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bind(item[position], AddOrderClick)
+        holder.bind(item[position], onClick)
     }
 
     override fun getItemCount(): Int {
         return this.item.size
     }
 }
+
+sealed class ClickListenerCreatorList()
+
+class TakeOrder(val idOrder: String?): ClickListenerCreatorList()

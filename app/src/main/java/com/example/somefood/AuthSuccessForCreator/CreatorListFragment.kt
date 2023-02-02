@@ -29,8 +29,12 @@ class CreatorListFragment : Fragment(R.layout.fragment_creator_list) {
     private fun initViews(){
         adapterHomeCreator =
             RecyclerViewAdapterForCreator {
-                    DialogForTakeOrderFragment.getInstance(it.number)
-                        .show(childFragmentManager, DialogFragmentForCancel.TAG)
+              when(it){
+                  is TakeOrder -> it.idOrder?.let { it1 ->
+                      DialogForTakeOrderFragment.getInstance(it1)
+                          .show(childFragmentManager, DialogFragmentForCancel.TAG)
+                  }
+              }
             }
 
         with(viewBinding.recyclerViewCreator) {

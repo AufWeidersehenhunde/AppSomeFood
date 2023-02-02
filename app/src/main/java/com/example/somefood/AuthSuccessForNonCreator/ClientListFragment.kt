@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.appsomefood.databinding.FragmentListBinding
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.appsomefood.BottomSheet.BottomSheetFragment
+import com.example.appsomefood.FavoriteFragment.DeleteFavorite
 import com.example.appsomefood.R
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
@@ -30,13 +31,21 @@ class ClientListFragment : Fragment(R.layout.fragment_list) {
 
     private fun initViews() {
         adapterHome =
-            RecyclerViewAdapterForNonCreator({
-                    viewListViewModel.putFoodToFavorite(it.idFood)}, {
-                    BottomSheetFragment.getInstance(it.idFood)
-                        .show(requireActivity().supportFragmentManager, "tag")
-            },
-                {BottomSheetFragment.getInstance(it.idFood)
-                    .show(requireActivity().supportFragmentManager, "tag")})
+            RecyclerViewAdapterForNonCreator{
+                when(it){
+                    is AddToFavorite -> it.idFood?.let { it1 ->
+                        viewListViewModel.putFoodToFavorite(
+                            it1
+                        )
+                    }
+                    is AddToOrder -> it.idFood?.let { it1 ->
+                        BottomSheetFragment.getInstance(it1)
+                            .show(requireActivity().supportFragmentManager, "tag")
+                    }
+
+                    }
+                }
+
         with(viewBinding.recyclerView) {
             layoutManager = GridLayoutManager(
                 context,
@@ -51,7 +60,5 @@ class ClientListFragment : Fragment(R.layout.fragment_list) {
             adapterHome?.set(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
-
-
 }
 
