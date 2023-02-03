@@ -17,7 +17,7 @@ class OrdersViewModel(
 
     fun takeOrders() {
         viewModelScope.launch {
-            repositoryOrders.takeForRV(repositoryUser.userID, Status.ARCHIVE).collect {
+            repositoryOrders.observeForRV(repositoryUser.userID, Status.ARCHIVE).collect {
                 _listFoodsForRecycler.value = it
             }
         }

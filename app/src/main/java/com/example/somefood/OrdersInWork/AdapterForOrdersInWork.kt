@@ -3,6 +3,7 @@ package com.example.appsomefood.OrdersInWork
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -38,11 +39,11 @@ class AdapterForOrdersInWork(
                 volumeOrderCreator.text = order.volume.toString()
                 btnDoneOrder.setOnClickListener {
                     forOrder(order)
-                    wait.isVisible
+                    wait.isVisible = true
                     rate(order)
                 }
 
-                btnDelOrder.visibility = View.INVISIBLE
+                btnDelOrder.isInvisible = true
 
             }
         }

@@ -38,9 +38,9 @@ val appModule = module {
     viewModel { RegistrationViewModel(get(), get(), get()) }
     viewModel { AuthAndRegViewModel(get()) }
     viewModel { AuthViewModel(get(), get(), get(), get()) }
-    viewModel { ClientListViewModel(get(), get(), get()) }
+    viewModel { ClientListViewModel(get(), get()) }
     viewModel { ProfileViewModel(get(), get(), get(), get(), get()) }
-    viewModel { FavoriteViewModel(get(), get()) }
+    viewModel { FavoriteViewModel(get()) }
     viewModel { ContainerViewModel(get(), get(), get()) }
     viewModel { OrdersViewModel(get(), get()) }
     viewModel { BottomSheetViewModel(get(), get()) }
@@ -78,7 +78,7 @@ val appModule = module {
     single { RepositoryUser ( get(), get(), get()) }
     single { RepositoryOrders ( get()) }
     single { RepositoryProfileData ( get()) }
-    single { RepositoryFavorite ( get()) }
+    single { RepositoryFavorite ( get(), get()) }
     single { RepositoryBottomSheet ( get()) }
     single { RepositoryFood ( get()) }
     single { Reference ( get()) }

@@ -21,6 +21,7 @@ import com.example.appsomefood.R
 import com.example.appsomefood.databinding.FragmentProfileBinding
 import com.example.appsomefood.MainActivity.MainActivity
 import com.example.appsomefood.PhotoProfile
+import com.example.somefood.Services.Services
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -32,6 +33,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private val viewModelProfile: ProfileViewModel by viewModel()
     private var adapterLastest: RecyclerVIewAdapterLastestOrders? = null
     private var btnBoolean: Boolean? = null
+    private val services = Services()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +64,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 adapter = adapterLastest
             }
             addPhotoToProfile.setOnClickListener {
-              photoProfile?.pickPhoto()
+                viewModelProfile.example()
+//              photoProfile?.pickPhoto()
             }
             btnSignOutAcc.setOnClickListener {
                 viewModelProfile.signOut()
@@ -138,14 +141,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
     }
 
-    private fun View.hideKeyboard() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            viewBinding.textInfo.focusable = View.FOCUSABLE
-        }
-        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(windowToken, 0)
-    }
-
     private fun takeData() {
         with(viewBinding) {
             viewModelProfile.takeProfileInfo()
@@ -203,10 +198,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
         }
 
-        btn.setOnClickListener {
+        btn.setOnClickListener { view->
             text.isFocusable = false
             btn.isVisible = false
-            it.hideKeyboard()
+            services.apply {
+                viewBinding.textInfo.isFocusable = true
+                view.hideKeyboard()
+            }
+
             if (text == viewBinding.profileNameHeader) {
                 text.setText("${text.text}")
                 viewModelProfile.setName(

@@ -1,14 +1,15 @@
 package com.example.appsomefood.profileFragment
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.appsomefood.DBandProvider.FoodDb
 import com.example.appsomefood.DBandProvider.UsersDb
 import com.example.appsomefood.Orders.OrdersModel
 import com.example.appsomefood.Orders.Status
+import com.example.appsomefood.Screens
 import com.example.appsomefood.repository.*
+import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -18,7 +19,8 @@ class ProfileViewModel(
     private val repositoryUser: RepositoryUser,
     private val repositoryOrders: RepositoryOrders,
     private val repositoryFood: RepositoryFood,
-    private val preference: Reference
+    private val router: Router,
+
 ) : ViewModel() {
     private val _profile = MutableStateFlow<UsersDb?>(null)
     val profile: MutableStateFlow<UsersDb?> = _profile
@@ -34,13 +36,18 @@ class ProfileViewModel(
     private val _ratingFeedback = MutableStateFlow<Double>(0.00)
     val ratingFeedback: MutableStateFlow<Double> = _ratingFeedback
 
+
+
+    fun example(){
+        router.newRootScreen(Screens.routeToFavoriteFragment())
+    }
     private fun takeFeedbackProfile(it: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryUser.takeProfileInfo(it).collect {
+            repositoryUser.observeProfileInfo(it).collect {
                 feedbackProfile.value = it
                 takeRatingForFeedback()
                 repositoryUser.userID?.let { it1 ->
-                    repositoryOrders.takeForRVLastest(it1, status = Status.ARCHIVE).collect {
+                    repositoryOrders.observeForRVLastest(it1, status = Status.ARCHIVE).collect {
                         _listFoodsForRecycler.value = it
                     }
                 }
@@ -52,7 +59,7 @@ class ProfileViewModel(
         val stat = _userFeedback.value?.id?.value?.isCreator
         viewModelScope.launch(Dispatchers.IO) {
             if (stat == true) {
-                repositoryOrders.takeRatingForFeedbackByCreator(_userFeedback.value?.id?.value?.uuid.toString())
+                repositoryOrders.observeRatingForFeedbackByCreator(_userFeedback.value?.id?.value?.uuid.toString())
                     .collect {
                         val list = it?.map { it.markForClient }
                         if (list != null) {
@@ -60,7 +67,7 @@ class ProfileViewModel(
                         }
                     }
             } else if (stat == false) {
-                repositoryOrders.takeRatingForFeedbackByClient(_userFeedback.value?.id?.value?.uuid.toString())
+                repositoryOrders.observeRatingForFeedbackByClient(_userFeedback.value?.id?.value?.uuid.toString())
                     .collect {
                         val list = it?.map { it.markForCreator }
                         if (list != null) {
@@ -73,8 +80,8 @@ class ProfileViewModel(
 
     private fun takeMarksForProfileCreator() {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryUser.userID?.let {
-                repositoryOrders.takeMarksForCreator(it).collect {
+            repositoryUser.userID.let {
+                repositoryOrders.observeFeedbackForCreator(it).collect {
                     val list = it?.map { it.markForCreator }
                     if (list != null) {
                         _averageMark.value = list.filterNotNull().average()
@@ -98,8 +105,8 @@ class ProfileViewModel(
 
     private fun takeMarksForProfileClient() {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryUser.userID?.let {
-                repositoryOrders.takeMarksForClient(it).collect {
+            repositoryUser.userID.let {
+                repositoryOrders.observeFeedbackForClient(it).collect {
                     val list = it?.map { it.markForClient }
                     if (list != null) {
                         _averageMark.value = list.filterNotNull().average()
@@ -136,30 +143,32 @@ class ProfileViewModel(
 
     fun takeProfileInfo() {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryUser.takeProfileInfo(repositoryUser.userID).collect {
+            repositoryUser.observeProfileInfo(repositoryUser.userID).collect {
                 _profile.value = it
                 if (it.isCreator == true) {
                     takeMarksForProfileCreator()
-                    repositoryOrders.takeFeedbackForCreator(repositoryUser.userID).collect {
-                        if (it != null) {
-                            takeFeedbackProfile(it.idUser)
+                    repositoryOrders.observeFeedbackForCreator(repositoryUser.userID).collect {
+                        val order = it?.last()
+                        if (order!= null) {
+                            takeFeedbackProfile(order.idUser)
                         }
                         _userFeedback.value =
                             ProfileForFeedback(
                                 feedbackProfile,
-                                it?.textForCreator,
-                                it?.markForCreator
+                                order?.textForCreator,
+                                order?.markForCreator
                             )
                     }
                 } else {
                     takeMarksForProfileClient()
-                    repositoryOrders.takeFeedbackForClient(repositoryUser.userID).collect {
-                        it?.idCreator?.let { it1 -> takeFeedbackProfile(it1) }
+                    repositoryOrders.observeFeedbackForClient(repositoryUser.userID).collect {
+                        val order = it?.last()
+                        order?.idCreator?.let { it1 -> takeFeedbackProfile(it1) }
                         _userFeedback.value =
                             ProfileForFeedback(
                                 feedbackProfile,
-                                it?.textForClient,
-                                it?.markForClient
+                                order?.textForClient,
+                                order?.markForClient
                             )
                     }
                 }
@@ -176,7 +185,7 @@ class ProfileViewModel(
 
     fun takeAllOrdersForMost() {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryOrders.takeAllOrders(repositoryUser.userID, Status.ARCHIVE).collect {
+            repositoryOrders.observeAllOrders(repositoryUser.userID, Status.ARCHIVE).collect {
                 if (it != null) {
                     if (it.isNotEmpty()) {
                         mostCommon(repositoryUser.userID, it.map { it.name })
@@ -193,7 +202,7 @@ class ProfileViewModel(
                 repositoryOrders.takeOrdersDone(uuid, Status.ARCHIVE),
                 repositoryOrders.takeOrdersOrdered(uuid, Status.ARCHIVE),
                 numbersByElement.maxBy { it.value }.value,
-                repositoryFood.takeFoodForMustOrder(numbersByElement.maxBy { it.value }.key)
+                repositoryFood.observeFoodForMustOrder(numbersByElement.maxBy { it.value }.key)
             )
         }
     }

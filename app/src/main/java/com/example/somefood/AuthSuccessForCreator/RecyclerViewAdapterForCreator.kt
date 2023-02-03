@@ -34,7 +34,7 @@ class RecyclerViewAdapterForCreator (private val onClick: (click: ClickListenerC
                 btnDoneOrder.setOnClickListener {
                     onClick(TakeOrder(order.number))
                 }
-                btnDelOrder.isInvisible
+                btnDelOrder.isInvisible = true
             }
         }
     }

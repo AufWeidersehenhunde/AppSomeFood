@@ -12,8 +12,7 @@ import kotlinx.coroutines.launch
 
 class ClientListViewModel(
     private val repositoryFavorite: RepositoryFavorite,
-    private val repositoryFood: RepositoryFood,
-    private val repositoryUser: RepositoryUser
+    private val repositoryFood: RepositoryFood
 ) : ViewModel() {
     private val _listFoods = MutableStateFlow<List<FoodDb>>(emptyList())
     val listFoods:MutableStateFlow<List<FoodDb>> = _listFoods
@@ -26,12 +25,7 @@ class ClientListViewModel(
 
     fun putFoodToFavorite(uuid:String){
         viewModelScope.launch(Dispatchers.IO) {
-            val check = repositoryFavorite.checkFavoriteFood(uuid, repositoryUser.userID)
-            if (check != null) {
-                repositoryFavorite.deleteFavoriteFood(check)
-            } else {
-                repositoryFavorite.addFoodToFavorite(uuid, repositoryUser.userID)
-            }
+           repositoryFavorite.checkFavoriteFood(uuid)
         }
     }
 

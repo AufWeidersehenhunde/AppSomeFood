@@ -6,7 +6,7 @@ import com.example.appsomefood.Dao.DaoBottomSheet
 class RepositoryBottomSheet(
     private val bSheet: DaoBottomSheet
 ) {
-    fun takeFoodForSheet(it: String) = bSheet.observeFoodForId(it)
+    fun observeFoodForSheet(it: String) = bSheet.observeFoodForId(it)
 
     fun addFoodToOrder(uuid: String, id: String, time: String, volume: Int) {
         val model = Orders(idFood = uuid, idUser = id, time = time, volume = volume)

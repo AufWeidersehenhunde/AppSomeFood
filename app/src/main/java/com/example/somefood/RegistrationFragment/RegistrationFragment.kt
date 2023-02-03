@@ -11,6 +11,7 @@ import com.example.appsomefood.R
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.appsomefood.databinding.FragmentRegistrationBinding
 import com.example.appsomefood.DBandProvider.UsersDb
+import com.example.somefood.Services.Services
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.regex.Matcher
@@ -19,6 +20,8 @@ import java.util.regex.Pattern
 class RegistrationFragment : Fragment(R.layout.fragment_registration) {
     private val viewModelRegistrationFragment: RegistrationViewModel by viewModel()
     private val viewBinding: FragmentRegistrationBinding by viewBinding()
+    private val services = Services()
+
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -26,10 +29,6 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
         initViews()
     }
 
-    private fun View.hideKeyboard() {
-        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(windowToken, 0)
-    }
 
     private suspend fun initObservers(){
         viewModelRegistrationFragment.regBoolean.collect{
@@ -41,8 +40,10 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
 
     private fun initViews(){
         with(viewBinding){
-            btnBack.setOnClickListener {
-                it.hideKeyboard()
+            btnBack.setOnClickListener { view->
+                services.apply {
+                    view.hideKeyboard()
+                }
                 viewModelRegistrationFragment.goToBack()
             }
             btnAccept.setOnClickListener {

@@ -49,24 +49,24 @@ class RecyclerViewAdapterOrders(
                     Status.FREE -> {
                         statusOrder.text = "Not recruited yet"
                         statusOrder.setTextColor(Color.WHITE)
-                        btnDone.isInvisible
+                        btnDone.isInvisible = true
                     }
                     Status.WORK -> {
                         statusOrder.text = "In work"
                         statusOrder.setTextColor(Color.RED)
-                        btnDone.isInvisible
+                        btnDone.isInvisible = true
                     }
                     Status.DONE -> {
                         statusOrder.text = "Done"
                         statusOrder.setTextColor(Color.GREEN)
-                        btnDone.isVisible
-                        btnDelOrder.isInvisible
+                        btnDone.isVisible = true
+                        btnDelOrder.isInvisible = true
                     }
                     else -> {
                         statusOrder.text = "Wait"
                         statusOrder.setTextColor(Color.WHITE)
-                        btnDone.isInvisible
-                        btnDelOrder.isVisible
+                        btnDone.isInvisible = true
+                        btnDelOrder.isVisible = true
                     }
                 }
                 creatorFood.text = food?.nameCreator

@@ -4,17 +4,25 @@ import com.example.appsomefood.DBandProvider.FavoriteFoods
 import com.example.appsomefood.Dao.DaoFavorite
 
 class RepositoryFavorite(
-    private val favorite: DaoFavorite
+    private val favorite: DaoFavorite,
+    private val repositoryUser: RepositoryUser
 ) {
 
-    fun addFoodToFavorite(idFood: String, idUser: String) {
+    private fun addFoodToFavorite(idFood: String, idUser: String) {
         val model = FavoriteFoods(idFood = idFood, idUser = idUser)
         favorite.addFoodToFavorite(model)
     }
 
-    suspend fun checkFavoriteFood(uuid: String, id: String) = favorite.checkFavoriteFood(uuid, id)
+    suspend fun checkFavoriteFood(uuid: String) {
+        val check = favorite.checkFavoriteFood(uuid, repositoryUser.userID)
+        if (check != null) {
+            deleteFavoriteFood(check)
+        } else {
+            addFoodToFavorite(uuid, repositoryUser.userID)
+        }
+    }
 
-    fun takeFavorite() = favorite.observeFavorite()
+    fun observeFavorite() = favorite.observeFavorite()
 
-    suspend fun deleteFavoriteFood(model: FavoriteFoods) = favorite.deleteFavoriteFood(model)
+    private suspend fun deleteFavoriteFood(model: FavoriteFoods) = favorite.deleteFavoriteFood(model)
 }

@@ -17,7 +17,7 @@ interface DaoFavorite {
     fun observeFavorite():Flow<List<FavoriteModel>?>
 
     @Query("SELECT * FROM favorites WHERE idFood =:uuid AND idUser=:id")
-    suspend fun checkFavoriteFood(uuid: String, id: String): FavoriteFoods?
+    fun checkFavoriteFood(uuid: String, id: String): FavoriteFoods?
 
     @Delete
     suspend fun deleteFavoriteFood(model: FavoriteFoods)

@@ -608,7 +608,7 @@
                         android:layout_height="wrap_content"
                         android:background="@color/blue"
                         android:gravity="center_horizontal"
-                        android:text="First feedback"
+                        android:text="Last feedback"
                         android:textStyle="bold|italic"
                         android:paddingLeft="10dp"
                         android:textSize="20sp" />

@@ -1,6 +1,8 @@
 package com.example.appsomefood.fragmentContainer
 
 import android.os.Bundle
+import android.os.PersistableBundle
+import android.util.Log
 import android.view.View
 import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
@@ -30,17 +32,17 @@ class ContainerFragment : Fragment(R.layout.fragment_child) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (savedInstanceState == null) {
+        Log.e("hooli4", "$savedInstanceState")
+        if (savedInstanceState==null){
             viewModelContainer.create()
             takeStatus()
             initView()
         }
+
     }
 
+
     private fun initView() {
-        if (viewModelContainer.user == null) {
-            viewBinding.bottomNavigationViewHome.isInvisible
-        }
         with(viewBinding) {
             this.bottomNavigationViewHome.setOnItemSelectedListener {
                 when (it.itemId) {
@@ -92,9 +94,9 @@ class ContainerFragment : Fragment(R.layout.fragment_child) {
 
     override fun onResume() {
         super.onResume()
-        navigatorHolder.removeNavigator()
         navigatorHolder.setNavigator(navigator)
     }
+
 
     override fun onPause() {
         navigatorHolder.removeNavigator()

@@ -33,7 +33,7 @@ class ContainerViewModel(
 
     fun checkAccount(){
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryProfileData.checkAccountForStatus(repositoryUser.userID)?.filterNotNull()?.collect{
+            repositoryProfileData.observeAccountForStatus(repositoryUser.userID)?.filterNotNull()?.collect{
                     statusProfile.value = it
             }
         }

@@ -8,39 +8,35 @@ import kotlinx.coroutines.flow.Flow
 class RepositoryOrders(
     private val order:DaoOrders
 ) {
-    fun takeForRV(uuid: String, status: Status): Flow<List<OrdersModel>?> {
+    fun observeForRV(uuid: String, status: Status): Flow<List<OrdersModel>?> {
         return order.observeOrdersForClient(uuid, status)
     }
 
-    fun takeForRVLastest(uuid: String, status: Status): Flow<List<OrdersModel>?> {
-        return order.leftJoinTablesForLastest(uuid, status)
+    fun observeForRVLastest(uuid: String, status: Status): Flow<List<OrdersModel>?> {
+        return order.observeOrdersForLastest(uuid, status)
     }
 
-    fun takeRatingForFeedbackByCreator(uuid:String) = order.observeRatingForCreator(uuid)
+    fun observeRatingForFeedbackByCreator(uuid:String) = order.observeRatingForCreator(uuid)
 
-    fun takeRatingForFeedbackByClient(uuid:String) = order.observeRatingForClient(uuid)
+    fun observeRatingForFeedbackByClient(uuid:String) = order.observeRatingForClient(uuid)
 
     suspend fun delOrder(id: String) = order.delOrder(id)
 
-    fun takeAllOrders(uuid: String, it: Status) = order.observeOrders(uuid,it)
+    fun observeAllOrders(uuid: String, status: Status) = order.observeOrders(uuid,status)
 
-    fun takeAllOrdersFree( it: Status) = order.observeAllOrders(it)
+    fun observeAllOrdersFree(statusFree: Status) = order.observeAllOrders(statusFree)
 
-    fun insertFeedbackByClient(id:String,idClient:String, textForCreator:String, markForCreator:Double) = order.insertFeedbackByClient(id, idClient,textForCreator,markForCreator)
+    fun insertFeedbackByClient(idOrder:String,idClient:String, textForCreator:String, markForCreator:Double) = order.insertFeedbackByClient(idOrder, idClient,textForCreator,markForCreator)
 
-    fun insertFeedbackByCreator(id:String,idCreator:String, textForClient:String, markForClient:Double) = order.insertFeedbackByCreator(id, idCreator,textForClient,markForClient)
+    fun insertFeedbackByCreator(idOrder:String,idCreator:String, textForClient:String, markForClient:Double) = order.insertFeedbackByCreator(idOrder, idCreator,textForClient,markForClient)
 
-    fun takeFeedbackForClient(it:String)  = order.observeFeedbackForClient(it)
+    fun observeFeedbackForClient(idClient:String)  = order.observeFeedbackForClient(idClient)
 
-    fun takeFeedbackForCreator(it:String)  = order.observeFeedbackForCreator(it)
+    fun observeFeedbackForCreator(idCreator:String)  = order.observeFeedbackForCreator(idCreator)
 
-    fun takeMarksForCreator(it:String) = order.observeMarksForCreator(it)
+    fun observeInWorkAndDone(user:String, statusFirst:Status, statusSecond:Status) = order.observeOrdersForCreatorWork(user,statusFirst, statusSecond)
 
-    fun takeMarksForClient(it:String) = order.observeMarksForClient(it)
-
-    fun takeInWorkAndDone(user:String, it:Status, it2:Status) = order.observeOrdersForCreatorWork(user,it, it2)
-
-    fun takeOrder(idOrder: String, creator:String, uuid:String, status: Status) = order.observeOrder(idOrder, creator,uuid, status)
+    fun observeOrder(idOrder: String, creator:String, uuid:String, status: Status) = order.observeOrder(idOrder, creator,uuid, status)
 
     fun orderDoneForCreator(number: String, creator:String, done: Status, id: String) = order.orderDoneForCreator(number, creator,done, id)
 

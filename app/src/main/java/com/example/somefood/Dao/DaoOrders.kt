@@ -10,9 +10,6 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface DaoOrders {
 
-    @Query("SELECT*FROM orders")
-    fun observeOrders(): Flow<List<Orders>?>
-
     @Query("SELECT * FROM orders WHERE idCreator=:uuid")
     fun observeRatingForCreator(uuid:String):Flow<List<Orders>?>
 
@@ -26,28 +23,22 @@ interface DaoOrders {
     fun insertFeedbackByCreator(id:String, idCreator:String, textForClient:String, markForClient:Double)
 
     @Query("SELECT * FROM orders WHERE idUser=:it")
-    fun observeFeedbackForClient(it:String):Flow<Orders?>
+    fun observeFeedbackForClient(it:String):Flow<List<Orders>?>
 
     @Query("SELECT * FROM orders WHERE idCreator=:it")
-    fun observeFeedbackForCreator(it:String):Flow<Orders?>
+    fun observeFeedbackForCreator(it:String):Flow<List<Orders>?>
 
-    @Query("SELECT * FROM orders WHERE idUser=:id ")
-    fun observeMarksForClient(id:String):Flow<List<Orders>?>
+    @Query("SELECT * FROM orders LEFT JOIN food ON orders.idFood = food.idFood WHERE orders.status =:status and orders.idUser=:uuid")
+    fun observeOrders(uuid:String, status: Status): Flow<List<OrdersModel>?>
 
-    @Query("SELECT * FROM orders WHERE idCreator=:id ")
-    fun observeMarksForCreator(id:String):Flow<List<Orders>?>
-
-    @Query("SELECT * FROM orders LEFT JOIN food ON orders.idFood = food.idFood WHERE orders.status =:FREE and orders.idUser=:uuid")
-    fun observeOrders(uuid:String, FREE: Status): Flow<List<OrdersModel>?>
-
-    @Query("SELECT * FROM orders LEFT JOIN food ON orders.idFood = food.idFood WHERE orders.status =:FREE")
-    fun observeAllOrders(FREE: Status): Flow<List<OrdersModel>?>
+    @Query("SELECT * FROM orders LEFT JOIN food ON orders.idFood = food.idFood WHERE orders.status =:statusFree")
+    fun observeAllOrders(statusFree: Status): Flow<List<OrdersModel>?>
 
     @Query("SELECT * FROM orders LEFT JOIN food ON orders.idFood = food.idFood WHERE orders.idUser =:id and orders.status!=:status")
     fun observeOrdersForClient(id:String, status: Status): Flow<List<OrdersModel>?>
 
     @Query("SELECT * FROM orders LEFT JOIN food ON orders.idFood = food.idFood WHERE orders.idUser =:id and orders.status=:status")
-    fun leftJoinTablesForLastest(id:String, status: Status): Flow<List<OrdersModel>?>
+    fun observeOrdersForLastest(id:String, status: Status): Flow<List<OrdersModel>?>
 
     @Query("SELECT * FROM orders LEFT JOIN food ON orders.idFood = food.idFood WHERE orders.status=:status or orders.status=:secondStatus and orders.idCreator=:user")
     fun observeOrdersForCreatorWork(user:String, status:Status, secondStatus:Status):Flow<List<OrdersModel>?>
