@@ -17,8 +17,11 @@ import com.bumptech.glide.Glide
 import com.example.appsomefood.R
 import com.example.appsomefood.databinding.FragmentProfileBinding
 import com.example.appsomefood.MainActivity.MainActivity
+import com.example.appsomefood.OrdersInWork.ListOrdersInWorkItem
 import com.example.appsomefood.PhotoProfile
-import com.example.somefood.Services.hideKeyboard
+import com.example.somefood.Services.Services
+import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.adapters.ItemAdapter
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -28,7 +31,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private var photoProfile: PhotoProfile? = null
     private val viewBinding: FragmentProfileBinding by viewBinding()
     private val viewModelProfile: ProfileViewModel by viewModel()
-    private var adapterLastest: RecyclerVIewAdapterLastestOrders? = null
+    private val itemAdapter = ItemAdapter<ListLastestItem>()
+    private val fastAdapter = FastAdapter.with(itemAdapter)
     private var btnBoolean: Boolean? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,14 +54,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun initView() {
-        adapterLastest =
-            RecyclerVIewAdapterLastestOrders()
         with(viewBinding) {
             with(recyclerViewForLatestOrders) {
                 layoutManager = LinearLayoutManager(
                     context
                 )
-                adapter = adapterLastest
+                adapter = fastAdapter
             }
             addPhotoToProfile.setOnClickListener {
                 photoProfile?.pickPhoto()
@@ -223,7 +225,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun observeElement() {
         viewModelProfile.listFoodsForRecycler.filterNotNull().onEach {
-            adapterLastest?.set(it)
+            itemAdapter.set(it.map {
+                ListLastestItem(it)
+            })
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 }

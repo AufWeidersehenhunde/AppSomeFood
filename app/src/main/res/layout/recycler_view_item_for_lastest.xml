@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/identificatorLast"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="2dp"
@@ -22,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/nameFood"
+            android:id="@+id/nameFoodLast"
             android:layout_width="270dp"
             android:layout_height="35dp"
             android:layout_marginStart="102dp"
@@ -66,7 +67,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imageViewFood"
+            android:id="@+id/imageViewFoodLast"
             android:layout_width="90dp"
             android:layout_height="90dp"
             android:layout_gravity="center"
