@@ -1,16 +1,14 @@
 package com.example.appsomefood.RegistrationFragment
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.appsomefood.R
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.appsomefood.databinding.FragmentRegistrationBinding
-import com.example.appsomefood.DBandProvider.UsersDb
+import com.example.somefood.Services.hideKeyboard
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.regex.Matcher
@@ -21,15 +19,12 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
     private val viewBinding: FragmentRegistrationBinding by viewBinding()
 
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
     }
 
-    private fun View.hideKeyboard() {
-        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(windowToken, 0)
-    }
 
     private suspend fun initObservers(){
         viewModelRegistrationFragment.regBoolean.collect{
@@ -41,8 +36,8 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
 
     private fun initViews(){
         with(viewBinding){
-            btnBack.setOnClickListener {
-                it.hideKeyboard()
+            btnBack.setOnClickListener { view->
+                view.hideKeyboard()
                 viewModelRegistrationFragment.goToBack()
             }
             btnAccept.setOnClickListener {

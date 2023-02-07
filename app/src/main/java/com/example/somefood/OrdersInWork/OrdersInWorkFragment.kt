@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.appsomefood.R
@@ -31,7 +30,7 @@ class OrdersInWorkFragment : Fragment(R.layout.fragment_orders_in_work) {
         adapterWorkCreator =
             AdapterForOrdersInWork ({
                 it.idUser?.let { it1 ->
-                        viewOrdersWorkListViewModel.orderDone(it.number)
+                        viewOrdersWorkListViewModel.updateOrderDone(it.number)
                 }
             }, {feedbackDialog(it)})
 

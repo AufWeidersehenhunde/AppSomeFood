@@ -14,10 +14,10 @@ interface DaoFavorite {
     fun addFoodToFavorite(model: FavoriteFoods)
 
     @Query("SELECT * FROM food LEFT JOIN favorites ON food.idFood = favorites.idFood WHERE food.idFood = favorites.idFood")
-    fun observeFavorite():Flow<List<FavoriteModel>?>
+    fun observeFavorite(): Flow<List<FavoriteModel>?>
 
     @Query("SELECT * FROM favorites WHERE idFood =:uuid AND idUser=:id")
-    suspend fun checkFavoriteFood(uuid: String, id: String): FavoriteFoods?
+    fun checkFavoriteFood(uuid: String, id: String): FavoriteFoods?
 
     @Delete
     suspend fun deleteFavoriteFood(model: FavoriteFoods)

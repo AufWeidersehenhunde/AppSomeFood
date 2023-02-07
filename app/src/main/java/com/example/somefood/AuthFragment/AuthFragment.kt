@@ -1,25 +1,20 @@
 package com.example.appsomefood.AuthFragment
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.appsomefood.R
 import com.example.appsomefood.databinding.FragmentAuthBinding
-import kotlinx.coroutines.flow.collect
+import com.example.somefood.Services.hideKeyboard
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.regex.Matcher
-import java.util.regex.Pattern
 
 class AuthFragment : Fragment(R.layout.fragment_auth) {
     private val viewBinding: FragmentAuthBinding by viewBinding()
@@ -30,11 +25,6 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
         super.onViewCreated(view, savedInstanceState)
         initView()
         initObservers()
-    }
-
-    private fun View.hideKeyboard() {
-        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
     private fun initObservers() {
@@ -87,9 +77,9 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
                 }
             }
 
-            btnBackToSplesh.setOnClickListener {
+            btnBackToSplesh.setOnClickListener {view->
                 viewModelAuth.routeToBack()
-                it.hideKeyboard()
+                    view.hideKeyboard()
             }
 
 //            viewBinding.loginAuth.addTextChangedListener()

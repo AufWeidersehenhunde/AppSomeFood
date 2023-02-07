@@ -52,7 +52,7 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         val idFood = arguments?.getString(FOOD)
         val myTimes = arrayOf("15", "20", "25", "30", "35", "40", "45", "50", "55", "60")
         if (idFood != null) {
-            viewModelBottom.takeFood(idFood)
+            viewModelBottom.observeFood(idFood)
         }
         with(viewBinding.timePicker) {
             value = myTimes[0].toInt()

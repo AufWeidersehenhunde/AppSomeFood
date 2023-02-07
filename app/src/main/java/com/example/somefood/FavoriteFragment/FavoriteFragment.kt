@@ -19,6 +19,11 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
     private val viewModelFavorite: FavoriteViewModel by viewModel()
     private var adapterFavorite: RecyclerViewAdapterFavorite? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        savedInstanceState
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeElement()

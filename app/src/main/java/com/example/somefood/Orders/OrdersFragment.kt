@@ -32,7 +32,7 @@ class OrdersFragment : Fragment(R.layout.fragment_orders) {
     }
 
     private fun initViews(){
-        viewModelOrders.takeOrders()
+        viewModelOrders.observeOrders()
         adapterOrders =
             RecyclerViewAdapterOrders {
                 when(it){

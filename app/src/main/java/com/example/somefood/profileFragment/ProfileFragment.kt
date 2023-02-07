@@ -1,11 +1,8 @@
 package com.example.appsomefood.profileFragment
 
-import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.core.view.isInvisible
@@ -21,13 +18,14 @@ import com.example.appsomefood.R
 import com.example.appsomefood.databinding.FragmentProfileBinding
 import com.example.appsomefood.MainActivity.MainActivity
 import com.example.appsomefood.PhotoProfile
+import com.example.somefood.Services.hideKeyboard
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
-    private var photoProfile:PhotoProfile? = null
+    private var photoProfile: PhotoProfile? = null
     private val viewBinding: FragmentProfileBinding by viewBinding()
     private val viewModelProfile: ProfileViewModel by viewModel()
     private var adapterLastest: RecyclerVIewAdapterLastestOrders? = null
@@ -62,7 +60,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 adapter = adapterLastest
             }
             addPhotoToProfile.setOnClickListener {
-              photoProfile?.pickPhoto()
+                photoProfile?.pickPhoto()
             }
             btnSignOutAcc.setOnClickListener {
                 viewModelProfile.signOut()
@@ -80,7 +78,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 .into(imageViewLastFeedback)
             viewLifecycleOwner.lifecycleScope.launchWhenStarted {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModelProfile.averageMark.collect{
+                    viewModelProfile.averageMark.collect {
                         val markRound = String.format("%.1f", it)
                         mark.text = "$markRound/5"
                     }
@@ -98,7 +96,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 }
             }
 
-            viewModelProfile.takeAllOrdersForMost()
+            viewModelProfile.observeAllOrdersForMost()
             viewModelProfile.ordersCount.filterNotNull().onEach {
                 ordersDoneNumber.text = it.oredered.toString()
                 ordersGoneNumber.text = it.done.toString()
@@ -113,7 +111,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun changeStatus(i: Boolean) {
         viewLifecycleOwner.lifecycleScope.launch {
-                viewModelProfile.changeStatus(i)
+            viewModelProfile.changeStatus(i)
         }
     }
 
@@ -128,8 +126,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                             creatorProfile.isVisible = false
                         } else {
                             btnPersonProfile.isChecked = true
-                            creatorProfile.visibility = View.VISIBLE
-                            nonCreatorProfile.visibility = View.INVISIBLE
+                            creatorProfile.isVisible = true
+                            nonCreatorProfile.isVisible = false
                         }
                     }
                 }
@@ -138,17 +136,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
     }
 
-    private fun View.hideKeyboard() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            viewBinding.textInfo.focusable = View.FOCUSABLE
-        }
-        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(windowToken, 0)
-    }
-
     private fun takeData() {
         with(viewBinding) {
-            viewModelProfile.takeProfileInfo()
+            viewModelProfile.observeProfileInfo()
             changeView(profileNameHeader, acceptName)
             changeView(textInfo, acceptDescription)
             changeView(addressProfile, acceptAddress)
@@ -173,15 +163,16 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
     }
 
-    private fun takeFeedbackRating(){
+    private fun takeFeedbackRating() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModelProfile.ratingFeedback.collect{
+            viewModelProfile.ratingFeedback.collect {
                 val markRoundFeedback = String.format("%.1f", it)
                 viewBinding.feedbackMark.text = "$markRoundFeedback"
             }
         }
 
     }
+
     private fun takeDataForFeedback() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -203,10 +194,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
         }
 
-        btn.setOnClickListener {
+        btn.setOnClickListener { view ->
             text.isFocusable = false
             btn.isVisible = false
-            it.hideKeyboard()
+                viewBinding.textInfo.isFocusable = true
+                view.hideKeyboard()
+
             if (text == viewBinding.profileNameHeader) {
                 text.setText("${text.text}")
                 viewModelProfile.setName(

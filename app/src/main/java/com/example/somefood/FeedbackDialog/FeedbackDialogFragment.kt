@@ -1,8 +1,6 @@
 package com.example.appsomefood.FeedbackDialog
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,7 +51,7 @@ class FeedbackDialogFragment : DialogFragment() {
                 Toast.makeText(context, "Minimal mark 0,5", Toast.LENGTH_SHORT).show()
             } else {
                 if (idOrder != null) {
-                    viewModelDialog.checkFeedback(idOrder,
+                    viewModelDialog.updateFeedback(idOrder,
                         viewBindingDialog.feedback.text.toString(), numberRating!!)
                 }
                 dialog?.cancel()

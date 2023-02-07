@@ -15,9 +15,9 @@ class OrdersViewModel(
     private val _listFoodsForRecycler = MutableStateFlow<List<OrdersModel>?>(null)
     val listFoodsForRecycler : MutableStateFlow<List<OrdersModel>?> = _listFoodsForRecycler
 
-    fun takeOrders() {
+    fun observeOrders() {
         viewModelScope.launch {
-            repositoryOrders.takeForRV(repositoryUser.userID, Status.ARCHIVE).collect {
+            repositoryOrders.observeForRV(repositoryUser.userID, Status.ARCHIVE).collect {
                 _listFoodsForRecycler.value = it
             }
         }
@@ -26,7 +26,7 @@ class OrdersViewModel(
     fun acceptOrder(order: OrdersModel) {
         viewModelScope.launch(Dispatchers.IO) {
             if (order.status == Status.DONE) {
-                repositoryOrders.orderArchive(order.number, Status.ARCHIVE)
+                repositoryOrders.updateOrderArchive(order.number, Status.ARCHIVE)
             }
         }
     }

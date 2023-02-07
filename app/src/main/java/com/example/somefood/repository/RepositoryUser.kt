@@ -22,22 +22,22 @@ class RepositoryUser (
         userID = preference.getValue("pref").toString()
         preference.remove("pref")}
 
-    fun registerUser(usersDb:UsersDb) = user.registerUser(usersDb)
+    fun registerUser(usersDb: UsersDb) = user.registerUser(usersDb)
 
-    suspend fun checkLogin(log:String) = user.checkLogin(log)
+    suspend fun checkLogin(log: String) = user.checkLogin(log)
 
-    suspend fun checkAccount(log: String, pass:String) = user.checkAccount(log, pass)
+    suspend fun checkAccount(log: String, pass: String) = user.checkAccount(log, pass)
 
-    fun checkStatus(UUID:String) = user.checkStatus(UUID)
+    fun checkStatus(UUID: String) = user.checkStatus(UUID)
 
-    fun takeProfileInfo(uuid: String) = user.observeProfileInfo(uuid)
+    fun observeProfileInfo(uuid: String) = user.observeProfileInfo(uuid)
 
     suspend fun setPhoto(userID: String, profilePhoto: String) {
         user.setPhoto(userID, profilePhoto)
     }
 
     private suspend fun getUserPhoto(){
-        userID?.let { user.getUserPhoto(it) }
+        user.getUserPhoto(userID)
     }
 
     suspend fun savePhoto(newUri: Uri?): String {

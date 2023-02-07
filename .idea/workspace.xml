@@ -6,7 +6,7 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="hooli2" />
+    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="hooli4" />
     <option name="TOOL_WINDOW_LOG_LEVEL" value="debug" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
@@ -51,7 +51,7 @@
     <property name="android-custom-view/Users/mintrocket/Library/Android/sdk/sources/android-33/android/widget/CompoundButton.java_SELECTED" value="CompoundButton" />
     <property name="cidr.known.project.marker" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="memory.settings.postsync.last.time.stamp" value="1675335316193" />
+    <property name="memory.settings.postsync.last.time.stamp" value="1675768423820" />
   </component>
   <component name="RunManager">
     <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
