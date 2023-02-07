@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
-import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -17,9 +16,8 @@ import com.bumptech.glide.Glide
 import com.example.appsomefood.R
 import com.example.appsomefood.databinding.FragmentProfileBinding
 import com.example.appsomefood.MainActivity.MainActivity
-import com.example.appsomefood.OrdersInWork.ListOrdersInWorkItem
 import com.example.appsomefood.PhotoProfile
-import com.example.somefood.Services.Services
+import com.example.somefood.Services.hideKeyboard
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import kotlinx.coroutines.flow.*
@@ -90,11 +88,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             btnPersonProfile.setOnCheckedChangeListener { _, isChecked ->
                 changeStatus(isChecked)
                 if (isChecked) {
-                    nonCreatorProfile.isInvisible
-                    creatorProfile.isVisible
+                    nonCreatorProfile.isVisible = false
+                    creatorProfile.isVisible = true
                 } else {
-                    creatorProfile.isInvisible
-                    nonCreatorProfile.isVisible
+                    creatorProfile.isVisible = false
+                    nonCreatorProfile.isVisible = true
                 }
             }
 
@@ -199,8 +197,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         btn.setOnClickListener { view ->
             text.isFocusable = false
             btn.isVisible = false
-                viewBinding.textInfo.isFocusable = true
-                view.hideKeyboard()
+            viewBinding.textInfo.isFocusable = true
+            view.hideKeyboard()
 
             if (text == viewBinding.profileNameHeader) {
                 text.setText("${text.text}")

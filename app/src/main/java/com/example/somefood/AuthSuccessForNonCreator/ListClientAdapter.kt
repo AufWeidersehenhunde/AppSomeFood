@@ -15,7 +15,7 @@ import com.mikepenz.fastadapter.items.AbstractItem
 import de.hdodenhof.circleimageview.CircleImageView
 
 class ListClientItem(
-     val item:FoodDb?, private val onClick:(ClickListener)->Unit
+    val item: FoodDb?, private val onClick: (ClickListener) -> Unit
 ) : AbstractItem<ListClientItem.ViewHolder>() {
 
     override val type: Int
@@ -34,7 +34,7 @@ class ListClientItem(
         var favorite: ImageView = view.findViewById(R.id.viewBtnAddToFavourite)
         var image: CircleImageView = view.findViewById(R.id.imageView)
         var add: ImageView = view.findViewById(R.id.viewBtnAddToOrder)
-        var body:CardView = view.findViewById(R.id.cardViewFoodBody)
+        var body: CardView = view.findViewById(R.id.cardViewFoodBody)
 
         override fun bindView(item: ListClientItem, payloads: List<Any>) {
             name.text = item.item?.name

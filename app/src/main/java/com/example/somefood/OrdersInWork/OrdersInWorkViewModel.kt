@@ -10,22 +10,22 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class OrdersInWorkViewModel (
+class OrdersInWorkViewModel(
     private val repositoryOrders: RepositoryOrders,
     private val repositoryUser: RepositoryUser
 ) : ViewModel() {
     private val _listOrdersForRecycler = MutableStateFlow<List<OrdersModel>?>(null)
-    val listOrdersForRecycler : MutableStateFlow<List<OrdersModel>?> = _listOrdersForRecycler
+    val listOrdersForRecycler: MutableStateFlow<List<OrdersModel>?> = _listOrdersForRecycler
 
-    init{
+    init {
         observeAllOrders()
     }
 
 
-    private fun observeAllOrders(){
+    private fun observeAllOrders() {
         viewModelScope.launch(Dispatchers.IO) {
             repositoryUser.userID.let {
-                repositoryOrders.observeInWorkAndDone(it,Status.WORK, Status.DONE).collect{
+                repositoryOrders.observeInWorkAndDone(it, Status.WORK, Status.DONE).collect {
                     _listOrdersForRecycler.value = it
                 }
             }
@@ -36,7 +36,12 @@ class OrdersInWorkViewModel (
         viewModelScope.launch(Dispatchers.IO) {
             repositoryUser.userID.let {
                 repositoryUser.observeProfileInfo(it).collect {
-                    repositoryOrders.orderDoneForCreator(number, it.name, Status.DONE, it.uuid)
+                    repositoryOrders.updateOrderDoneForCreator(
+                        number,
+                        it.name,
+                        Status.DONE,
+                        it.uuid
+                    )
                 }
             }
         }

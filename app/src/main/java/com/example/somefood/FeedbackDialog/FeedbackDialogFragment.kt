@@ -51,8 +51,10 @@ class FeedbackDialogFragment : DialogFragment() {
                 Toast.makeText(context, "Minimal mark 0,5", Toast.LENGTH_SHORT).show()
             } else {
                 if (idOrder != null) {
-                    viewModelDialog.updateFeedback(idOrder,
-                        viewBindingDialog.feedback.text.toString(), numberRating!!)
+                    viewModelDialog.updateFeedback(
+                        idOrder,
+                        viewBindingDialog.feedback.text.toString(), numberRating!!
+                    )
                 }
                 dialog?.cancel()
             }

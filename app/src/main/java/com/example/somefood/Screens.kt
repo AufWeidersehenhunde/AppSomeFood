@@ -23,5 +23,4 @@ object Screens {
     fun routeToOrdersFragment() = FragmentScreen { OrdersFragment() }
     fun routeToCreatorList() = FragmentScreen { CreatorListFragment() }
     fun routeToOrdersWork() = FragmentScreen { OrdersInWorkFragment() }
-
-    }
+}

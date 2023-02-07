@@ -94,7 +94,7 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun initObserve(){
+    private fun initObserve() {
         viewModelBottom.number.onEach {
             viewBinding.volume.text = it.toString()
         }.launchIn(viewLifecycleOwner.lifecycleScope)

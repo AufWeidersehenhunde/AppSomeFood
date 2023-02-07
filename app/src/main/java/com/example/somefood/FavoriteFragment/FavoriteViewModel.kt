@@ -23,7 +23,6 @@ class FavoriteViewModel(
         }
     }
 
-
     private fun observeFavorite() {
         viewModelScope.launch {
             repositoryFavorite.observeFavorite().collect {

@@ -15,7 +15,7 @@ import com.mikepenz.fastadapter.items.AbstractItem
 import de.hdodenhof.circleimageview.CircleImageView
 
 class ListFavoriteItem(
-    val item: FavoriteModel?, private val onClick:(ClickListener)->Unit
+    val item: FavoriteModel?, private val onClick: (ClickListener) -> Unit
 ) : AbstractItem<ListFavoriteItem.ViewHolder>() {
 
     override val type: Int

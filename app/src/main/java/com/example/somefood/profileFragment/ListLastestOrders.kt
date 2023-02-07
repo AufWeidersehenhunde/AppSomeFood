@@ -2,7 +2,6 @@ package com.example.appsomefood.profileFragment
 
 import android.view.View
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import com.bumptech.glide.Glide
 import com.example.appsomefood.Orders.OrdersModel
 import com.example.appsomefood.R

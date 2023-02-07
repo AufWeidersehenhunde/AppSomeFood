@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class BottomSheetViewModel (
+class BottomSheetViewModel(
     private val repositoryBottomSheet: RepositoryBottomSheet,
     private val repositoryUser: RepositoryUser
 ) : ViewModel() {
@@ -18,8 +18,7 @@ class BottomSheetViewModel (
     private val _food = MutableStateFlow<FoodDb?>(null)
     val food: MutableStateFlow<FoodDb?> = _food
 
-
-    fun minusSome(){
+    fun minusSome() {
         if (_number.value > 1) {
             _number.value = _number.value - 1
         }
@@ -29,17 +28,17 @@ class BottomSheetViewModel (
         _number.value = _number.value + 1
     }
 
-    fun observeFood(it:String) {
+    fun observeFood(it: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryBottomSheet.observeFoodForSheet(it).collect{
+            repositoryBottomSheet.observeFoodForSheet(it).collect {
                 _food.value = it
             }
         }
     }
 
-    fun putInOrder(idFood:String, time:String, volume:Int){
-        viewModelScope.launch(Dispatchers.IO)  {
-            repositoryBottomSheet.addFoodToOrder(idFood,repositoryUser.userID, time, volume)
+    fun putInOrder(idFood: String, time: String, volume: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repositoryBottomSheet.addFoodToOrder(idFood, repositoryUser.userID, time, volume)
         }
     }
 }

@@ -7,15 +7,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.example.appsomefood.AuthSuccessForCreator.ListCreatorItem
 import com.example.appsomefood.R
 import com.example.appsomefood.databinding.FragmentOrdersBinding
 import com.example.appsomefood.FeedbackDialog.FeedbackDialogFragment
+import com.example.somefood.ClickListener.AcceptOrder
+import com.example.somefood.ClickListener.DeleteOrder
+import com.example.somefood.ClickListener.Dialog
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -45,7 +45,7 @@ class OrdersFragment : Fragment(R.layout.fragment_orders) {
     }
 
     private fun observeElement() {
-        viewModelOrders.takeOrders()
+        viewModelOrders.observeOrders()
         viewLifecycleOwner.lifecycleScope.launch {
             viewModelOrders.listFoodsForRecycler.filterNotNull().collect {
                 itemAdapter.set(it.map {
@@ -66,6 +66,7 @@ class OrdersFragment : Fragment(R.layout.fragment_orders) {
                                     ).show(childFragmentManager, FeedbackDialogFragment.TAG)
                                 }
                             }
+                            else -> {}
                         }
                     }
                 })

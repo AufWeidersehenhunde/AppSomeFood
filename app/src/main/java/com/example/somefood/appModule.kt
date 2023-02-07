@@ -75,13 +75,13 @@ val appModule = module {
     single { get<DBprovider>().DaoFavorite() }
     single { get<DBprovider>().DaoProfileInfo() }
     single { get<DBprovider>().DaoBottomSheet() }
-    single { RepositoryUser ( get(), get(), get()) }
-    single { RepositoryOrders ( get()) }
-    single { RepositoryProfileData ( get()) }
-    single { RepositoryFavorite ( get(), get()) }
-    single { RepositoryBottomSheet ( get()) }
-    single { RepositoryFood ( get()) }
-    single { Reference ( get()) }
+    single { RepositoryUser(get(), get(), get()) }
+    single { RepositoryOrders(get()) }
+    single { RepositoryProfileData(get()) }
+    single { RepositoryFavorite(get(), get()) }
+    single { RepositoryBottomSheet(get()) }
+    single { RepositoryFood(get()) }
+    single { Reference(get()) }
 }
 
 fun getFoods(): List<FoodDb> {

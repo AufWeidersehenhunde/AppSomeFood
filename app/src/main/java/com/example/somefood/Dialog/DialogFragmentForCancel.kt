@@ -1,5 +1,3 @@
-
-
 import com.example.appsomefood.databinding.FragmentDialogForCancelBinding
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -38,7 +36,7 @@ class DialogFragmentForCancel : DialogFragment() {
         initView()
     }
 
-    private fun initView(){
+    private fun initView() {
         val idOrder = arguments?.getString(number)
         viewBindingDialog.btnCancelDel.setOnClickListener {
             dialog?.cancel()

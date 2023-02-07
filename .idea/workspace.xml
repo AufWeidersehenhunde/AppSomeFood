@@ -129,7 +129,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-function">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/somefood/RegistrationFragment/RegistrationViewModel.kt</url>
-          <line>22</line>
+          <line>24</line>
           <properties class="com.example.appsomefood.RegistrationFragment.RegistrationViewModel" method="goToBack">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />

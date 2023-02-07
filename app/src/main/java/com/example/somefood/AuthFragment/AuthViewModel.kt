@@ -1,7 +1,5 @@
 package com.example.appsomefood.AuthFragment
 
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.appsomefood.DBandProvider.UsersDb
@@ -11,9 +9,7 @@ import com.example.appsomefood.repository.RepositoryProfileData
 import com.example.appsomefood.repository.RepositoryUser
 import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.util.regex.Pattern
 
@@ -31,7 +27,7 @@ class AuthViewModel(
         router.backTo(Screens.routeToHomeFragment())
     }
 
-    private fun authentication(log:String, pass:String, status:Boolean) {
+    private fun authentication(log: String, pass: String, status: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             val model = UsersDb(
                 login = log,
@@ -42,34 +38,32 @@ class AuthViewModel(
             if (check != null) {
                 repositoryProfileData.changeStatus(check.uuid, model.isCreator)
             }
-            if (check != null )  {
+            if (check != null) {
                 _auth.value = true
-                    preference.save("pref", check.uuid)
-                    router.newRootScreen(Screens.routeToFragmentContainer())
-                }
-
-            else {
+                preference.save("pref", check.uuid)
+                router.newRootScreen(Screens.routeToFragmentContainer())
+            } else {
                 _auth.value = false
             }
         }
     }
 
-    fun checkInput(login:String, password:String, status: Boolean){
+    fun checkInput(login: String, password: String, status: Boolean) {
         if (password.isEmpty()) {
-            toast.value  = toastAuth.PASS
+            toast.value = toastAuth.PASS
 
         } else if (login.isEmpty()) {
             toast.value = toastAuth.LOGIN
 
-        } else if(!isEmailValid(login)){
+        } else if (!isEmailValid(login)) {
             toast.value = toastAuth.LOGININVALID
 
-        }else {
-            authentication(login,password,status)
+        } else {
+            authentication(login, password, status)
         }
     }
 
-    private fun isEmailValid(email:String): Boolean {
+    private fun isEmailValid(email: String): Boolean {
         val expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
         val pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
         val matcher = pattern.matcher(email);
@@ -80,5 +74,6 @@ class AuthViewModel(
 enum class toastAuth {
     PASS,
     LOGIN,
-    LOGININVALID
+    LOGININVALID,
+    PASSINVALID
 }

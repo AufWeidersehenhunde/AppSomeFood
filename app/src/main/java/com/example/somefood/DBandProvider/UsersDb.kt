@@ -18,6 +18,5 @@ data class UsersDb(
     @ColumnInfo(name = "isCreator") val isCreator: Boolean? = null,
     @ColumnInfo(name = "ordersOrdered") val ordersOrdered: Int? = null,
     @ColumnInfo(name = "ordersDone") val ordersDone: Int? = null,
-
     )
 

@@ -3,7 +3,6 @@ package com.example.appsomefood.OrdersInWork
 import android.view.View
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.example.appsomefood.Orders.OrdersModel
@@ -16,7 +15,7 @@ import com.mikepenz.fastadapter.items.AbstractItem
 import de.hdodenhof.circleimageview.CircleImageView
 
 class ListOrdersInWorkItem(
-    val item: OrdersModel?, private val Click:(ClickListener)->Unit
+    val item: OrdersModel?, private val Click: (ClickListener) -> Unit
 ) : AbstractItem<ListOrdersInWorkItem.ViewHolder>() {
 
     override val type: Int
@@ -35,7 +34,7 @@ class ListOrdersInWorkItem(
         var takeOrder: CardView = view.findViewById(R.id.btnDoneOrder)
         var delOrder: CardView = view.findViewById(R.id.btnDelOrder)
         var image: CircleImageView = view.findViewById(R.id.imageViewFood)
-        var description:TextView = view.findViewById(R.id.descriptionFood)
+        var description: TextView = view.findViewById(R.id.descriptionFood)
         var volume: TextView = view.findViewById(R.id.volumeOrderCreator)
         var minute: TextView = view.findViewById(R.id.timerMinute)
         var wait: TextView = view.findViewById(R.id.wait)
@@ -53,7 +52,7 @@ class ListOrdersInWorkItem(
                 item.Click(Order(item.item))
                 item.Click(DoneOrder(item.item))
             }
-            delOrder.isInvisible = true
+            delOrder.isVisible = false
         }
 
         override fun unbindView(item: ListOrdersInWorkItem) {

@@ -20,7 +20,6 @@ class ProfileViewModel(
     private val repositoryOrders: RepositoryOrders,
     private val repositoryFood: RepositoryFood,
     private val router: Router,
-
 ) : ViewModel() {
     private val _profile = MutableStateFlow<UsersDb?>(null)
     val profile: MutableStateFlow<UsersDb?> = _profile
@@ -37,10 +36,10 @@ class ProfileViewModel(
     val ratingFeedback: MutableStateFlow<Double> = _ratingFeedback
 
 
-
-    fun example(){
+    fun example() {
         router.newRootScreen(Screens.routeToFavoriteFragment())
     }
+
     private fun observeFeedbackProfile(it: String) {
         viewModelScope.launch(Dispatchers.IO) {
             repositoryUser.observeProfileInfo(it).collect {
@@ -149,7 +148,7 @@ class ProfileViewModel(
                     observeMarksForProfileCreator()
                     repositoryOrders.observeFeedbackForCreator(repositoryUser.userID).collect {
                         val order = it?.last()
-                        if (order!= null) {
+                        if (order != null) {
                             observeFeedbackProfile(order.idUser)
                         }
                         _userFeedback.value =

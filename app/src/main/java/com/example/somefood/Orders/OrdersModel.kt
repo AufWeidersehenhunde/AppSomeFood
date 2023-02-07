@@ -11,7 +11,8 @@ data class OrdersModel(
     var status: Status?,
     var nameCreator: String?
 )
-enum class Status{
+
+enum class Status {
     FREE,
     WORK,
     DONE,

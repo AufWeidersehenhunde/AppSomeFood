@@ -12,7 +12,6 @@ class AuthAndRegFragment : Fragment(R.layout.fragment_auth_and_reg) {
     private val viewModelAuth: AuthAndRegViewModel by viewModel()
     private val viewBinding: FragmentAuthAndRegBinding by viewBinding()
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()

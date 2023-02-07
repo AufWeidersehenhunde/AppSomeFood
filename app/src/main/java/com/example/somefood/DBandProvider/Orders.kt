@@ -16,8 +16,8 @@ data class Orders(
     @ColumnInfo(name = "status") val status: Status = Status.FREE,
     @ColumnInfo(name = "nameCreator") val nameCreator: String? = null,
     @ColumnInfo(name = "idCreator") val idCreator: String? = null,
-    @ColumnInfo (name= "textForCreator") val textForCreator: String? = "",
-    @ColumnInfo (name = "textForClient") val textForClient: String? = "",
-    @ColumnInfo (name = "markForCreator") val markForCreator: Double?=null,
-    @ColumnInfo (name = "markForClient") val markForClient: Double?=null,
+    @ColumnInfo(name = "textForCreator") val textForCreator: String? = "",
+    @ColumnInfo(name = "textForClient") val textForClient: String? = "",
+    @ColumnInfo(name = "markForCreator") val markForCreator: Double? = null,
+    @ColumnInfo(name = "markForClient") val markForClient: Double? = null,
 )

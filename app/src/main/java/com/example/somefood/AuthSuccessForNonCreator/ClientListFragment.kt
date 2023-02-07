@@ -9,6 +9,8 @@ import com.example.appsomefood.databinding.FragmentListBinding
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.appsomefood.BottomSheet.BottomSheetFragment
 import com.example.appsomefood.R
+import com.example.somefood.ClickListener.AddToFavorite
+import com.example.somefood.ClickListener.AddToOrder
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import kotlinx.coroutines.launch
@@ -56,6 +58,7 @@ class ClientListFragment : Fragment(R.layout.fragment_list) {
                                     it1
                                 ).show(requireActivity().supportFragmentManager, "tag")
                             }
+                            else -> {}
                         }
 
                     }

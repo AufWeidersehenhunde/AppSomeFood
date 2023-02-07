@@ -7,13 +7,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.appsomefood.R
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.example.appsomefood.AuthSuccessForNonCreator.ListClientItem
 import com.example.appsomefood.databinding.FragmentFavoriteBinding
+import com.example.somefood.ClickListener.DeleteFavorite
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -46,7 +44,7 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
         }
     }
 
-    private fun initObservers(){
+    private fun initObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModelFavorite.listFoods.filterNotNull().collect {
                 itemAdapter.set(it.map {
@@ -57,6 +55,7 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
                                     it1
                                 )
                             }
+                            else -> {}
                         }
                     }
                 })

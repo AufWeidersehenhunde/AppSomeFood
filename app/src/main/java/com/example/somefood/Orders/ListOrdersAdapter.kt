@@ -17,7 +17,7 @@ import com.mikepenz.fastadapter.items.AbstractItem
 import de.hdodenhof.circleimageview.CircleImageView
 
 class ListOrdersItem(
-    val item: OrdersModel?, private val onClick:(ClickListener)->Unit
+    val item: OrdersModel?, private val onClick: (ClickListener) -> Unit
 ) : AbstractItem<ListOrdersItem.ViewHolder>() {
 
     override val type: Int

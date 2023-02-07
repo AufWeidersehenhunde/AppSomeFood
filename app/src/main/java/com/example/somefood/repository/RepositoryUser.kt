@@ -7,20 +7,21 @@ import com.example.appsomefood.Dao.DaoUser
 import java.io.File
 import java.util.*
 
-class RepositoryUser (
+class RepositoryUser(
     private val user: DaoUser,
     private val context: Context,
     private val preference: Reference
-){
-    var userID:String = ""
+) {
+    var userID: String = ""
 
-    fun getPreference(){
+    fun getPreference() {
         userID = preference.getValue("pref").toString()
     }
 
-    fun delPref (){
+    fun delPref() {
         userID = preference.getValue("pref").toString()
-        preference.remove("pref")}
+        preference.remove("pref")
+    }
 
     fun registerUser(usersDb: UsersDb) = user.registerUser(usersDb)
 
@@ -36,7 +37,7 @@ class RepositoryUser (
         user.setPhoto(userID, profilePhoto)
     }
 
-    private suspend fun getUserPhoto(){
+    private suspend fun getUserPhoto() {
         user.getUserPhoto(userID)
     }
 
