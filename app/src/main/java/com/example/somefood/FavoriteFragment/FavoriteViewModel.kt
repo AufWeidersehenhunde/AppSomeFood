@@ -10,11 +10,11 @@ import kotlinx.coroutines.launch
 class FavoriteViewModel(
     private val repositoryFavorite: RepositoryFavorite
 ) : ViewModel() {
-    private val _listFoods = MutableStateFlow<List<FavoriteModel>?>(emptyList())
+    private val _listFoods = MutableStateFlow<List<FavoriteModel>?>(null)
     val listFoods: MutableStateFlow<List<FavoriteModel>?> = _listFoods
 
     init {
-        takeFavorite()
+        observeFavorite()
     }
 
     fun delFoodInFavorite(uuid: String) {
@@ -24,7 +24,7 @@ class FavoriteViewModel(
     }
 
 
-    private fun takeFavorite() {
+    private fun observeFavorite() {
         viewModelScope.launch {
             repositoryFavorite.observeFavorite().collect {
                 _listFoods.value = it

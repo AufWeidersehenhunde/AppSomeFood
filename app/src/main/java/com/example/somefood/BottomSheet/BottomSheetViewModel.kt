@@ -29,7 +29,7 @@ class BottomSheetViewModel (
         _number.value = _number.value + 1
     }
 
-    fun takeFood(it:String) {
+    fun observeFood(it:String) {
         viewModelScope.launch(Dispatchers.IO) {
             repositoryBottomSheet.observeFoodForSheet(it).collect{
                 _food.value = it

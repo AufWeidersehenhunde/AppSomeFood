@@ -32,7 +32,7 @@ class ClientListViewModel(
 
     private fun observe() {
         viewModelScope.launch {
-            repositoryFood.takeIt().collect {
+            repositoryFood.observeAllFood().collect {
                 _listFoods.value = it
             }
         }

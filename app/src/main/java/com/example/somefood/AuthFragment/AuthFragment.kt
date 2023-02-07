@@ -1,33 +1,24 @@
 package com.example.appsomefood.AuthFragment
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.core.content.PackageManagerCompat.LOG_TAG
-import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.appsomefood.R
 import com.example.appsomefood.databinding.FragmentAuthBinding
-import com.example.somefood.Services.Services
-import kotlinx.coroutines.flow.collect
+import com.example.somefood.Services.hideKeyboard
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.regex.Matcher
-import java.util.regex.Pattern
 
 class AuthFragment : Fragment(R.layout.fragment_auth) {
     private val viewBinding: FragmentAuthBinding by viewBinding()
     private val viewModelAuth: AuthViewModel by viewModel()
-    private val services = Services()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -88,9 +79,7 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
 
             btnBackToSplesh.setOnClickListener {view->
                 viewModelAuth.routeToBack()
-                services.apply {
                     view.hideKeyboard()
-                }
             }
 
 //            viewBinding.loginAuth.addTextChangedListener()

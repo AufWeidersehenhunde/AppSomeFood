@@ -27,15 +27,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-            viewModelMain.create()
+        viewModelMain.create()
     }
-
-
 
     override fun onResumeFragments() {
         super.onResumeFragments()

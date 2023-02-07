@@ -15,11 +15,11 @@ class CreatorListViewModel (
     val listOrdersForRecycler:MutableStateFlow<List<OrdersModel>?> = _listOrdersForRecycler
 
     init {
-        takeAllOrders()
+        observeAllOrders()
     }
 
 
-    private fun takeAllOrders(){
+    private fun observeAllOrders(){
         viewModelScope.launch {
             repositoryOrders.observeAllOrdersFree(Status.FREE).collect{
                 _listOrdersForRecycler.value = it

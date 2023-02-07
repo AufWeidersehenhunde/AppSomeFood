@@ -41,11 +41,11 @@ class ProfileViewModel(
     fun example(){
         router.newRootScreen(Screens.routeToFavoriteFragment())
     }
-    private fun takeFeedbackProfile(it: String) {
+    private fun observeFeedbackProfile(it: String) {
         viewModelScope.launch(Dispatchers.IO) {
             repositoryUser.observeProfileInfo(it).collect {
                 feedbackProfile.value = it
-                takeRatingForFeedback()
+                observeRatingForFeedback()
                 repositoryUser.userID?.let { it1 ->
                     repositoryOrders.observeForRVLastest(it1, status = Status.ARCHIVE).collect {
                         _listFoodsForRecycler.value = it
@@ -55,7 +55,7 @@ class ProfileViewModel(
         }
     }
 
-    private fun takeRatingForFeedback() {
+    private fun observeRatingForFeedback() {
         val stat = _userFeedback.value?.id?.value?.isCreator
         viewModelScope.launch(Dispatchers.IO) {
             if (stat == true) {
@@ -78,7 +78,7 @@ class ProfileViewModel(
         }
     }
 
-    private fun takeMarksForProfileCreator() {
+    private fun observeMarksForProfileCreator() {
         viewModelScope.launch(Dispatchers.IO) {
             repositoryUser.userID.let {
                 repositoryOrders.observeFeedbackForCreator(it).collect {
@@ -103,7 +103,7 @@ class ProfileViewModel(
         }
     }
 
-    private fun takeMarksForProfileClient() {
+    private fun observeMarksForProfileClient() {
         viewModelScope.launch(Dispatchers.IO) {
             repositoryUser.userID.let {
                 repositoryOrders.observeFeedbackForClient(it).collect {
@@ -141,16 +141,16 @@ class ProfileViewModel(
         }
     }
 
-    fun takeProfileInfo() {
+    fun observeProfileInfo() {
         viewModelScope.launch(Dispatchers.IO) {
             repositoryUser.observeProfileInfo(repositoryUser.userID).collect {
                 _profile.value = it
                 if (it.isCreator == true) {
-                    takeMarksForProfileCreator()
+                    observeMarksForProfileCreator()
                     repositoryOrders.observeFeedbackForCreator(repositoryUser.userID).collect {
                         val order = it?.last()
                         if (order!= null) {
-                            takeFeedbackProfile(order.idUser)
+                            observeFeedbackProfile(order.idUser)
                         }
                         _userFeedback.value =
                             ProfileForFeedback(
@@ -160,10 +160,10 @@ class ProfileViewModel(
                             )
                     }
                 } else {
-                    takeMarksForProfileClient()
+                    observeMarksForProfileClient()
                     repositoryOrders.observeFeedbackForClient(repositoryUser.userID).collect {
                         val order = it?.last()
-                        order?.idCreator?.let { it1 -> takeFeedbackProfile(it1) }
+                        order?.idCreator?.let { it1 -> observeFeedbackProfile(it1) }
                         _userFeedback.value =
                             ProfileForFeedback(
                                 feedbackProfile,
@@ -183,19 +183,19 @@ class ProfileViewModel(
         }
     }
 
-    fun takeAllOrdersForMost() {
+    fun observeAllOrdersForMost() {
         viewModelScope.launch(Dispatchers.IO) {
             repositoryOrders.observeAllOrders(repositoryUser.userID, Status.ARCHIVE).collect {
                 if (it != null) {
                     if (it.isNotEmpty()) {
-                        mostCommon(repositoryUser.userID, it.map { it.name })
+                        observeMostCommon(repositoryUser.userID, it.map { it.name })
                     }
                 }
             }
         }
     }
 
-    private fun mostCommon(uuid: String, input: List<String>) {
+    private fun observeMostCommon(uuid: String, input: List<String>) {
         viewModelScope.launch(Dispatchers.IO) {
             val numbersByElement = input.groupingBy { it }.eachCount()
             _ordersCount.value = OrdersCount(

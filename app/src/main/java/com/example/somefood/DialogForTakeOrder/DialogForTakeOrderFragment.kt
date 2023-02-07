@@ -46,7 +46,7 @@ class DialogForTakeOrderFragment : DialogFragment() {
 
         viewBindingDialogTake.btnTakeOrder.setOnClickListener {
             if (idOrder != null) {
-                viewModelDialog.takeOrder(idOrder)
+                viewModelDialog.updateOrder(idOrder)
             }
             dialog?.cancel()
         }

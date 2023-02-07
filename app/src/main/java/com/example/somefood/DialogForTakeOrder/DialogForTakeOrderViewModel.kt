@@ -14,10 +14,10 @@ class DialogForTakeOrderViewModel (
 
 ) : ViewModel() {
 
-    fun takeOrder(idOrder: String ) {
+    fun updateOrder(idOrder: String ) {
         viewModelScope.launch(Dispatchers.IO) {
             repositoryUser.observeProfileInfo(repositoryUser.userID).collect{
-                repositoryOrders.observeOrder(idOrder, it.name, it.uuid, Status.WORK)
+                repositoryOrders.updateOrder(idOrder, it.name, it.uuid, Status.WORK)
             }
         }
     }

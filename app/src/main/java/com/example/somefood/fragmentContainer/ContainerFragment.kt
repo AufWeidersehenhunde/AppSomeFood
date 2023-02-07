@@ -32,13 +32,11 @@ class ContainerFragment : Fragment(R.layout.fragment_child) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e("hooli4", "$savedInstanceState")
-        if (savedInstanceState==null){
+        if (savedInstanceState == null){
             viewModelContainer.create()
             takeStatus()
             initView()
         }
-
     }
 
 

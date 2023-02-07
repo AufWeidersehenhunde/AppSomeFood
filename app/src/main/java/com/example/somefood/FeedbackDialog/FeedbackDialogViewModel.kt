@@ -16,12 +16,12 @@ class FeedbackDialogViewModel(
     var profile: MutableStateFlow<UsersDb?> = _profile
 
 
-    fun checkFeedback(id: String, text: String, mark: Double) {
+    fun updateFeedback(id: String, text: String, mark: Double) {
         viewModelScope.launch(Dispatchers.IO) {
             if (_profile.value?.isCreator == false) {
-                repositoryOrders.insertFeedbackByClient(id, repositoryUser.userID, text, mark)
+                repositoryOrders.updateFeedbackByClient(id, repositoryUser.userID, text, mark)
             } else {
-                repositoryOrders.insertFeedbackByCreator(id, repositoryUser.userID, text, mark)
+                repositoryOrders.updateFeedbackByCreator(id, repositoryUser.userID, text, mark)
             }
         }
     }
