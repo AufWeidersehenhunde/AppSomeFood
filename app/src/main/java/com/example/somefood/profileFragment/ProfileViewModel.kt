@@ -146,29 +146,36 @@ class ProfileViewModel(
                 _profile.value = it
                 if (it.isCreator == true) {
                     observeMarksForProfileCreator()
-                    repositoryOrders.observeFeedbackForCreator(repositoryUser.userID).collect {
-                        val order = it?.last()
-                        if (order != null) {
-                            observeFeedbackProfile(order.idUser)
+                    repositoryOrders.observeFeedbackForCreator(repositoryUser.userID)
+                        .collect {
+                            if (it != null) {
+                                if (it.isNotEmpty()) {
+                                    val order = it.last()
+                                    observeFeedbackProfile(order.idUser)
+                                    _userFeedback.value =
+                                        ProfileForFeedback(
+                                            feedbackProfile,
+                                            order.textForCreator,
+                                            order.markForCreator
+                                        )
+                                }
+                            }
                         }
-                        _userFeedback.value =
-                            ProfileForFeedback(
-                                feedbackProfile,
-                                order?.textForCreator,
-                                order?.markForCreator
-                            )
-                    }
                 } else {
                     observeMarksForProfileClient()
                     repositoryOrders.observeFeedbackForClient(repositoryUser.userID).collect {
-                        val order = it?.last()
-                        order?.idCreator?.let { it1 -> observeFeedbackProfile(it1) }
-                        _userFeedback.value =
-                            ProfileForFeedback(
-                                feedbackProfile,
-                                order?.textForClient,
-                                order?.markForClient
-                            )
+                        if (it != null) {
+                            if (it.isNotEmpty()) {
+                                val order = it.last()
+                                order.idCreator?.let { it1 -> observeFeedbackProfile(it1) }
+                                _userFeedback.value =
+                                    ProfileForFeedback(
+                                        feedbackProfile,
+                                        order.textForClient,
+                                        order.markForClient
+                                    )
+                            }
+                        }
                     }
                 }
             }
