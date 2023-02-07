@@ -8,12 +8,15 @@ import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.example.appsomefood.Orders.OrdersModel
 import com.example.appsomefood.R
+import com.example.somefood.ClickListener.ClickListener
+import com.example.somefood.ClickListener.DoneOrder
+import com.example.somefood.ClickListener.Order
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 import de.hdodenhof.circleimageview.CircleImageView
 
 class ListOrdersInWorkItem(
-    val item: OrdersModel?, private val Click:(ClickOnWork)->Unit
+    val item: OrdersModel?, private val Click:(ClickListener)->Unit
 ) : AbstractItem<ListOrdersInWorkItem.ViewHolder>() {
 
     override val type: Int
@@ -58,10 +61,3 @@ class ListOrdersInWorkItem(
         }
     }
 }
-
-
-sealed class ClickOnWork
-
-class Order (val order: OrdersModel?): ClickOnWork()
-
-class DoneOrder (val order: OrdersModel?): ClickOnWork()

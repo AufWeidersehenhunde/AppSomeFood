@@ -8,6 +8,8 @@ import androidx.cardview.widget.CardView
 import androidx.core.view.isInvisible
 import com.bumptech.glide.Glide
 import com.example.appsomefood.R
+import com.example.somefood.ClickListener.ClickListener
+import com.example.somefood.ClickListener.DeleteFavorite
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 import de.hdodenhof.circleimageview.CircleImageView
@@ -51,8 +53,6 @@ class ListFavoriteItem(
     }
 }
 
-sealed class ClickListener
 
-class DeleteFavorite (val idFood: String?): ClickListener()
 
 

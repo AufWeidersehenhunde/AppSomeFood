@@ -7,12 +7,15 @@ import androidx.cardview.widget.CardView
 import com.bumptech.glide.Glide
 import com.example.appsomefood.DBandProvider.FoodDb
 import com.example.appsomefood.R
+import com.example.somefood.ClickListener.AddToFavorite
+import com.example.somefood.ClickListener.AddToOrder
+import com.example.somefood.ClickListener.ClickListener
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 import de.hdodenhof.circleimageview.CircleImageView
 
 class ListClientItem(
-     val item:FoodDb?, private val onClick:(ClickListenerForList)->Unit
+     val item:FoodDb?, private val onClick:(ClickListener)->Unit
 ) : AbstractItem<ListClientItem.ViewHolder>() {
 
     override val type: Int
@@ -55,8 +58,3 @@ class ListClientItem(
     }
 }
 
-sealed class ClickListenerForList
-
-class AddToFavorite (val idFood: String?): ClickListenerForList()
-
-class AddToOrder (val idFood: String?): ClickListenerForList()

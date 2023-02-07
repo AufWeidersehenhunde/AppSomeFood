@@ -37,6 +37,7 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
 
     private fun initView() {
         with(viewBinding.recyclerViewFavorite) {
+            itemAnimator = null
             layoutManager = GridLayoutManager(
                 context,
                 2

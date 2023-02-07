@@ -36,6 +36,7 @@ class OrdersInWorkFragment : Fragment(R.layout.fragment_orders_in_work) {
 
     private fun initViews(){
         with(viewBinding.recyclerViewOrdersInWork) {
+            itemAnimator = null
             layoutManager = LinearLayoutManager(
                 context
             )

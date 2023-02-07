@@ -8,12 +8,16 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.example.appsomefood.R
+import com.example.somefood.ClickListener.AcceptOrder
+import com.example.somefood.ClickListener.ClickListener
+import com.example.somefood.ClickListener.DeleteOrder
+import com.example.somefood.ClickListener.Dialog
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 import de.hdodenhof.circleimageview.CircleImageView
 
 class ListOrdersItem(
-    val item: OrdersModel?, private val onClick:(ClickListenerOrdersUser)->Unit
+    val item: OrdersModel?, private val onClick:(ClickListener)->Unit
 ) : AbstractItem<ListOrdersItem.ViewHolder>() {
 
     override val type: Int
@@ -89,12 +93,3 @@ class ListOrdersItem(
         }
     }
 }
-
-
-sealed class ClickListenerOrdersUser
-
-class DeleteOrder (val idOrder: String?): ClickListenerOrdersUser()
-
-class AcceptOrder (val order: OrdersModel?): ClickListenerOrdersUser()
-
-class Dialog (val idOrder: String?, val userId:String?): ClickListenerOrdersUser()
