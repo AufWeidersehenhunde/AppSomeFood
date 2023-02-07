@@ -1,55 +1,49 @@
 package com.example.appsomefood.AuthSuccessForCreator
 
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import com.bumptech.glide.Glide
 import com.example.appsomefood.Orders.OrdersModel
 import com.example.appsomefood.R
+import com.example.appsomefood.databinding.RecyclerItemCreatorListBinding
 import com.example.somefood.ClickListener.ClickListener
 import com.example.somefood.ClickListener.TakeOrder
 import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.binding.AbstractBindingItem
 import com.mikepenz.fastadapter.items.AbstractItem
 import de.hdodenhof.circleimageview.CircleImageView
 
 class ListCreatorItem(
-    val item: OrdersModel?, private val onClick:(ClickListener)->Unit
-) : AbstractItem<ListCreatorItem.ViewHolder>() {
+    val item: OrdersModel, private val onClick: (ClickListener) -> Unit
+) : AbstractBindingItem<RecyclerItemCreatorListBinding>() {
 
     override val type: Int
         get() = R.id.identificatorCreator
 
-    override val layoutRes: Int
-        get() = R.layout.recycler_item_creator_list
 
-    override fun getViewHolder(v: View): ViewHolder {
-        return ViewHolder(v)
-
+    override fun createBinding(
+        inflater: LayoutInflater,
+        parent: ViewGroup?
+    ): RecyclerItemCreatorListBinding {
+        return RecyclerItemCreatorListBinding.inflate(inflater, parent, false)
     }
 
-    class ViewHolder(view: View) : FastAdapter.ViewHolder<ListCreatorItem>(view) {
-        var name: TextView = view.findViewById(R.id.nameFood)
-        var takeOrder: CardView = view.findViewById(R.id.btnDoneOrder)
-        var image: CircleImageView = view.findViewById(R.id.imageViewFood)
-        var description:TextView = view.findViewById(R.id.descriptionFood)
-        var volume: TextView = view.findViewById(R.id.volumeOrderCreator)
-        var minute: TextView = view.findViewById(R.id.timerMinute)
+    override fun bindView(binding: RecyclerItemCreatorListBinding, payloads: List<Any>) {
+        with(binding) {
+            nameFood.text = item.name
+            volumeOrderCreator.text = item.volume.toString()
+            timerMinute.text = item.time
+            Glide.with(imageViewFood.context)
+                .load(item.image)
+                .into(imageViewFood)
 
-        override fun bindView(item: ListCreatorItem, payloads: List<Any>) {
-            name.text = item.item?.name
-            volume.text = item.item?.volume.toString()
-            minute.text = item.item?.time
-            Glide.with(image.context)
-                .load(item.item?.image)
-                .into(image)
-
-            takeOrder.setOnClickListener {
-                item.onClick(TakeOrder(item.item?.number))
+            btnDoneOrder.setOnClickListener {
+                onClick(TakeOrder(item.number))
             }
-        }
-
-        override fun unbindView(item: ListCreatorItem) {
-            name.text = null
         }
     }
 }
+
