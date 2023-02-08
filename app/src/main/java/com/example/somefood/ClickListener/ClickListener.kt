@@ -11,7 +11,7 @@ class AddToFavorite(val idFood: String) : ClickListener()
 
 class AddToOrder(val idFood: String) : ClickListener()
 
-class DeleteFavorite(val idFood: String?) : ClickListener()
+class DeleteFavorite(val idFood: String) : ClickListener()
 
 class DeleteOrder(val idOrder: String) : ClickListener()
 

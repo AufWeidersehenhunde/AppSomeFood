@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import com.example.appsomefood.Dao.*
 
 @Database(
-    entities = [UsersDb::class, FoodDb::class, FavoriteFoods::class, Orders::class, Feedback::class],
+    entities = [UsersDb::class, FoodDb::class, FavoriteFoods::class, Orders::class],
     version = 1
 )
 abstract class DBprovider : RoomDatabase() {

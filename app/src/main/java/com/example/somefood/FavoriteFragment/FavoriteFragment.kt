@@ -51,11 +51,9 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
                     ListFavoriteItem(it) {
                         when (it) {
                             is DeleteFavorite ->
-                                it.idFood?.let { it1 ->
                                     viewModelFavorite.delFoodInFavorite(
-                                        it1
+                                        it.idFood
                                     )
-                                }
                             else -> {}
                         }
                     }
