@@ -24,16 +24,25 @@ class OrdersInWorkViewModel(
 
     private fun observeAllOrders() {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryOrders.observeInWorkAndDone(repositoryUser.userID, Status.WORK, Status.DONE).collect {
+            repositoryUser.userID.let {
+                repositoryOrders.observeInWorkAndDone(it, Status.WORK, Status.DONE).collect {
                     _listOrdersForRecycler.value = it
                 }
+            }
         }
     }
 
-    fun updateOrderDone(number: String) {
+    fun orderDone(number: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryUser.observeProfileInfo(repositoryUser.userID).collect {
-                repositoryOrders.updateOrderDoneForCreator(number, it.name, Status.DONE, it.uuid)
+            repositoryUser.userID.let {
+                repositoryUser.observeProfileInfo(it).collect {
+                    repositoryOrders.updateOrderDoneForCreator(
+                        number,
+                        it.name,
+                        Status.DONE,
+                        it.uuid
+                    )
+                }
             }
         }
     }

@@ -18,48 +18,48 @@ class ContainerViewModel(
     private val repositoryProfileData: RepositoryProfileData
 ) : ViewModel() {
     val statusProfile = MutableStateFlow<UsersDb?>(null)
-    val user = repositoryUser.userID
 
     fun create() {
         repositoryUser.getPreference()
         viewModelScope.launch(Dispatchers.IO) {
             if (repositoryUser.checkStatus(repositoryUser.userID)?.isCreator == true) {
                 router.newRootScreen(Screens.routeToCreatorList())
-            }else{
+            } else {
                 router.newRootScreen(Screens.routeToListFragment())
             }
         }
     }
 
-    fun checkAccount(){
+    fun checkAccount() {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryProfileData.observeAccountForStatus(repositoryUser.userID)?.filterNotNull()?.collect{
+            repositoryProfileData.observeAccountForStatus(repositoryUser.userID)?.filterNotNull()
+                ?.collect {
                     statusProfile.value = it
-            }
+                }
         }
     }
 
-    fun routeToProfile(){
+    fun routeToProfile() {
         router.navigateTo((Screens.routeToProfileFragment()))
     }
 
-    fun goToHomeForCreator(){
+    fun goToHomeForCreator() {
         router.newRootScreen(Screens.routeToCreatorList())
     }
 
-    fun goBack(){
+    fun goBack() {
         router.newRootScreen(Screens.routeToListFragment())
     }
 
-    fun routeToFavorite(){
+    fun routeToFavorite() {
         router.newRootScreen(Screens.routeToFavoriteFragment())
     }
 
-    fun routeToOrders(){
+    fun routeToOrders() {
         router.newRootScreen(Screens.routeToOrdersFragment())
     }
 
-    fun routeToOrdersWork(){
+    fun routeToOrdersWork() {
         router.newRootScreen(Screens.routeToOrdersWork())
     }
 }

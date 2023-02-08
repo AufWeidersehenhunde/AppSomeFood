@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
-import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -19,6 +18,8 @@ import com.example.appsomefood.databinding.FragmentProfileBinding
 import com.example.appsomefood.MainActivity.MainActivity
 import com.example.appsomefood.PhotoProfile
 import com.example.somefood.Services.hideKeyboard
+import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.adapters.ItemAdapter
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -28,7 +29,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private var photoProfile: PhotoProfile? = null
     private val viewBinding: FragmentProfileBinding by viewBinding()
     private val viewModelProfile: ProfileViewModel by viewModel()
-    private var adapterLastest: RecyclerVIewAdapterLastestOrders? = null
+    private val itemAdapter = ItemAdapter<ListLastestItem>()
+    private val fastAdapter = FastAdapter.with(itemAdapter)
     private var btnBoolean: Boolean? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,14 +52,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun initView() {
-        adapterLastest =
-            RecyclerVIewAdapterLastestOrders()
         with(viewBinding) {
             with(recyclerViewForLatestOrders) {
                 layoutManager = LinearLayoutManager(
                     context
                 )
-                adapter = adapterLastest
+                adapter = fastAdapter
             }
             addPhotoToProfile.setOnClickListener {
                 photoProfile?.pickPhoto()
@@ -88,11 +88,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             btnPersonProfile.setOnCheckedChangeListener { _, isChecked ->
                 changeStatus(isChecked)
                 if (isChecked) {
-                    nonCreatorProfile.isInvisible
-                    creatorProfile.isVisible
+                    nonCreatorProfile.isVisible = false
+                    creatorProfile.isVisible = true
                 } else {
-                    creatorProfile.isInvisible
-                    nonCreatorProfile.isVisible
+                    creatorProfile.isVisible = false
+                    nonCreatorProfile.isVisible = true
                 }
             }
 
@@ -197,8 +197,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         btn.setOnClickListener { view ->
             text.isFocusable = false
             btn.isVisible = false
-                viewBinding.textInfo.isFocusable = true
-                view.hideKeyboard()
+            viewBinding.textInfo.isFocusable = true
+            view.hideKeyboard()
 
             if (text == viewBinding.profileNameHeader) {
                 text.setText("${text.text}")
@@ -223,7 +223,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun observeElement() {
         viewModelProfile.listFoodsForRecycler.filterNotNull().onEach {
-            adapterLastest?.set(it)
+            itemAdapter.set(it.map {
+                ListLastestItem(it)
+            })
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 }

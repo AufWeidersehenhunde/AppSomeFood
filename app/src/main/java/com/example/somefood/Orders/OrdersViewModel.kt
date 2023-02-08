@@ -13,7 +13,7 @@ class OrdersViewModel(
     private val repositoryUser: RepositoryUser
 ) : ViewModel() {
     private val _listFoodsForRecycler = MutableStateFlow<List<OrdersModel>?>(null)
-    val listFoodsForRecycler : MutableStateFlow<List<OrdersModel>?> = _listFoodsForRecycler
+    val listFoodsForRecycler: MutableStateFlow<List<OrdersModel>?> = _listFoodsForRecycler
 
     fun observeOrders() {
         viewModelScope.launch {

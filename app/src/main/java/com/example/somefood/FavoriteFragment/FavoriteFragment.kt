@@ -8,16 +8,19 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.appsomefood.R
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.appsomefood.databinding.FragmentFavoriteBinding
+import com.example.somefood.ClickListener.DeleteFavorite
+import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.adapters.ItemAdapter
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
     private val viewBinding: FragmentFavoriteBinding by viewBinding()
     private val viewModelFavorite: FavoriteViewModel by viewModel()
-    private var adapterFavorite: RecyclerViewAdapterFavorite? = null
+    private val itemAdapter = ItemAdapter<ListFavoriteItem>()
+    private val fastAdapter = FastAdapter.with(itemAdapter)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,33 +29,36 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeElement()
         initView()
+        initObservers()
     }
 
     private fun initView() {
-        this.adapterFavorite =
-            RecyclerViewAdapterFavorite {
-                when(it){
-                    is DeleteFavorite -> it.idFood?.let { it1 ->
-                        viewModelFavorite.delFoodInFavorite(
-                            it1
-                        )
-                    }
-                }
-              }
         with(viewBinding.recyclerViewFavorite) {
+            itemAnimator = null
             layoutManager = GridLayoutManager(
                 context,
                 2
             )
-            adapter = adapterFavorite
+            adapter = fastAdapter
         }
     }
 
-    private fun observeElement() {
-        viewModelFavorite.listFoods.filterNotNull().onEach {
-            adapterFavorite?.set(it)
-        }.launchIn(viewLifecycleOwner.lifecycleScope)
+    private fun initObservers() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModelFavorite.listFoods.filterNotNull().collect {
+                itemAdapter.set(it.map {
+                    ListFavoriteItem(it) {
+                        when (it) {
+                            is DeleteFavorite ->
+                                    viewModelFavorite.delFoodInFavorite(
+                                        it.idFood
+                                    )
+                            else -> {}
+                        }
+                    }
+                })
+            }
+        }
     }
 }

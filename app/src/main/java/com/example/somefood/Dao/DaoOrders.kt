@@ -11,16 +11,26 @@ import kotlinx.coroutines.flow.Flow
 interface DaoOrders {
 
     @Query("SELECT * FROM orders WHERE idCreator=:uuid")
-    fun observeRatingForCreator(uuid:String): Flow<List<Orders>?>
+    fun observeRatingForCreator(uuid: String): Flow<List<Orders>?>
 
     @Query("SELECT * FROM orders WHERE idUser=:uuid")
-    fun observeRatingForClient(uuid:String): Flow<List<Orders>?>
+    fun observeRatingForClient(uuid: String): Flow<List<Orders>?>
 
     @Query("UPDATE orders SET idUser=:idClient, textForCreator=:textForCreator, markForCreator=:markForCreator WHERE number=:id")
-    fun updateFeedbackByClient(id: String, idClient: String, textForCreator: String, markForCreator: Double)
+    fun updateFeedbackByClient(
+        id: String,
+        idClient: String,
+        textForCreator: String,
+        markForCreator: Double
+    )
 
     @Query("UPDATE orders SET idCreator=:idCreator, textForClient=:textForClient, markForClient=:markForClient WHERE number=:id")
-    fun updateFeedbackByCreator(id: String, idCreator: String, textForClient: String, markForClient: Double)
+    fun updateFeedbackByCreator(
+        id: String,
+        idCreator: String,
+        textForClient: String,
+        markForClient: Double
+    )
 
     @Query("SELECT * FROM orders WHERE idUser=:it")
     fun observeFeedbackForClient(it: String): Flow<List<Orders>?>
@@ -41,7 +51,11 @@ interface DaoOrders {
     fun observeOrdersForLastest(id: String, status: Status): Flow<List<OrdersModel>?>
 
     @Query("SELECT * FROM orders LEFT JOIN food ON orders.idFood = food.idFood WHERE orders.status=:status or orders.status=:secondStatus and orders.idCreator=:user")
-    fun observeOrdersForCreatorWork(user: String, status: Status, secondStatus: Status): Flow<List<OrdersModel>?>
+    fun observeOrdersForCreatorWork(
+        user: String,
+        status: Status,
+        secondStatus: Status
+    ): Flow<List<OrdersModel>?>
 
     @Query("DELETE FROM orders WHERE number =:id")
     suspend fun delOrder(id: String)
@@ -59,5 +73,5 @@ interface DaoOrders {
     suspend fun takeOrdersDone(id: String, status: Status): List<Orders>
 
     @Query("SELECT * FROM orders WHERE idUser=:id and status=:status")
-    suspend fun takeOrdersOrdered(id:String, status: Status): List<Orders>
+    suspend fun takeOrdersOrdered(id: String, status: Status): List<Orders>
 }

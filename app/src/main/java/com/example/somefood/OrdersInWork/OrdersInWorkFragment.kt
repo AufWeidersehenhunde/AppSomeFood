@@ -9,16 +9,20 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.appsomefood.R
 import com.example.appsomefood.databinding.FragmentOrdersInWorkBinding
 import com.example.appsomefood.FeedbackDialog.FeedbackDialogFragment
-import com.example.appsomefood.Orders.OrdersModel
+import com.example.somefood.ClickListener.DoneOrder
+import com.example.somefood.ClickListener.Order
+import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.adapters.ItemAdapter
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class OrdersInWorkFragment : Fragment(R.layout.fragment_orders_in_work) {
     private val viewOrdersWorkListViewModel: OrdersInWorkViewModel by viewModel()
     private val viewBinding: FragmentOrdersInWorkBinding by viewBinding()
-    private var adapterWorkCreator: AdapterForOrdersInWork? = null
+    private val itemAdapter = ItemAdapter<ListOrdersInWorkItem>()
+    private val fastAdapter = FastAdapter.with(itemAdapter)
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -26,34 +30,36 @@ class OrdersInWorkFragment : Fragment(R.layout.fragment_orders_in_work) {
         initViews()
     }
 
-    private fun initViews(){
-        adapterWorkCreator =
-            AdapterForOrdersInWork ({
-                it.idUser?.let { it1 ->
-                        viewOrdersWorkListViewModel.updateOrderDone(it.number)
-                }
-            }, {feedbackDialog(it)})
-
-
-
+    private fun initViews() {
         with(viewBinding.recyclerViewOrdersInWork) {
+            itemAnimator = null
             layoutManager = LinearLayoutManager(
                 context
             )
-            adapter = adapterWorkCreator
+            adapter = fastAdapter
         }
     }
 
     private fun observeElement() {
-        viewOrdersWorkListViewModel.listOrdersForRecycler.filterNotNull().onEach {
-            adapterWorkCreator?.set(it)
-        }.launchIn(viewLifecycleOwner.lifecycleScope)
-    }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewOrdersWorkListViewModel.listOrdersForRecycler.filterNotNull().collect {
+                itemAdapter.set(it.map {
+                    ListOrdersInWorkItem(it) {
+                        when (it) {
+                            is Order ->
+                                viewOrdersWorkListViewModel.orderDone(
+                                    it.order.number
+                                )
 
-    private fun feedbackDialog(it:OrdersModel){
-        it.idUser?.let { it1 ->
-            FeedbackDialogFragment.getInstance(it.number, it1)
-                .show(childFragmentManager, FeedbackDialogFragment.TAG)
+                            is DoneOrder ->
+                                FeedbackDialogFragment.getInstance(it.order.number, it.order.idUser)
+                                    .show(childFragmentManager, FeedbackDialogFragment.TAG)
+
+                            else -> {}
+                        }
+                    }
+                })
+            }
         }
     }
 }

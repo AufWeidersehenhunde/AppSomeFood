@@ -69,20 +69,16 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
                 if (it) {
                     noncreator.isVisible = false
                     creator.isVisible = true
-
                 } else {
                     creator.isVisible = false
                     noncreator.isVisible = true
-
                 }
             }
 
-            btnBackToSplesh.setOnClickListener {view->
+            btnBackToSplesh.setOnClickListener { view ->
                 viewModelAuth.routeToBack()
-                    view.hideKeyboard()
+                view.hideKeyboard()
             }
-
-//            viewBinding.loginAuth.addTextChangedListener()
 
             btnSignin.setOnClickListener {
                 viewModelAuth.checkInput(

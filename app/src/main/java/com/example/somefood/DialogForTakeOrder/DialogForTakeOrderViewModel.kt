@@ -8,15 +8,14 @@ import com.example.appsomefood.repository.RepositoryUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class DialogForTakeOrderViewModel (
+class DialogForTakeOrderViewModel(
     private val repositoryOrders: RepositoryOrders,
     private val repositoryUser: RepositoryUser,
-
 ) : ViewModel() {
 
-    fun updateOrder(idOrder: String ) {
+    fun updateOrder(idOrder: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryUser.observeProfileInfo(repositoryUser.userID).collect{
+            repositoryUser.observeProfileInfo(repositoryUser.userID).collect {
                 repositoryOrders.updateOrder(idOrder, it.name, it.uuid, Status.WORK)
             }
         }

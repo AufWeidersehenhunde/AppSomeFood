@@ -15,7 +15,6 @@ class FeedbackDialogViewModel(
     private val _profile = MutableStateFlow<UsersDb?>(null)
     var profile: MutableStateFlow<UsersDb?> = _profile
 
-
     fun updateFeedback(id: String, text: String, mark: Double) {
         viewModelScope.launch(Dispatchers.IO) {
             if (_profile.value?.isCreator == false) {
@@ -26,7 +25,6 @@ class FeedbackDialogViewModel(
         }
     }
 
-
     fun checkStatus() {
         viewModelScope.launch(Dispatchers.IO) {
             repositoryUser.observeProfileInfo(repositoryUser.userID).collect {
@@ -34,6 +32,4 @@ class FeedbackDialogViewModel(
             }
         }
     }
-
-
 }

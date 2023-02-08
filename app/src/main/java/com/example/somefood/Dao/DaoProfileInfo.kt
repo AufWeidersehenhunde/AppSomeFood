@@ -24,5 +24,5 @@ interface DaoProfileInfo {
     fun observeAccountStatus(uuid:String): Flow<UsersDb>?
 
     @Query("SELECT * FROM users WHERE uuid=:idUser")
-    fun takeFeedback(idUser:String):UsersDb?
+    fun takeFeedback(idUser: String): UsersDb?
 }

@@ -24,5 +24,6 @@ class RepositoryFavorite(
 
     fun observeFavorite() = favorite.observeFavorite()
 
-    private suspend fun deleteFavoriteFood(model: FavoriteFoods) = favorite.deleteFavoriteFood(model)
+    private suspend fun deleteFavoriteFood(model: FavoriteFoods) =
+        favorite.deleteFavoriteFood(model)
 }

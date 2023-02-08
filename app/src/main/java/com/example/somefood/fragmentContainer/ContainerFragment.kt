@@ -1,10 +1,7 @@
 package com.example.appsomefood.fragmentContainer
 
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.util.Log
 import android.view.View
-import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -32,7 +29,7 @@ class ContainerFragment : Fragment(R.layout.fragment_child) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (savedInstanceState == null){
+        if (savedInstanceState == null) {
             viewModelContainer.create()
             takeStatus()
             initView()

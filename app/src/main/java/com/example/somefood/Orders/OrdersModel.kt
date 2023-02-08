@@ -3,7 +3,7 @@ package com.example.appsomefood.Orders
 data class OrdersModel(
     var idFood: String,
     var number: String,
-    var idUser: String?,
+    var idUser: String,
     var name: String,
     var image: String,
     var time: String,
@@ -11,7 +11,8 @@ data class OrdersModel(
     var status: Status?,
     var nameCreator: String?
 )
-enum class Status{
+
+enum class Status {
     FREE,
     WORK,
     DONE,
