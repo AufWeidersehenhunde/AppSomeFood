@@ -23,7 +23,7 @@ interface DaoUser {
     fun checkStatus(UUID: String): UsersDb?
 
     @Query("SELECT*FROM users WHERE uuid=:uuid")
-    fun observeProfileInfo(uuid: String): Flow<UsersDb>
+   suspend fun observeProfileInfo(uuid: String): UsersDb?
 
     @Query("UPDATE users SET icon = :newPhoto WHERE uuid = :userId")
     suspend fun setPhoto(userId: String, newPhoto: String)

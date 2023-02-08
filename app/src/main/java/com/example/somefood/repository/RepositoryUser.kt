@@ -31,7 +31,7 @@ class RepositoryUser(
 
     fun checkStatus(UUID: String) = user.checkStatus(UUID)
 
-    fun observeProfileInfo(uuid: String) = user.observeProfileInfo(uuid)
+   suspend fun getProfileInfo(uuid: String) = user.observeProfileInfo(uuid)
 
     suspend fun setPhoto(userID: String, profilePhoto: String) {
         user.setPhoto(userID, profilePhoto)

@@ -35,15 +35,16 @@ class OrdersInWorkViewModel(
     fun orderDone(number: String) {
         viewModelScope.launch(Dispatchers.IO) {
             repositoryUser.userID.let {
-                repositoryUser.observeProfileInfo(it).collect {
+               val model =  repositoryUser.getProfileInfo(it)
+                if (model != null) {
                     repositoryOrders.updateOrderDoneForCreator(
                         number,
-                        it.name,
+                        model.name,
                         Status.DONE,
-                        it.uuid
+                        model.uuid
                     )
+                }
                 }
             }
         }
     }
-}

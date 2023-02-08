@@ -59,7 +59,7 @@ class RepositoryOrders(
     suspend fun takeOrdersDone(idCreator: String, status: Status) =
         order.takeOrdersDone(idCreator, status).size
 
-    suspend fun takeOrdersOrdered(idUser: String, status: Status) =
+    suspend fun takeOrdersOrdered(idUser: String, status: Status = Status.DONE) =
         order.takeOrdersOrdered(idUser, status).size
 
 

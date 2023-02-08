@@ -15,8 +15,9 @@ class DialogForTakeOrderViewModel(
 
     fun updateOrder(idOrder: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryUser.observeProfileInfo(repositoryUser.userID).collect {
-                repositoryOrders.updateOrder(idOrder, it.name, it.uuid, Status.WORK)
+            val model = repositoryUser.getProfileInfo(repositoryUser.userID)
+            if (model != null) {
+                repositoryOrders.updateOrder(idOrder, model.name, model.uuid, Status.WORK)
             }
         }
     }

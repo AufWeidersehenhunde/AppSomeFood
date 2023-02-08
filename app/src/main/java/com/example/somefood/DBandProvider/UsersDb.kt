@@ -16,7 +16,5 @@ data class UsersDb(
     @ColumnInfo(name = "address") val address: String = "",
     @ColumnInfo(name = "icon") val icon: String? = null,
     @ColumnInfo(name = "isCreator") val isCreator: Boolean? = null,
-    @ColumnInfo(name = "ordersOrdered") val ordersOrdered: Int? = null,
-    @ColumnInfo(name = "ordersDone") val ordersDone: Int? = null,
-    )
+)
 
