@@ -35,17 +35,16 @@ class ProfileViewModel(
     private val _ratingFeedback = MutableStateFlow<Double>(0.00)
     val ratingFeedback: MutableStateFlow<Double> = _ratingFeedback
 
+    val example = MutableStateFlow<DataForFragment?>(null)
 
-    fun example() {
-        router.newRootScreen(Screens.routeToFavoriteFragment())
-    }
 
     private fun observeFeedbackProfile(it: String) {
         viewModelScope.launch(Dispatchers.IO) {
             repositoryUser.observeProfileInfo(it).collect {
+                example.value?.id = it
                 feedbackProfile.value = it
                 observeRatingForFeedback()
-                repositoryUser.userID?.let { it1 ->
+                repositoryUser.userID.let { it1 ->
                     repositoryOrders.observeForRVLastest(it1, status = Status.ARCHIVE).collect {
                         _listFoodsForRecycler.value = it
                     }
@@ -227,4 +226,13 @@ class ProfileViewModel(
         var mark: Double?
     )
 
+    data class DataForFragment(
+        var ordered: Int,
+        val ordersDone: Int,
+        var mustOrderedNum: Int?,
+        var mustOrderedFood: FoodDb?,
+        var text: String?,
+        var mark: Double?,
+        var id: UsersDb?
+    )
 }
