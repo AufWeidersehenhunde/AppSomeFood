@@ -14,7 +14,7 @@ import com.example.somefood.ClickListener.Dialog
 import com.mikepenz.fastadapter.binding.AbstractBindingItem
 
 class ListOrdersItem(
-    val item: OrdersModel?, private val onClick: (ClickListener) -> Unit
+    val item: OrdersModel, private val onClick: (ClickListener) -> Unit
 ) : AbstractBindingItem<RecyclerViewItemOrdersBinding>() {
 
     override val type: Int
@@ -29,14 +29,14 @@ class ListOrdersItem(
 
     override fun bindView(binding: RecyclerViewItemOrdersBinding, payloads: List<Any>) {
         with(binding) {
-            nameFood.text = item?.name
-            volumeOrder.text = item?.volume.toString()
-            timerMinutes.text = item?.time
-            creatorFood.text = item?.nameCreator
+            nameFood.text = item.name
+            volumeOrder.text = item.volume.toString()
+            timerMinutes.text = item.time
+            creatorFood.text = item.nameCreator
             Glide.with(imageViewFavorite.context)
-                .load(item?.image)
+                .load(item.image)
                 .into(imageViewFavorite)
-            when (item?.status) {
+            when (item.status) {
                 Status.FREE -> {
                     statusOrder.text = "Not recruited yet"
                     statusOrder.setTextColor(Color.WHITE)
@@ -63,11 +63,11 @@ class ListOrdersItem(
             }
             btnDone.setOnClickListener {
                 onClick(AcceptOrder(item))
-                onClick(Dialog(item?.number, item?.idUser))
+                onClick(Dialog(item.number, item.idUser))
             }
 
             btnDelOrder.setOnClickListener {
-                onClick(DeleteOrder(item?.number))
+                onClick(DeleteOrder(item.number))
             }
         }
     }

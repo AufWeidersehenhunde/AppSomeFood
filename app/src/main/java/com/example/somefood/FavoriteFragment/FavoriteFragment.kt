@@ -50,11 +50,12 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
                 itemAdapter.set(it.map {
                     ListFavoriteItem(it) {
                         when (it) {
-                            is DeleteFavorite -> it.idFood?.let { it1 ->
-                                viewModelFavorite.delFoodInFavorite(
-                                    it1
-                                )
-                            }
+                            is DeleteFavorite ->
+                                it.idFood?.let { it1 ->
+                                    viewModelFavorite.delFoodInFavorite(
+                                        it1
+                                    )
+                                }
                             else -> {}
                         }
                     }

@@ -51,21 +51,17 @@ class OrdersFragment : Fragment(R.layout.fragment_orders) {
                 itemAdapter.set(it.map {
                     ListOrdersItem(it) {
                         when (it) {
-                            is DeleteOrder -> it.idOrder?.let { it1 ->
+                            is DeleteOrder ->
                                 DialogFragmentForCancel.getInstance(
-                                    it1
+                                    it.idOrder
                                 ).show(childFragmentManager, DialogFragmentForCancel.TAG)
-                            }
-                            is AcceptOrder -> {
-                                it.order?.let { it1 -> viewModelOrders.acceptOrder(it1) }
-                            }
-                            is Dialog -> it.idOrder?.let { it1 ->
-                                it.userId?.let { it2 ->
-                                    FeedbackDialogFragment.getInstance(
-                                        it1, it2
-                                    ).show(childFragmentManager, FeedbackDialogFragment.TAG)
-                                }
-                            }
+
+                            is AcceptOrder -> viewModelOrders.acceptOrder(it.order)
+
+                            is Dialog ->
+                                FeedbackDialogFragment.getInstance(
+                                    it.idOrder, it.userId
+                                ).show(childFragmentManager, FeedbackDialogFragment.TAG)
                             else -> {}
                         }
                     }

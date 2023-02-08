@@ -46,16 +46,15 @@ class OrdersInWorkFragment : Fragment(R.layout.fragment_orders_in_work) {
                 itemAdapter.set(it.map {
                     ListOrdersInWorkItem(it) {
                         when (it) {
-                            is Order -> it.order?.let { it1 ->
+                            is Order ->
                                 viewOrdersWorkListViewModel.orderDone(
-                                    it1.number
+                                    it.order.number
                                 )
-                            }
 
-                            is DoneOrder -> it.order?.idUser?.let { it1 ->
-                                FeedbackDialogFragment.getInstance(it.order.number, it1)
+                            is DoneOrder ->
+                                FeedbackDialogFragment.getInstance(it.order.number, it.order.idUser)
                                     .show(childFragmentManager, FeedbackDialogFragment.TAG)
-                            }
+
                             else -> {}
                         }
                     }

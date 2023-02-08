@@ -12,7 +12,7 @@ import com.example.somefood.ClickListener.DeleteFavorite
 import com.mikepenz.fastadapter.binding.AbstractBindingItem
 
 class ListFavoriteItem(
-    val item: FavoriteModel?, private val onClick: (ClickListener) -> Unit
+    val item: FavoriteModel, private val onClick: (ClickListener) -> Unit
 ) : AbstractBindingItem<RecyclerItemClientListBinding>() {
 
     override val type: Int
@@ -27,13 +27,13 @@ class ListFavoriteItem(
 
     override fun bindView(binding: RecyclerItemClientListBinding, payloads: List<Any>) {
         with(binding) {
-            name.text = item?.name
+            name.text = item.name
             viewBtnAddToFavourite.setColorFilter(Color.RED)
             Glide.with(imageView.context)
-                .load(item?.image)
+                .load(item.image)
                 .into(imageView)
             btnAddToFavourite.setOnClickListener {
-                onClick(DeleteFavorite(item?.idFood))
+                onClick(DeleteFavorite(item.idFood))
             }
             btnAdd.isVisible = false
         }

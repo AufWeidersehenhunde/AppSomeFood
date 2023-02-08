@@ -14,7 +14,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class FeedbackDialogFragment : DialogFragment() {
     private val viewBindingDialog: FragmentFeedbackDialogBinding by viewBinding()
     private val viewModelDialog: FeedbackDialogViewModel by viewModel()
-    private var numberRating: Double? = null
 
     companion object {
         const val TAG = "Dialog"
@@ -44,16 +43,15 @@ class FeedbackDialogFragment : DialogFragment() {
     private fun initView() {
         viewModelDialog.checkStatus()
         val idOrder = arguments?.getString(number)
-
         viewBindingDialog.sendFeedback.setOnClickListener {
-            numberRating = viewBindingDialog.ratingBarIndicator.rating.toDouble()
-            if (numberRating!! < 0.5) {
+            val numberRating = viewBindingDialog.ratingBarIndicator.rating.toDouble()
+            if (numberRating < 0.5) {
                 Toast.makeText(context, "Minimal mark 0,5", Toast.LENGTH_SHORT).show()
             } else {
                 if (idOrder != null) {
                     viewModelDialog.updateFeedback(
                         idOrder,
-                        viewBindingDialog.feedback.text.toString(), numberRating!!
+                        viewBindingDialog.feedback.text.toString(), numberRating
                     )
                 }
                 dialog?.cancel()

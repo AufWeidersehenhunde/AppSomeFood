@@ -48,16 +48,15 @@ class ClientListFragment : Fragment(R.layout.fragment_list) {
                 itemAdapter.set(it.map {
                     ListClientItem(it) {
                         when (it) {
-                            is AddToFavorite -> it.idFood?.let { it1 ->
+                            is AddToFavorite ->
                                 viewListViewModel.putFoodToFavorite(
-                                    it1
+                                    it.idFood
                                 )
-                            }
-                            is AddToOrder -> it.idFood?.let { it1 ->
+                            is AddToOrder ->
                                 BottomSheetFragment.getInstance(
-                                    it1
+                                    it.idFood
                                 ).show(requireActivity().supportFragmentManager, "tag")
-                            }
+
                             else -> {}
                         }
 

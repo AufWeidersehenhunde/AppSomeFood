@@ -44,10 +44,9 @@ class CreatorListFragment : Fragment(R.layout.fragment_creator_list) {
                 itemAdapter.set(it.map {
                     ListCreatorItem(it) {
                         when (it) {
-                            is TakeOrder -> it.idOrder?.let { it1 ->
-                                DialogForTakeOrderFragment.getInstance(it1)
+                            is TakeOrder ->
+                                DialogForTakeOrderFragment.getInstance(it.idOrder)
                                     .show(childFragmentManager, DialogFragmentForCancel.TAG)
-                            }
                             else -> {}
                         }
                     }
