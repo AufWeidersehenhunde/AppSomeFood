@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.appsomefood.DBandProvider.FoodDb
+import com.example.appsomefood.DBandProvider.Orders
 import com.example.appsomefood.DBandProvider.UsersDb
 import com.example.appsomefood.Orders.OrdersModel
 import com.example.appsomefood.Orders.Status
@@ -21,130 +22,123 @@ class ProfileViewModel(
     private val repositoryFood: RepositoryFood,
     private val router: Router,
 ) : ViewModel() {
-    private val _profile = MutableStateFlow<UsersDb?>(null)
-    val profile: MutableStateFlow<UsersDb?> = _profile
-    private val _listFoodsForRecycler = MutableStateFlow<List<OrdersModel>?>(null)
-    val listFoodsForRecycler: MutableStateFlow<List<OrdersModel>?> = _listFoodsForRecycler
-    private val _dataProfile = MutableStateFlow<DataForFragment?>(null)
-    val dataProfile: MutableStateFlow<DataForFragment?> = _dataProfile
 
-
-    private val _dataUser = MutableStateFlow<UserDataState?>(null)
-    val dataUser: MutableStateFlow<UserDataState?> = _dataUser
+    private val _dataAll = MutableStateFlow<AllDataEbanata?>(null)
+    val dataAll: MutableStateFlow<AllDataEbanata?> = _dataAll
 
 
     init {
         takeUserData()
+        takeMostOrder()
+        takeOrdersStats()
+        takeListLast()
+        takeLastFeedback()
     }
 
     private fun takeUserData() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             repositoryUser.getProfileInfo(repositoryUser.userID)?.let { info ->
-                Log.e("dataP", "kekes $info")
-                _dataUser.value = UserDataState(
-                    uuid = info.uuid,
+                val rate =
+                    if (info.isCreator == true) {
+                        repositoryOrders.observeRatingForFeedbackByClient(
+                            repositoryUser.userID
+                        )
+                            .map { it.markForCreator }
+                    } else {
+                        repositoryOrders.observeRatingForFeedbackByCreator(
+                            repositoryUser.userID
+                        ).map { it.markForClient }
+                    }
+
+                _dataAll.update { it?.copy(
+                    user = UserDataState( uuid = info.uuid,
                     login = info.login,
+                    averageMark = rate.filterNotNull().average(),
                     description = info.description,
                     icon = info.icon,
                     address = info.address,
                     name = info.name,
-                    isCreator = info.isCreator
-                )
+                    isCreator = info.isCreator)
+                ) }
             }
         }
     }
 
-    private fun takeOrdersData(){
-        viewModelScope.launch {
-//            repositoryOrders.takeOrdersOrdered()
-        }
-    }
-
-
-    private fun takeordersData() {
-        viewModelScope.launch {
-//            repositoryOrders.observeAllOrders()
-        }
-    }
-
-    private fun observeFeedbackProfile(id: String) {
+    private fun takeOrdersStats() {
         viewModelScope.launch(Dispatchers.IO) {
-            _dataProfile.update {
-                it?.copy(
-                    feedbackUser = ProfileForFeedback(
-                        feedbackProfile = repositoryUser.getProfileInfo(id)
+            _dataAll.update { it?.copy(
+                order = OrdersStats(
+                ordered = repositoryOrders.takeOrdersOrdered(repositoryUser.userID).toString(),
+                ordersDone = repositoryOrders.takeOrdersDone(repositoryUser.userID).toString()
+            )) }
+        }
+    }
+
+    private fun takeMostOrder() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val orders = repositoryOrders.observeAllOrders(repositoryUser.userID)
+            if (orders.isNotEmpty()) {
+                val numbersByElement = orders.map { it?.name }.groupingBy { it }.eachCount()
+                _dataAll.update { it?.copy(
+                    counter = MostOrdered(
+                        food = numbersByElement.maxBy { it.value }.key?.let {
+                            repositoryFood.observeFoodForMustOrder(it)
+                        },
+                    count = numbersByElement.maxBy { it.value }.value.toString(),
                     )
-                )
+                ) }
             }
-            Log.e("hhh", "prof${_dataProfile.value?.feedbackUser?.feedbackProfile}")
-            observeRatingForFeedback()
-            takeListLast()
-            Log.e("hhh", "11${repositoryUser.getProfileInfo(id)}")
+        }
+    }
+
+    private fun takeLastFeedback() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val element = repositoryUser.getProfileInfo(repositoryUser.userID)
+            val list = repositoryOrders.getFeedback(repositoryUser.userID, element?.isCreator).lastOrNull()
+            val user: UsersDb?
+            val rate: List<Orders>
+            val listMarks: List<Double?>
+            if (list != null) {
+                if (element?.isCreator==true){
+                    rate = repositoryOrders.observeRatingForFeedbackByCreator(list.idCreator)
+                    user = repositoryUser.getProfileInfo(list.idUser)
+                    listMarks = rate.map { it.markForClient }
+                } else{
+                    rate = repositoryOrders.observeRatingForFeedbackByClient(list.idUser)
+                    user = list.idCreator.let { repositoryUser.getProfileInfo(it) }
+                    listMarks =  rate.map { it.markForCreator }
+                }
+                _dataAll.update { it?.copy(
+                    feedback = LastFeedback(
+                        profile = user,
+                        text =
+                        if (element?.isCreator == true) {
+                            list.textForCreator
+                        } else {
+                            list.textForClient
+                        },
+                        markFeedback =
+                        if (element?.isCreator == true) {
+                            list.markForCreator
+                        } else {
+                            list.markForClient
+                        },
+                        markByFeedback = listMarks.filterNotNull().average()
+                    )
+                ) }
+            }
         }
     }
 
 
     private fun takeListLast() {
         viewModelScope.launch {
-            repositoryUser.userID.let { it1 ->
-                repositoryOrders.observeForRVLastest(it1, status = Status.ARCHIVE).collect {
-                    _listFoodsForRecycler.value = it
-                    Log.e("hhh", "22${it}")
-                }
-            }
+            _dataAll.update { it?.copy(
+                listLast = repositoryOrders.observeForRVLastest(repositoryUser.userID, status = Status.ARCHIVE)
+            ) }
         }
     }
 
-    private fun observeRatingForFeedback() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val stat = _dataProfile.value?.feedbackUser?.feedbackProfile?.isCreator
-            Log.e("hhh", "336${_dataProfile.value?.feedbackUser?.feedbackProfile}")
-            if (stat == true) {
-                repositoryOrders.observeRatingForFeedbackByCreator(_dataProfile.value?.feedbackUser?.feedbackProfile?.uuid.toString())
-                    .collect {
-                        val list = it?.map { it.markForClient }
-                        if (list != null) {
-                            _dataProfile.update {
-                                it?.copy(
-                                    ratingFeedback = list.filterNotNull().average()
-                                )
-                            }
-                        }
-                        Log.e("hhh", "33${it}")
-                    }
-            } else if (stat == false) {
-                repositoryOrders.observeRatingForFeedbackByClient(_dataProfile.value?.feedbackUser?.feedbackProfile?.uuid.toString())
-                    .collect {
-                        val list = it?.map { it.markForCreator }
-                        if (list != null) {
-                            _dataProfile.update {
-                                it?.copy(
-                                    ratingFeedback = list.filterNotNull().average()
-                                )
-                            }
-                        }
-                        Log.e("hhh", "332${it}")
-                    }
-            }
-        }
-    }
-
-    private fun observeMarksForProfileCreator() {
-        viewModelScope.launch(Dispatchers.IO) {
-            repositoryUser.userID.let {
-                repositoryOrders.observeFeedbackForCreator(it).collect {
-                    val list = it?.map { it.markForCreator }
-                    if (list != null) {
-                        _dataProfile.update {
-                            it?.copy(
-                                averageMark = list.filterNotNull().average()
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     private fun setPhotoProfile(profilePhoto: String) {
         viewModelScope.launch {
@@ -158,22 +152,6 @@ class ProfileViewModel(
         }
     }
 
-    private fun observeMarksForProfileClient() {
-        viewModelScope.launch(Dispatchers.IO) {
-            repositoryUser.userID.let {
-                repositoryOrders.observeFeedbackForClient(it).collect {
-                    val list = it?.map { it.markForClient }
-                    if (list != null) {
-                        _dataProfile.update {
-                            it?.copy(
-                                averageMark = list.filterNotNull().average()
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     fun signOut() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -201,120 +179,48 @@ class ProfileViewModel(
     }
 
 
-    private fun observeProfileInfo() {
-        viewModelScope.launch(Dispatchers.IO) {
-            _profile.value = repositoryUser.getProfileInfo(repositoryUser.userID)
-            if (repositoryUser.getProfileInfo(repositoryUser.userID)?.isCreator == true) {
-                observeMarksForProfileCreator()
-                Log.e("hhh", "22123${_profile.value}")
-                // suspend
-                repositoryOrders.observeFeedbackForCreator(repositoryUser.userID)
-                    .collect { fb ->
-                        Log.e("hhh", "22123123${fb}")
-                        if (!fb.isNullOrEmpty()) {
-                            val order = fb.last()
-                            observeFeedbackProfile(order.idUser)
-                            _dataProfile.update {
-                                it?.copy(
-                                    feedbackUser = ProfileForFeedback(
-                                        _dataProfile.value?.feedbackUser?.feedbackProfile,
-                                        order.textForCreator,
-                                        order.markForCreator
-                                    )
-                                )
-                            }
-
-                        }
-                    }
-            } else {
-                observeMarksForProfileClient()
-                Log.e("hhh", "22123${_profile.value}")
-                repositoryOrders.observeFeedbackForClient(repositoryUser.userID).collect {
-                    if (it != null) {
-                        if (it.isNotEmpty()) {
-                            val order = it.last()
-                            order.idCreator?.let { it1 -> observeFeedbackProfile(it1) }
-                            _dataProfile.update {
-                                it?.copy(
-                                    feedbackUser =
-                                    ProfileForFeedback(
-                                        _dataProfile.value?.feedbackUser?.feedbackProfile,
-                                        order.textForClient,
-                                        order.markForClient
-                                    )
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-
     fun changeStatus(creatorStatus: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             repositoryProfileData.changeStatus(repositoryUser.userID, creatorStatus)
         }
     }
 
-    fun observeAllOrdersForMost() {
-        viewModelScope.launch(Dispatchers.IO) {
-            repositoryOrders.observeAllOrders(repositoryUser.userID, Status.ARCHIVE).collect {
-                if (it != null) {
-                    if (it.isNotEmpty()) {
-                        observeMostCommon(repositoryUser.userID, it.map { it.name })
-                    }
-                }
-            }
-        }
-    }
-
-    private fun observeMostCommon(uuid: String, input: List<String>) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val numbersByElement = input.groupingBy { it }.eachCount()
-            _dataProfile.update {
-                it?.copy(
-                    ordersCount = OrdersCount(
-                        repositoryOrders.takeOrdersDone(uuid, Status.ARCHIVE),
-                        repositoryOrders.takeOrdersOrdered(uuid, Status.ARCHIVE),
-                        numbersByElement.maxBy { it.value }.value,
-                        repositoryFood.observeFoodForMustOrder(numbersByElement.maxBy { it.value }.key)
-                    )
-                )
-            }
-
-        }
-    }
-
-
-    data class OrdersCount(
-        var oredered: Int = 0,
-        val done: Int = 0,
-        var mustOrderedNum: Int? = 0,
-        var mustOrderedFood: FoodDb? = FoodDb("", "", "", "")
-    )
-
-    data class ProfileForFeedback(
-        val feedbackProfile: UsersDb? = null,
-        val text: String? = "",
-        val mark: Double? = 0.00
-    )
-
-    data class DataForFragment(
-        val ordersCount: OrdersCount?,
-        val feedbackUser: ProfileForFeedback?,
-        val averageMark: Double? = 0.00,
-        val ratingFeedback: Double? = (0.00)
-    )
-
     data class UserDataState(
         val uuid: String,
         val login: String,
+        val averageMark: Double?,
         val description: String = "",
         val name: String = "User",
         val address: String = "",
         val icon: String? = null,
         val isCreator: Boolean? = null,
     )
+
+    data class OrdersStats(
+        val ordered: String,
+        val ordersDone: String
+    )
+
+    data class MostOrdered(
+        val food: FoodDb?,
+        val count: String?
+    )
+
+    data class LastFeedback(
+        val profile: UsersDb?,
+        val text: String?,
+        val markFeedback: Double?,
+        val markByFeedback: Double?
+    )
+
+    data class AllDataEbanata(
+        val user: UserDataState,
+        val order: OrdersStats,
+        val counter: MostOrdered,
+        val feedback: LastFeedback,
+        val listLast: List<OrdersModel?>
+    )
+
 }
+
+

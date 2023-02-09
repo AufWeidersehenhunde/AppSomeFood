@@ -11,10 +11,10 @@ import kotlinx.coroutines.flow.Flow
 interface DaoOrders {
 
     @Query("SELECT * FROM orders WHERE idCreator=:uuid")
-    fun observeRatingForCreator(uuid: String): Flow<List<Orders>?>
+    fun observeRatingForCreator(uuid: String): List<Orders>
 
     @Query("SELECT * FROM orders WHERE idUser=:uuid")
-    fun observeRatingForClient(uuid: String): Flow<List<Orders>?>
+    fun observeRatingForClient(uuid: String): List<Orders>
 
     @Query("UPDATE orders SET idUser=:idClient, textForCreator=:textForCreator, markForCreator=:markForCreator WHERE number=:id")
     fun updateFeedbackByClient(
@@ -33,13 +33,13 @@ interface DaoOrders {
     )
 
     @Query("SELECT * FROM orders WHERE idUser=:it")
-    fun observeFeedbackForClient(it: String): Flow<List<Orders>?>
+    fun observeFeedbackForClient(it: String): List<Orders?>
 
     @Query("SELECT * FROM orders WHERE idCreator=:it")
-    fun observeFeedbackForCreator(it: String): Flow<List<Orders>?>
+    fun observeFeedbackForCreator(it: String): List<Orders?>
 
     @Query("SELECT * FROM orders LEFT JOIN food ON orders.idFood = food.idFood WHERE orders.status =:status and orders.idUser=:uuid")
-    fun observeOrders(uuid: String, status: Status): Flow<List<OrdersModel>?>
+   fun observeOrders(uuid: String, status: Status = Status.ARCHIVE): List<OrdersModel?>
 
     @Query("SELECT * FROM orders LEFT JOIN food ON orders.idFood = food.idFood WHERE orders.status =:statusFree")
     fun observeAllOrders(statusFree: Status): Flow<List<OrdersModel>?>
@@ -48,7 +48,7 @@ interface DaoOrders {
     fun observeOrdersForClient(id: String, status: Status): Flow<List<OrdersModel>?>
 
     @Query("SELECT * FROM orders LEFT JOIN food ON orders.idFood = food.idFood WHERE orders.idUser =:id and orders.status=:status")
-    fun observeOrdersForLastest(id: String, status: Status): Flow<List<OrdersModel>?>
+    fun observeOrdersForLastest(id: String, status: Status): List<OrdersModel?>
 
     @Query("SELECT * FROM orders LEFT JOIN food ON orders.idFood = food.idFood WHERE orders.status=:status or orders.status=:secondStatus and orders.idCreator=:user")
     fun observeOrdersForCreatorWork(
@@ -70,8 +70,8 @@ interface DaoOrders {
     fun updateOrderArchive(number: String, status: Status)
 
     @Query("SELECT * FROM orders WHERE idCreator=:id and status=:status")
-    suspend fun takeOrdersDone(id: String, status: Status): List<Orders>
+    suspend fun takeOrdersDone(id: String, status: Status = Status.ARCHIVE): List<Orders>
 
     @Query("SELECT * FROM orders WHERE idUser=:id and status=:status")
-    suspend fun takeOrdersOrdered(id: String, status: Status): List<Orders>
+    suspend fun takeOrdersOrdered(id: String, status: Status = Status.ARCHIVE): List<Orders>
 }

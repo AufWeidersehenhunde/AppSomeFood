@@ -7,5 +7,5 @@ class RepositoryFood(
 ) {
 
     fun observeAllFood() = food.observeFood()
-    suspend fun observeFoodForMustOrder(name: String) = food.takeFoodForMustOrder(name)
+    fun observeFoodForMustOrder(name: String) = food.takeFoodForMustOrder(name)
 }

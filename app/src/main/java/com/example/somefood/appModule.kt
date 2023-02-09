@@ -76,7 +76,7 @@ val appModule = module {
     single { get<DBprovider>().DaoProfileInfo() }
     single { get<DBprovider>().DaoBottomSheet() }
     single { RepositoryUser(get(), get(), get()) }
-    single { RepositoryOrders(get()) }
+    single { RepositoryOrders(get(), get()) }
     single { RepositoryProfileData(get()) }
     single { RepositoryFavorite(get(), get()) }
     single { RepositoryBottomSheet(get()) }

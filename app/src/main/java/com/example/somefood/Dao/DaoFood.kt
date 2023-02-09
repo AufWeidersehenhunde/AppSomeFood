@@ -15,5 +15,5 @@ interface DaoFood {
     fun insertFoods(list: List<FoodDb>)
 
     @Query("SELECT*FROM food WHERE name=:it")
-    suspend fun takeFoodForMustOrder(it: String): FoodDb?
+    fun takeFoodForMustOrder(it: String): FoodDb?
 }

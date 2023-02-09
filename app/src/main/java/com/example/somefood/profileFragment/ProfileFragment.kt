@@ -8,16 +8,14 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
+import com.example.appsomefood.MainActivity.MainActivity
 import com.example.appsomefood.R
 import com.example.appsomefood.databinding.FragmentProfileBinding
-import com.example.appsomefood.MainActivity.MainActivity
 import com.example.appsomefood.PhotoProfile
 import com.example.somefood.Services.hideKeyboard
 import com.mikepenz.fastadapter.FastAdapter
@@ -45,34 +43,39 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        checkStatus()
-        initView()
-//        takeData()
-        takeAllData()
-        observeElement()
-
-
         initUserViews()
+        initCountOrders()
+        initMostOrder()
+        observeLastFeedback()
+        observeLastOrders()
     }
 
     private fun initUserViews() {
         with(viewBinding) {
-            viewModelProfile.dataUser.onEach {
-                if (it != null) {
-                    idProfile.text = "${it.uuid}"
-                    loginProfile.text = " ${it.login}"
-                    profileNameHeader.setText("${it.name}")
-                    textInfo.setText("${it.description}")
-                    addressProfile.setText("${it.address}")
+            with(recyclerViewForLatestOrders) {
+                layoutManager = LinearLayoutManager(
+                    context
+                )
+                adapter = fastAdapter
+            }
+            viewModelProfile.dataAll.onEach {
+                if (it?.user != null) {
+                    val markAverage = String.format("%.1f", it.user.averageMark)
+                    mark.text = "${markAverage}/5"
+                    idProfile.text = "${it.user.uuid}"
+                    loginProfile.text = " ${it.user.login}"
+                    profileNameHeader.setText("${it.user.name}")
+                    textInfo.setText("${it.user.description}")
+                    addressProfile.setText("${it.user.address}")
                     Glide
                         .with(imageViewProfile.context)
                         .asBitmap()
-                        .load(it.icon)
+                        .load(it.user.icon)
                         .centerCrop()
                         .placeholder(R.drawable.aheg)
                         .into(imageViewProfile)
                 }
-                if (it?.isCreator == false) {
+                if (it?.user?.isCreator == false) {
                     btnPersonProfile.isChecked = false
                     nonCreatorProfile.isVisible = true
                     creatorProfile.isVisible = false
@@ -88,6 +91,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             Glide.with(imageViewProfile.context)
                 .load(R.drawable.faceanime)
                 .into(imageViewProfile)
+
+            btnSignOutAcc.setOnClickListener {
+                viewModelProfile.signOut()
+                val intent = Intent(activity, MainActivity::class.java)
+                startActivity(intent)
+            }
 
             btnPersonProfile.setOnCheckedChangeListener { _, isChecked ->
                 changeStatus(isChecked)
@@ -105,108 +114,39 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
     }
 
-    private fun initView() {
-        viewModelProfile.observeAllOrdersForMost()
-        with(viewBinding) {
-            with(recyclerViewForLatestOrders) {
-                layoutManager = LinearLayoutManager(
-                    context
-                )
-                adapter = fastAdapter
-            }
-
-            btnSignOutAcc.setOnClickListener {
-                viewModelProfile.signOut()
-                val intent = Intent(activity, MainActivity::class.java)
-                startActivity(intent)
-            }
-
-            Glide.with(imageViewLastFeedback.context)
-                .load(R.drawable.aheg)
-                .into(imageViewLastFeedback)
-
-
-        }
-    }
-
-    private fun takeAllData(){
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModelProfile.dataProfile.filterNotNull().collect {
-                with(viewBinding) {
-                    Log.e("hhh", "$it")
-                    val markRound = String.format("%.1f", it.averageMark)
-                    mark.text = "$markRound/5"
-                    ordersDoneNumber.text = it.ordersCount?.oredered.toString()
-                    ordersGoneNumber.text = it.ordersCount?.done.toString()
-                    Glide.with(imageViewMostOrderedFood.context)
-                        .load(it.ordersCount?.mustOrderedFood?.image)
-                        .into(imageViewMostOrderedFood)
-                    numberOrdered.text = "Ordered:  ${it.ordersCount?.mustOrderedNum}"
-                    nameMostOrderedFood.text = it.ordersCount?.mustOrderedFood?.name
-                    val markRoundFeedback = String.format("%.1f", it.ratingFeedback)
-                    feedbackMark.text = "$markRoundFeedback"
-                    textViewFeedback.text = "${it.feedbackUser?.text}"
-                    nameLastFeedback.text = "${it.feedbackUser?.feedbackProfile?.name}"
-                    markFeedback.text = "${it.feedbackUser?.mark}"
+    private fun initCountOrders(){
+        viewModelProfile.dataAll.onEach {
+            if ( it?.order!= null){
+                with(viewBinding){
+                    ordersDoneNumber.text = it.order.ordersDone
+                    ordersGoneNumber.text = it.order.ordered
                 }
             }
-        }
+        }.launchIn(viewModelProfile.viewModelScope)
     }
+
+
+    private fun initMostOrder(){
+        viewModelProfile.dataAll.onEach {
+            if (it?.counter!= null){
+                with(viewBinding){
+                    nameMostOrderedFood.text = it.counter.food?.name
+                    numberOrdered.text = "Ordered: ${it.counter.count}"
+                    Glide
+                        .with(imageViewMostOrderedFood.context)
+                        .load(it.counter.food?.image)
+                        .into(imageViewMostOrderedFood)
+                }
+            }
+        }.launchIn(viewModelProfile.viewModelScope)
+    }
+
 
     private fun changeStatus(i: Boolean) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModelProfile.changeStatus(i)
         }
     }
-
-//    private fun checkStatus() {
-//        viewLifecycleOwner.lifecycleScope.launch {
-//            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                viewModelProfile.profile.filterNotNull().collect {
-//                    with(viewBinding) {
-//                        if (it.isCreator == false) {
-//                            btnPersonProfile.isChecked = false
-//                            nonCreatorProfile.isVisible = true
-//                            creatorProfile.isVisible = false
-//                        } else {
-//                            btnPersonProfile.isChecked = true
-//                            creatorProfile.isVisible = true
-//                            nonCreatorProfile.isVisible = false
-//                        }
-//                    }
-//                }
-//
-//            }
-//        }
-//    }
-
-//    private fun takeData() {
-//        with(viewBinding) {
-//            changeView(profileNameHeader, acceptName)
-//            changeView(textInfo, acceptDescription)
-//            changeView(addressProfile, acceptAddress)
-//            viewLifecycleOwner.lifecycleScope.launch {
-//                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                    viewModelProfile.profile.filterNotNull().collect {
-//                        idProfile.text = "${it.uuid}"
-//                        loginProfile.text = " ${it.login}"
-//                        profileNameHeader.setText("${it.name}")
-//                        textInfo.setText("${it.description}")
-//                        addressProfile.setText("${it.address}")
-//                        Glide
-//                            .with(imageViewProfile.context)
-//                            .asBitmap()
-//                            .load(it.icon)
-//                            .centerCrop()
-//                            .placeholder(R.drawable.aheg)
-//                            .into(imageViewProfile)
-//                    }
-//                }
-//            }
-//        }
-//    }
-
-
 
 
     private fun changeView(text: EditText, btn: ImageView) {
@@ -244,11 +184,29 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
     }
 
-    private fun observeElement() {
-        viewModelProfile.listFoodsForRecycler.filterNotNull().onEach {
-            itemAdapter.set(it.map {
+    private fun observeLastFeedback(){
+        viewModelProfile.dataAll.onEach {
+            with(viewBinding){
+                nameLastFeedback.text = it?.feedback?.profile?.name
+                Glide
+                    .with(imageViewLastFeedback.context)
+                    .load(it?.feedback?.profile?.icon)
+                    .into(imageViewLastFeedback)
+                val markForFeedback = String.format("%.1f", it?.feedback?.markFeedback)
+                val markByFeedback = String.format("%.1f", it?.feedback?.markByFeedback)
+                feedbackMark.text = markByFeedback
+                markFeedback.text = "$markForFeedback/5"
+                textViewFeedback.text = it?.feedback?.text
+            }
+        }.launchIn(viewModelProfile.viewModelScope)
+    }
+
+    private fun observeLastOrders() {
+        viewModelProfile.dataAll.filterNotNull().onEach {
+            itemAdapter.set(it.listLast.map {
                 ListLastestItem(it)
             })
+            Log.e("hoolie", "12${it}")
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 }
