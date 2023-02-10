@@ -2,7 +2,6 @@ package com.example.appsomefood.profileFragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
@@ -43,14 +42,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initUserViews()
-        initCountOrders()
-        initMostOrder()
-        observeLastFeedback()
+        initViews()
         observeLastOrders()
     }
 
-    private fun initUserViews() {
+    private fun initViews() {
         with(viewBinding) {
             with(recyclerViewForLatestOrders) {
                 layoutManager = LinearLayoutManager(
@@ -58,24 +54,28 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 )
                 adapter = fastAdapter
             }
-            viewModelProfile.dataAll.onEach {
-                if (it?.user != null) {
-                    val markAverage = String.format("%.1f", it.user.averageMark)
+            viewModelProfile.dataAll.filterNotNull().onEach {
+                val user = it.user
+                val order = it.order
+                val counter = it.counter
+                val feedback = it.feedback
+                if (user != null) {
+                    val markAverage = String.format("%.1f", user.averageMark)
                     mark.text = "${markAverage}/5"
-                    idProfile.text = "${it.user.uuid}"
-                    loginProfile.text = " ${it.user.login}"
-                    profileNameHeader.setText("${it.user.name}")
-                    textInfo.setText("${it.user.description}")
-                    addressProfile.setText("${it.user.address}")
+                    idProfile.text = "${user.uuid}"
+                    loginProfile.text = " ${user.login}"
+                    profileNameHeader.setText("${user.name}")
+                    textInfo.setText("${user.description}")
+                    addressProfile.setText("${user.address}")
                     Glide
                         .with(imageViewProfile.context)
                         .asBitmap()
-                        .load(it.user.icon)
+                        .load(it.user!!.icon)
                         .centerCrop()
                         .placeholder(R.drawable.aheg)
                         .into(imageViewProfile)
                 }
-                if (it?.user?.isCreator == false) {
+                if (user?.isCreator == false) {
                     btnPersonProfile.isChecked = false
                     nonCreatorProfile.isVisible = true
                     creatorProfile.isVisible = false
@@ -84,7 +84,32 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     creatorProfile.isVisible = true
                     nonCreatorProfile.isVisible = false
                 }
+                if ( order!= null){
+                        ordersDoneNumber.text = order.ordersDone
+                        ordersGoneNumber.text = order.ordered
+                    }
+                if (counter!= null){
+                        nameMostOrderedFood.text = counter.food?.name
+                        numberOrdered.text = "Ordered: ${counter.count}"
+                        Glide
+                            .with(imageViewMostOrderedFood.context)
+                            .load(counter.food?.image)
+                            .into(imageViewMostOrderedFood)
+                }
+                if (feedback!=null){
+                    nameLastFeedback.text = feedback.profile?.name
+                    Glide
+                        .with(imageViewLastFeedback.context)
+                        .load(feedback.profile?.icon)
+                        .into(imageViewLastFeedback)
+                    val markForFeedback = String.format("%.1f", feedback.markFeedback)
+                    val markByFeedback = String.format("%.1f", feedback.markByFeedback)
+                    feedbackMark.text = markByFeedback
+                    markFeedback.text = "$markForFeedback/5"
+                    textViewFeedback.text = feedback.text
+                }
             }.launchIn(viewModelProfile.viewModelScope)
+
             addPhotoToProfile.setOnClickListener {
                 photoProfile?.pickPhoto()
             }
@@ -112,33 +137,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             changeView(textInfo, acceptDescription)
             changeView(addressProfile, acceptAddress)
         }
-    }
-
-    private fun initCountOrders(){
-        viewModelProfile.dataAll.onEach {
-            if ( it?.order!= null){
-                with(viewBinding){
-                    ordersDoneNumber.text = it.order.ordersDone
-                    ordersGoneNumber.text = it.order.ordered
-                }
-            }
-        }.launchIn(viewModelProfile.viewModelScope)
-    }
-
-
-    private fun initMostOrder(){
-        viewModelProfile.dataAll.onEach {
-            if (it?.counter!= null){
-                with(viewBinding){
-                    nameMostOrderedFood.text = it.counter.food?.name
-                    numberOrdered.text = "Ordered: ${it.counter.count}"
-                    Glide
-                        .with(imageViewMostOrderedFood.context)
-                        .load(it.counter.food?.image)
-                        .into(imageViewMostOrderedFood)
-                }
-            }
-        }.launchIn(viewModelProfile.viewModelScope)
     }
 
 
@@ -184,29 +182,15 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
     }
 
-    private fun observeLastFeedback(){
-        viewModelProfile.dataAll.onEach {
-            with(viewBinding){
-                nameLastFeedback.text = it?.feedback?.profile?.name
-                Glide
-                    .with(imageViewLastFeedback.context)
-                    .load(it?.feedback?.profile?.icon)
-                    .into(imageViewLastFeedback)
-                val markForFeedback = String.format("%.1f", it?.feedback?.markFeedback)
-                val markByFeedback = String.format("%.1f", it?.feedback?.markByFeedback)
-                feedbackMark.text = markByFeedback
-                markFeedback.text = "$markForFeedback/5"
-                textViewFeedback.text = it?.feedback?.text
-            }
-        }.launchIn(viewModelProfile.viewModelScope)
-    }
+
 
     private fun observeLastOrders() {
         viewModelProfile.dataAll.filterNotNull().onEach {
-            itemAdapter.set(it.listLast.map {
-                ListLastestItem(it)
-            })
-            Log.e("hoolie", "12${it}")
+            it.listLast?.let { listLast ->
+                itemAdapter.set(listLast.map { list->
+                    ListLastestItem(list)
+                })
+            }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 }

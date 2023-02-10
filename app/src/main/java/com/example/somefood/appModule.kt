@@ -39,7 +39,7 @@ val appModule = module {
     viewModel { AuthAndRegViewModel(get()) }
     viewModel { AuthViewModel(get(), get(), get(), get()) }
     viewModel { ClientListViewModel(get(), get()) }
-    viewModel { ProfileViewModel(get(), get(), get(), get(), get()) }
+    viewModel { ProfileViewModel(get(), get(), get(), get()) }
     viewModel { FavoriteViewModel(get()) }
     viewModel { ContainerViewModel(get(), get(), get()) }
     viewModel { OrdersViewModel(get(), get()) }

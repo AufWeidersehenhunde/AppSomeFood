@@ -1,7 +1,6 @@
 package com.example.appsomefood.profileFragment
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.appsomefood.DBandProvider.FoodDb
@@ -10,7 +9,6 @@ import com.example.appsomefood.DBandProvider.UsersDb
 import com.example.appsomefood.Orders.OrdersModel
 import com.example.appsomefood.Orders.Status
 import com.example.appsomefood.repository.*
-import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -19,12 +17,11 @@ class ProfileViewModel(
     private val repositoryProfileData: RepositoryProfileData,
     private val repositoryUser: RepositoryUser,
     private val repositoryOrders: RepositoryOrders,
-    private val repositoryFood: RepositoryFood,
-    private val router: Router,
-) : ViewModel() {
+    private val repositoryFood: RepositoryFood
+    ) : ViewModel() {
 
-    private val _dataAll = MutableStateFlow<AllDataEbanata?>(null)
-    val dataAll: MutableStateFlow<AllDataEbanata?> = _dataAll
+    private val _dataAll = MutableStateFlow<AllDataProfile?>(AllDataProfile())
+    val dataAll: MutableStateFlow<AllDataProfile?> = _dataAll
 
 
     init {
@@ -132,7 +129,7 @@ class ProfileViewModel(
 
 
     private fun takeListLast() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             _dataAll.update { it?.copy(
                 listLast = repositoryOrders.observeForRVLastest(repositoryUser.userID, status = Status.ARCHIVE)
             ) }
@@ -213,14 +210,13 @@ class ProfileViewModel(
         val markByFeedback: Double?
     )
 
-    data class AllDataEbanata(
-        val user: UserDataState,
-        val order: OrdersStats,
-        val counter: MostOrdered,
-        val feedback: LastFeedback,
-        val listLast: List<OrdersModel?>
+    data class AllDataProfile(
+        val user: UserDataState? = null,
+        val order: OrdersStats? = null,
+        val counter: MostOrdered? = null,
+        val feedback: LastFeedback? = null,
+        val listLast: List<OrdersModel?>? = null
     )
-
 }
 
 
