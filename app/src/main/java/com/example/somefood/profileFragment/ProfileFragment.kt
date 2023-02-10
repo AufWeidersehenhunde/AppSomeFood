@@ -42,11 +42,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViews()
+        initViewUserData()
         observeLastOrders()
     }
 
-    private fun initViews() {
+    private fun initViewUserData() {
         with(viewBinding) {
             with(recyclerViewForLatestOrders) {
                 layoutManager = LinearLayoutManager(
@@ -84,29 +84,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     creatorProfile.isVisible = true
                     nonCreatorProfile.isVisible = false
                 }
-                if ( order!= null){
-                        ordersDoneNumber.text = order.ordersDone
-                        ordersGoneNumber.text = order.ordered
-                    }
+                if (order!=null) {
+                    initViewOrderData(order)
+                }
                 if (counter!= null){
-                        nameMostOrderedFood.text = counter.food?.name
-                        numberOrdered.text = "Ordered: ${counter.count}"
-                        Glide
-                            .with(imageViewMostOrderedFood.context)
-                            .load(counter.food?.image)
-                            .into(imageViewMostOrderedFood)
+                    initViewMostOrdered(counter)
                 }
                 if (feedback!=null){
-                    nameLastFeedback.text = feedback.profile?.name
-                    Glide
-                        .with(imageViewLastFeedback.context)
-                        .load(feedback.profile?.icon)
-                        .into(imageViewLastFeedback)
-                    val markForFeedback = String.format("%.1f", feedback.markFeedback)
-                    val markByFeedback = String.format("%.1f", feedback.markByFeedback)
-                    feedbackMark.text = markByFeedback
-                    markFeedback.text = "$markForFeedback/5"
-                    textViewFeedback.text = feedback.text
+                   initViewLastFeedback(feedback)
                 }
             }.launchIn(viewModelProfile.viewModelScope)
 
@@ -143,6 +128,39 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private fun changeStatus(i: Boolean) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModelProfile.changeStatus(i)
+        }
+    }
+
+    private fun initViewOrderData(order: ProfileViewModel.OrdersStats){
+        with(viewBinding) {
+            ordersDoneNumber.text = order.ordersDone
+            ordersGoneNumber.text = order.ordered
+        }
+    }
+
+    private fun initViewMostOrdered(counter: ProfileViewModel.MostOrdered) {
+        with(viewBinding) {
+            nameMostOrderedFood.text = counter.food?.name
+            numberOrdered.text = "Ordered: ${counter.count}"
+            Glide
+                .with(imageViewMostOrderedFood.context)
+                .load(counter.food?.image)
+                .into(imageViewMostOrderedFood)
+        }
+    }
+
+    private fun initViewLastFeedback(feedback: ProfileViewModel.LastFeedback) {
+        with(viewBinding){
+            nameLastFeedback.text = feedback.profile?.name
+            Glide
+                .with(imageViewLastFeedback.context)
+                .load(feedback.profile?.icon)
+                .into(imageViewLastFeedback)
+            val markForFeedback = String.format("%.1f", feedback.markFeedback)
+            val markByFeedback = String.format("%.1f", feedback.markByFeedback)
+            feedbackMark.text = markByFeedback
+            markFeedback.text = "$markForFeedback/5"
+            textViewFeedback.text = feedback.text
         }
     }
 
