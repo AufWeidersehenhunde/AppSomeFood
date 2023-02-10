@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
 import com.example.appsomefood.MainActivity.MainActivity
+import com.example.appsomefood.Orders.OrdersModel
 import com.example.appsomefood.R
 import com.example.appsomefood.databinding.FragmentProfileBinding
 import com.example.appsomefood.PhotoProfile
@@ -43,7 +44,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViewUserData()
-        observeLastOrders()
     }
 
     private fun initViewUserData() {
@@ -59,6 +59,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 val order = it.order
                 val counter = it.counter
                 val feedback = it.feedback
+                val list = it.listLast
                 if (user != null) {
                     val markAverage = String.format("%.1f", user.averageMark)
                     mark.text = "${markAverage}/5"
@@ -70,7 +71,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     Glide
                         .with(imageViewProfile.context)
                         .asBitmap()
-                        .load(it.user!!.icon)
+                        .load(it.user.icon)
                         .centerCrop()
                         .placeholder(R.drawable.aheg)
                         .into(imageViewProfile)
@@ -84,20 +85,24 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     creatorProfile.isVisible = true
                     nonCreatorProfile.isVisible = false
                 }
-                if (order!=null) {
+                if (order != null) {
                     initViewOrderData(order)
                 }
-                if (counter!= null){
+                if (counter != null) {
                     initViewMostOrdered(counter)
                 }
-                if (feedback!=null){
-                   initViewLastFeedback(feedback)
+                if (feedback != null) {
+                    initViewLastFeedback(feedback)
+                }
+                if (list != null) {
+                    observeLastOrders(list)
                 }
             }.launchIn(viewModelProfile.viewModelScope)
 
             addPhotoToProfile.setOnClickListener {
                 photoProfile?.pickPhoto()
             }
+
             Glide.with(imageViewProfile.context)
                 .load(R.drawable.faceanime)
                 .into(imageViewProfile)
@@ -125,13 +130,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
 
-    private fun changeStatus(i: Boolean) {
+    private fun changeStatus(status: Boolean) {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModelProfile.changeStatus(i)
+            viewModelProfile.changeStatus(status)
         }
     }
 
-    private fun initViewOrderData(order: ProfileViewModel.OrdersStats){
+    private fun initViewOrderData(order: ProfileViewModel.OrdersStats) {
         with(viewBinding) {
             ordersDoneNumber.text = order.ordersDone
             ordersGoneNumber.text = order.ordered
@@ -150,7 +155,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun initViewLastFeedback(feedback: ProfileViewModel.LastFeedback) {
-        with(viewBinding){
+        with(viewBinding) {
             nameLastFeedback.text = feedback.profile?.name
             Glide
                 .with(imageViewLastFeedback.context)
@@ -201,14 +206,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
 
-
-    private fun observeLastOrders() {
-        viewModelProfile.dataAll.filterNotNull().onEach {
-            it.listLast?.let { listLast ->
-                itemAdapter.set(listLast.map { list->
-                    ListLastestItem(list)
-                })
-            }
-        }.launchIn(viewLifecycleOwner.lifecycleScope)
+    private fun observeLastOrders(list: List<OrdersModel?>) {
+        itemAdapter.set(list.map { elements ->
+            ListLastestItem(elements)
+        })
     }
 }

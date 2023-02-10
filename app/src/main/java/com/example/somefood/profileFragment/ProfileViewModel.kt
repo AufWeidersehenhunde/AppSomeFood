@@ -47,7 +47,7 @@ class ProfileViewModel(
                         ).map { it.markForClient }
                     }
 
-                _dataAll.update { it?.copy(
+                _dataAll.update { model -> model?.copy(
                     user = UserDataState( uuid = info.uuid,
                     login = info.login,
                     averageMark = rate.filterNotNull().average(),
@@ -63,7 +63,7 @@ class ProfileViewModel(
 
     private fun takeOrdersStats() {
         viewModelScope.launch(Dispatchers.IO) {
-            _dataAll.update { it?.copy(
+            _dataAll.update { model -> model?.copy(
                 order = OrdersStats(
                 ordered = repositoryOrders.takeOrdersOrdered(repositoryUser.userID).toString(),
                 ordersDone = repositoryOrders.takeOrdersDone(repositoryUser.userID).toString()
@@ -76,7 +76,8 @@ class ProfileViewModel(
             val orders = repositoryOrders.observeAllOrders(repositoryUser.userID)
             if (orders.isNotEmpty()) {
                 val numbersByElement = orders.map { it?.name }.groupingBy { it }.eachCount()
-                _dataAll.update { it?.copy(
+                _dataAll.update { model ->
+                    model?.copy(
                     counter = MostOrdered(
                         food = numbersByElement.maxBy { it.value }.key?.let {
                             repositoryFood.observeFoodForMustOrder(it)
@@ -96,13 +97,13 @@ class ProfileViewModel(
             val rate: List<Orders>
             val listMarks: List<Double?>
             if (list != null) {
-                if (element?.isCreator==true){
+                if (element?.isCreator == true){
                     rate = repositoryOrders.observeRatingForFeedbackByCreator(list.idCreator)
                     user = repositoryUser.getProfileInfo(list.idUser)
                     listMarks = rate.map { it.markForClient }
                 } else{
                     rate = repositoryOrders.observeRatingForFeedbackByClient(list.idUser)
-                    user = list.idCreator.let { repositoryUser.getProfileInfo(it) }
+                    user = repositoryUser.getProfileInfo(list.idCreator)
                     listMarks =  rate.map { it.markForCreator }
                 }
                 _dataAll.update { it?.copy(
