@@ -56,7 +56,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
             viewModelProfile.dataAll.filterNotNull().onEach {
                 val user = it.user
-                val order = it.order
                 val counter = it.counter
                 val feedback = it.feedback
                 val list = it.listLast
@@ -85,9 +84,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     creatorProfile.isVisible = true
                     nonCreatorProfile.isVisible = false
                 }
-                if (order != null) {
-                    initViewOrderData(order)
-                }
+                it.order?.let { it1 -> initViewOrderData(it1) }
+
                 if (counter != null) {
                     initViewMostOrdered(counter)
                 }
