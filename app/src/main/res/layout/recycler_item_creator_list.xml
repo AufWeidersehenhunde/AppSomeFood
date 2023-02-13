@@ -50,15 +50,19 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
+
         <TextView
             android:id="@+id/descriptionFood"
             android:layout_width="160dp"
             android:layout_height="90dp"
+            android:paddingRight="5dp"
             android:layout_marginStart="180dp"
-            android:gravity="center"
-            android:layout_marginTop="70dp"
-            android:textSize="16sp"
+            android:layout_marginTop="60dp"
+            android:textSize="14sp"
+            android:ellipsize="end"
+            android:maxLines="5"
             android:textStyle="bold" />
+
 
         <TextView
             android:id="@+id/clientFood"
@@ -66,7 +70,7 @@
             android:layout_height="30dp"
             android:layout_marginStart="180dp"
             android:gravity="bottom"
-            android:text="creator is not founded yet"
+            android:text="Creator is not founded yet"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="165dp"
             android:textSize="14sp"
