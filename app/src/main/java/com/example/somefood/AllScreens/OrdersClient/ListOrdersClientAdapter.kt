@@ -13,7 +13,7 @@ import com.example.somefood.Utils.ClickListener.DeleteOrder
 import com.example.somefood.Utils.ClickListener.Dialog
 import com.mikepenz.fastadapter.binding.AbstractBindingItem
 
-class ListOrdersItem(
+class ListOrdersClientItem(
     val item: OrdersModel, private val onClick: (ClickListener) -> Unit
 ) : AbstractBindingItem<RecyclerViewItemOrdersBinding>() {
 
@@ -62,6 +62,7 @@ class ListOrdersItem(
                     btnDelOrder.isVisible = true
                 }
             }
+
             btnDone.setOnClickListener {
                 onClick(AcceptOrder(item))
                 onClick(Dialog(item.number, item.idUser))

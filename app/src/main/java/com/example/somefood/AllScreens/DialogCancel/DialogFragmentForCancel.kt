@@ -37,6 +37,7 @@ class DialogFragmentForCancel : DialogFragment() {
     }
 
     private fun initView() {
+        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
         val idOrder = arguments?.getString(number)
         viewBindingDialog.btnCancelDel.setOnClickListener {
             dialog?.cancel()

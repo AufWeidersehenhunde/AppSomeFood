@@ -10,8 +10,6 @@
         android:id="@+id/cardViewAcceptOrder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:elevation="20dp"
-        app:cardElevation="30dp"
         app:cardCornerRadius="22dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

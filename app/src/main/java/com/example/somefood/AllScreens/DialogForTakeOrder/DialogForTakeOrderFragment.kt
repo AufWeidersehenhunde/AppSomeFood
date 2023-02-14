@@ -46,6 +46,7 @@ class DialogForTakeOrderFragment : DialogFragment() {
     }
 
     private fun initView() {
+        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
         val idOrder = arguments?.getString(number)
         val nameFood = arguments?.getString(nameFood)
         if (nameFood != null) {

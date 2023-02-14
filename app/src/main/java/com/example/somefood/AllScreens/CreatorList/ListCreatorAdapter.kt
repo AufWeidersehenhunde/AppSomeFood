@@ -2,6 +2,7 @@ package com.example.appsomefood.AuthSuccessForCreator
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.example.appsomefood.Orders.OrdersModel
 import com.example.appsomefood.R
@@ -33,10 +34,11 @@ class ListCreatorItem(
             Glide.with(imageViewFood.context)
                 .load(item.image)
                 .into(imageViewFood)
-            descriptionFood.text = item.description
+            descriptionFood.text = item.ingredients
             btnDoneOrder.setOnClickListener {
                 onClick(TakeOrder(item))
             }
+            btnDelOrder.isVisible = false
         }
     }
 }

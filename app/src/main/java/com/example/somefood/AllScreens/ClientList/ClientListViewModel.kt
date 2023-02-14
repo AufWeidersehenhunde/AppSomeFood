@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.appsomefood.repository.RepositoryFavorite
 import com.example.appsomefood.repository.RepositoryFood
+import com.example.somefood.AllScreens.ClientList.Foods
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -29,26 +30,12 @@ class ClientListViewModel(
 
     private fun observe() {
         viewModelScope.launch {
-            repositoryFood.observeFavoriteFoods().collect { tt ->
-                _foods.value = tt
-
-                Log.e("fff", "${tt?.map { it.idUser }} fff")
+            repositoryFood.observeFavoriteFoods().collect {
+                _foods.value = it
             }
         }
     }
-
-
 }
 
-
-
-data class Foods(
-    val idFood: String,
-    val name: String?,
-    val image: String?,
-    val description: String?,
-    val idFoodFavorite: String?,
-    val idUser: String?
-)
 
 

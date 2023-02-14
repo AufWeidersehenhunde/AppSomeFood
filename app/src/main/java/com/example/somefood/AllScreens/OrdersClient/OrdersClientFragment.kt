@@ -22,7 +22,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class OrdersClientFragment : Fragment(R.layout.fragment_orders_client) {
     private val viewBinding: FragmentOrdersClientBinding by viewBinding()
     private val viewModelOrders: OrdersClientViewModel by viewModel()
-    private val itemAdapter = ItemAdapter<ListOrdersItem>()
+    private val itemAdapter = ItemAdapter<ListOrdersClientItem>()
     private val fastAdapter = FastAdapter.with(itemAdapter)
 
 
@@ -49,7 +49,7 @@ class OrdersClientFragment : Fragment(R.layout.fragment_orders_client) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModelOrders.listFoodsForRecycler.filterNotNull().collect {
                 itemAdapter.set(it.map {
-                    ListOrdersItem(it) {
+                    ListOrdersClientItem(it) {
                         when (it) {
                             is DeleteOrder ->
                                 DialogFragmentForCancel.getInstance(

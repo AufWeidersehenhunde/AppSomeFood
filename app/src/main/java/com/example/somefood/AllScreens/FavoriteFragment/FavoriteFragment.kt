@@ -7,7 +7,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.appsomefood.R
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.example.appsomefood.BottomSheet.BottomSheetFragment
 import com.example.appsomefood.databinding.FragmentFavoriteBinding
+import com.example.somefood.Utils.ClickListener.AddToOrder
 import com.example.somefood.Utils.ClickListener.DeleteFavorite
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
@@ -46,14 +48,19 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
 
     private fun initObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModelFavorite.listFoods.filterNotNull().collect {
-                itemAdapter.set(it.map {
-                    ListFavoriteItem(it) {
+            viewModelFavorite.listFoods.filterNotNull().collect { list ->
+                itemAdapter.set(list.map { model ->
+                    ListFavoriteItem(model) {
                         when (it) {
                             is DeleteFavorite ->
                                     viewModelFavorite.delFoodInFavorite(
                                         it.idFood
                                     )
+                            is AddToOrder ->
+                                BottomSheetFragment.getInstance(
+                                    it.idFood
+                                ).show(requireActivity().supportFragmentManager, "tag")
+
                             else -> {}
                         }
                     }

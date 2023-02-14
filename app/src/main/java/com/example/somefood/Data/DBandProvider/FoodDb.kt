@@ -10,5 +10,6 @@ data class FoodDb(
     @PrimaryKey var idFood: String,
     @ColumnInfo(name = "name") val name: String?,
     @ColumnInfo(name = "image") val image: String?,
-    @ColumnInfo(name = "description") val description: String?
+    @ColumnInfo(name = "description") val description: String?,
+    @ColumnInfo(name="ingredients") val ingredients: String?
 )

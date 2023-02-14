@@ -6,6 +6,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:padding="2dp"
+    android:elevation="10dp"
+    android:outlineProvider="bounds"
     android:layout_margin="5dp"
     android:background="@drawable/for_back_white"
     android:clipToPadding="false">
@@ -16,12 +18,11 @@
         android:id="@+id/cardViewImageFood"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:translationZ="1dp"
         app:cardCornerRadius="80dp"
         android:elevation="15dp"
         app:cardElevation="20dp"
         android:layout_marginTop="10dp"
-        android:backgroundTint="@color/mocha"
+        android:backgroundTint="@color/yellow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" >
@@ -32,8 +33,8 @@
             android:layout_height="130dp"
             android:layout_gravity="center"
             app:civ_border_color="@color/white"
-            app:civ_border_width="2dp"
-            />
+            app:civ_border_width="2dp" />
+
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -67,7 +68,7 @@
             app:cardElevation="8dp"
             android:layout_marginLeft="5dp"
             android:layout_marginBottom="5dp"
-            android:backgroundTint="@color/mocha"
+            android:backgroundTint="@color/yellow"
             android:layout_gravity="start|bottom"
             app:cardCornerRadius="80dp">
 
@@ -87,7 +88,7 @@
             app:cardElevation="8dp"
             android:layout_marginRight="5dp"
             android:layout_marginBottom="5dp"
-            android:backgroundTint="@color/mocha"
+            android:backgroundTint="@color/yellow"
             android:layout_gravity="end|bottom"
             app:cardCornerRadius="80dp">
 

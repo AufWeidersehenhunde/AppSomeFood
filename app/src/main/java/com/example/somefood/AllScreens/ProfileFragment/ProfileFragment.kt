@@ -23,6 +23,7 @@ import com.example.somefood.Utils.PhotoProfile
 import com.example.somefood.Services.hideKeyboard
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -46,7 +47,32 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViewUserData()
+        mockLoading()
+    }
+
+    private fun mockLoading() {
+        with(viewBinding) {
+            viewLifecycleOwner.lifecycleScope.launch {
+                initViewUserData()
+                progressBar.isVisible = true
+                progressBarSmall.isVisible = true
+                cardViewForCloud.isVisible = false
+                cardViewName.isVisible = false
+                scrollViewProfile.isVisible = false
+                cardViewGif.isVisible = true
+                Glide
+                    .with(gif.context)
+                    .load(R.drawable.gif_small_cat)
+                    .into(gif)
+                delay(1500)
+                progressBar.isVisible = false
+                progressBarSmall.isVisible = false
+                cardViewForCloud.isVisible = true
+                cardViewName.isVisible = true
+                scrollViewProfile.isVisible = true
+                cardViewGif.isVisible = false
+            }
+        }
     }
 
     private fun initViewUserData() {

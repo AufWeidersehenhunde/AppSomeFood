@@ -7,6 +7,7 @@ import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.example.appsomefood.R
 import com.example.appsomefood.databinding.RecyclerItemClientListBinding
+import com.example.somefood.Utils.ClickListener.AddToOrder
 import com.example.somefood.Utils.ClickListener.ClickListener
 import com.example.somefood.Utils.ClickListener.DeleteFavorite
 import com.mikepenz.fastadapter.binding.AbstractBindingItem
@@ -35,7 +36,9 @@ class ListFavoriteItem(
             btnAddToFavourite.setOnClickListener {
                 onClick(DeleteFavorite(item.idFood))
             }
-            btnAdd.isVisible = false
+            btnAdd.setOnClickListener {
+                onClick(AddToOrder(item.idFood))
+            }
         }
     }
 }

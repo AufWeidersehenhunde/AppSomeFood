@@ -3,8 +3,8 @@ package com.example.appsomefood.Dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.appsomefood.AuthSuccessForNonCreator.Foods
 import com.example.appsomefood.DBandProvider.FoodDb
+import com.example.somefood.AllScreens.ClientList.Foods
 import kotlinx.coroutines.flow.Flow
 
 @Dao

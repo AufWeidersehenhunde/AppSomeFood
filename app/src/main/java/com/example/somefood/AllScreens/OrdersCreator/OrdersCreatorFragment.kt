@@ -20,7 +20,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class OrdersCreatorFragment : Fragment(R.layout.fragment_orders_creator) {
     private val viewOrdersWorkListViewModel: OrdersCreatorViewModel by viewModel()
     private val viewBinding: FragmentOrdersCreatorBinding by viewBinding()
-    private val itemAdapter = ItemAdapter<ListOrdersInWorkItem>()
+    private val itemAdapter = ItemAdapter<ListOrdersCreatorItem>()
     private val fastAdapter = FastAdapter.with(itemAdapter)
 
 
@@ -42,19 +42,15 @@ class OrdersCreatorFragment : Fragment(R.layout.fragment_orders_creator) {
 
     private fun observeElement() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewOrdersWorkListViewModel.listOrdersForRecycler.filterNotNull().collect {
-                itemAdapter.set(it.map {
-                    ListOrdersInWorkItem(it) {
+            viewOrdersWorkListViewModel.listOrdersForRecycler.filterNotNull().collect { list ->
+                itemAdapter.set(list.map { model ->
+                    ListOrdersCreatorItem(model) {
                         when (it) {
                             is Order ->
-                                viewOrdersWorkListViewModel.orderDone(
-                                    it.order.number
-                                )
-
+                                viewOrdersWorkListViewModel.orderDone(it.order.number)
                             is DoneOrder ->
                                 FeedbackDialogFragment.getInstance(it.order.number, it.order.idUser)
                                     .show(childFragmentManager, FeedbackDialogFragment.TAG)
-
                             else -> {}
                         }
                     }

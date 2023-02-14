@@ -111,7 +111,7 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
                             .load(it.image)
                             .into(imageForOrderBottomSheet)
                         nameSheetFood.text = "${it.name}"
-                        descriptionFoodForOrder.text = "${it.description}"
+                        descriptionFoodForOrder.text = "${it.ingredients}"
                     }
                 }
             }

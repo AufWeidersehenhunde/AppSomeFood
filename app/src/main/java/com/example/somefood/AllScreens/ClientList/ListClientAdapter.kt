@@ -1,12 +1,16 @@
 package com.example.appsomefood.AuthSuccessForNonCreator
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
 import com.bumptech.glide.Glide
 import com.example.appsomefood.DBandProvider.FoodDb
 import com.example.appsomefood.R
 import com.example.appsomefood.databinding.RecyclerItemClientListBinding
+import com.example.somefood.AllScreens.ClientList.Foods
 import com.example.somefood.Data.DBandProvider.FavoriteFoods
 import com.example.somefood.Utils.ClickListener.AddToFavorite
 import com.example.somefood.Utils.ClickListener.AddToOrder
@@ -26,6 +30,7 @@ class ListClientItem(
     ): RecyclerItemClientListBinding {
         return RecyclerItemClientListBinding.inflate(inflater, parent, false)
     }
+
 
     override fun bindView(binding: RecyclerItemClientListBinding, payloads: List<Any>) {
         with(binding) {

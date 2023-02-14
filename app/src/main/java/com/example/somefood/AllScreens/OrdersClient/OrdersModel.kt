@@ -10,7 +10,8 @@ data class OrdersModel(
     var volume: Int,
     var status: Status?,
     var nameCreator: String?,
-    var description: String?
+    var description: String?,
+    val ingredients: String?
 )
 
 enum class Status {
