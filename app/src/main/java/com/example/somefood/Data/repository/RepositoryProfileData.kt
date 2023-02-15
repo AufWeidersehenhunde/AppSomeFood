@@ -18,6 +18,4 @@ class RepositoryProfileData(
         profileData.changeStatus(uuid, creatorStatus)
 
     fun observeAccountForStatus(uuid: String) = profileData.observeAccountStatus(uuid)
-
-
 }

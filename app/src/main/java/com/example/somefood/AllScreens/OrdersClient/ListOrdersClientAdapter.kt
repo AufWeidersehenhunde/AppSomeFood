@@ -7,10 +7,10 @@ import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.example.appsomefood.R
 import com.example.appsomefood.databinding.RecyclerViewItemOrdersBinding
-import com.example.somefood.Utils.ClickListener.AcceptOrder
-import com.example.somefood.Utils.ClickListener.ClickListener
-import com.example.somefood.Utils.ClickListener.DeleteOrder
-import com.example.somefood.Utils.ClickListener.Dialog
+import com.example.somefood.Utils.EnumAndSealed.AcceptOrder
+import com.example.somefood.Utils.EnumAndSealed.ClickListener
+import com.example.somefood.Utils.EnumAndSealed.DeleteOrder
+import com.example.somefood.Utils.EnumAndSealed.Dialog
 import com.mikepenz.fastadapter.binding.AbstractBindingItem
 
 class ListOrdersClientItem(

@@ -7,13 +7,29 @@
     android:background="@color/black"
     android:saveEnabled="true">
 
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="cardViewName,scrollViewProfile,cardViewForCloud"
+        tools:ignore="NotSibling" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
     <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="170dp"
         android:layout_height="170dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        android:visibility="gone"
         android:indeterminateTint="@color/my"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,7 +42,6 @@
         android:layout_height="120dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        android:visibility="gone"
         android:indeterminateTint="@color/my"
         android:rotation="300"
         android:scaleX="-1"
@@ -39,7 +54,6 @@
         android:id="@+id/cardViewGif"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:visibility="gone"
         app:cardCornerRadius="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -53,7 +67,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewForCloud"
@@ -105,7 +123,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="center"
-                    android:background="@drawable/aheg"
+                    android:background="@drawable/back_ligth_green"
                     app:civ_border_color="@color/white"
                     app:civ_border_width="2dp" />
             </androidx.cardview.widget.CardView>
@@ -134,7 +152,7 @@
                     android:layout_marginRight="90dp"
                     android:background="@drawable/for_back_white"
                     android:gravity="center"
-                    android:hint="Name"
+                    android:hint="@string/name"
                     android:text=""
                     android:textColor="@color/black"
                     android:textColorHint="@color/grey"
@@ -168,7 +186,7 @@
                     android:layout_marginLeft="15dp"
                     android:gravity="end"
                     android:maxEms="4"
-                    android:text="5/5"
+                    android:text="@string/_5_5"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 
@@ -206,7 +224,7 @@
                     android:layout_marginTop="7dp"
                     android:layout_marginEnd="5dp"
                     android:gravity="center|top"
-                    android:text="Creator"
+                    android:text="@string/creator"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:visibility="gone"
@@ -222,7 +240,7 @@
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="7dp"
                     android:gravity="center|top"
-                    android:text="Client"
+                    android:text="@string/client"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:visibility="visible"
@@ -233,7 +251,6 @@
 
             </androidx.cardview.widget.CardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.cardview.widget.CardView>
 
     <ScrollView
@@ -278,7 +295,7 @@
                         android:id="@+id/addressProfile"
                         android:layout_width="330dp"
                         android:layout_height="match_parent"
-                        android:hint="Your address"
+                        android:hint="@string/your_address"
                         android:textColor="@color/black"
                         android:textColorHint="@color/grey"
                         android:textColorLink="@color/grey"
@@ -335,7 +352,7 @@
                             android:layout_height="60dp"
                             android:gravity="bottom|center_horizontal"
                             android:rotationY="180"
-                            android:text="Orders made:"
+                            android:text="@string/orders_made"
                             android:textColor="@color/white"
                             android:textSize="18sp"
                             android:textStyle="bold|italic"
@@ -349,7 +366,7 @@
                             android:layout_height="60dp"
                             android:gravity="top|center_horizontal"
                             android:rotationY="180"
-                            android:text="000000"
+                            android:text="@string/_0"
                             android:textColor="@color/white"
                             android:textSize="18sp"
                             android:textStyle="bold|italic"
@@ -383,7 +400,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
                             android:gravity="bottom|center_horizontal"
-                            android:text="Orders ordered:"
+                            android:text="@string/orders_ordered"
                             android:textColor="@color/white"
                             android:textSize="18sp"
                             android:textStyle="bold|italic"
@@ -396,7 +413,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
                             android:gravity="top|center_horizontal"
-                            android:text="000000"
+                            android:text="@string/_0"
                             android:textColor="@color/white"
                             android:textSize="18sp"
                             android:textStyle="bold|italic"
@@ -434,7 +451,7 @@
                         android:background="@color/blue"
                         android:gravity="center_horizontal"
                         android:paddingLeft="10dp"
-                        android:text="Personal data"
+                        android:text="@string/personal_data"
                         android:textSize="20sp"
                         android:textStyle="bold|italic" />
 
@@ -449,7 +466,7 @@
                             android:id="@+id/idProfileText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Your id: "
+                            android:text="@string/your_id"
                             android:textColor="@color/black"
                             android:textSize="18sp"
                             app:layout_constraintBottom_toTopOf="@+id/idProfile"
@@ -462,7 +479,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@color/grey"
-                            android:text="323232 "
+                            android:text=""
                             android:textColor="@color/black"
                             android:textSize="18sp"
                             app:layout_constraintBottom_toTopOf="@+id/loginProfileText"
@@ -477,7 +494,7 @@
                             android:layout_marginTop="5dp"
                             android:ellipsize="middle"
                             android:maxLines="3"
-                            android:text="Your login:"
+                            android:text="@string/your_login"
                             android:textColor="@color/black"
                             android:textSize="18sp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -492,7 +509,7 @@
                             android:background="@color/grey"
                             android:ellipsize="middle"
                             android:maxLines="3"
-                            android:text="gg"
+                            android:text=""
                             android:textColor="@color/black"
                             android:textSize="18sp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -507,7 +524,7 @@
                             android:layout_marginTop="5dp"
                             android:ellipsize="middle"
                             android:maxLines="3"
-                            android:text="About you:"
+                            android:text="@string/about_you"
                             android:textColor="@color/black"
                             android:textSize="18sp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -527,7 +544,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
                                 android:background="@color/grey"
-                                android:hint="Description"
+                                android:hint="@string/description"
                                 android:textColor="@color/black"
                                 android:textColorHint="@color/grey"
                                 android:textSize="18sp"
@@ -573,7 +590,7 @@
                         android:background="@color/blue"
                         android:gravity="center_horizontal"
                         android:paddingLeft="10dp"
-                        android:text="Most ordered"
+                        android:text="@string/most_ordered"
                         android:textSize="20sp"
                         android:textStyle="bold|italic" />
 
@@ -602,7 +619,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:layout_marginTop="10dp"
-                            android:text="Nothing"
+                            android:text="@string/nothing"
                             android:textColor="@color/black"
                             android:textSize="18sp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -616,7 +633,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:layout_marginBottom="30dp"
-                            android:text="Ordered:0"
+                            android:text="@string/ordered_0"
                             android:textColor="@color/black"
                             android:textSize="18sp"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -654,7 +671,7 @@
                         android:background="@color/blue"
                         android:gravity="center_horizontal"
                         android:paddingLeft="10dp"
-                        android:text="Last feedback"
+                        android:text="@string/last_feedback"
                         android:textSize="20sp"
                         android:textStyle="bold|italic" />
 
@@ -704,7 +721,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:layout_marginTop="10dp"
-                            android:text="Ibragim"
+                            android:text="@string/ibrahim"
                             android:textColor="@color/black"
                             android:textSize="18sp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -718,7 +735,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:layout_marginBottom="30dp"
-                            android:text="Excellent"
+                            android:text="@string/excellent"
                             android:textColor="@color/black"
                             android:textSize="16sp"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -742,7 +759,7 @@
                             android:layout_marginVertical="5dp"
                             android:layout_marginEnd="10dp"
                             android:gravity="end"
-                            android:text="2/5"
+                            android:text="@string/_2_5"
                             android:textColor="@color/black"
                             android:textSize="18sp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -754,21 +771,44 @@
 
             </androidx.cardview.widget.CardView>
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/allLastOrders"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lastFeedback"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:backgroundTint="@color/white"
+                android:elevation="15dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="20dp">
+
+            <TextView
+                android:id="@+id/previewAllLastOrders"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/blue"
+                android:gravity="center_horizontal"
+                android:paddingLeft="10dp"
+                android:text="@string/all_orders"
+                android:textSize="20sp"
+                android:textStyle="bold|italic" />
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewForLatestOrders"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/lastFeedback"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="10dp"/>
+                android:layout_below="@+id/previewAllLastOrders"
+                android:layout_marginTop="30dp" />
+            </androidx.cardview.widget.CardView>
 
             <Button
                 android:id="@+id/btnSignOutAcc"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_below="@+id/recyclerViewForLatestOrders"
+                android:layout_below="@+id/allLastOrders"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:gravity="center"
@@ -776,5 +816,4 @@
 
         </RelativeLayout>
     </ScrollView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

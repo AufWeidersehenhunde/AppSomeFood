@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/identificator"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:padding="2dp"
     android:elevation="10dp"
-    android:outlineProvider="bounds"
     android:layout_margin="5dp"
     android:background="@drawable/for_back_white"
     android:clipToPadding="false">
@@ -55,8 +53,8 @@
             android:id="@+id/name"
             android:layout_width="159dp"
             android:layout_height="45dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="100dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
             android:textSize="16sp"
             android:textStyle="bold" />
 

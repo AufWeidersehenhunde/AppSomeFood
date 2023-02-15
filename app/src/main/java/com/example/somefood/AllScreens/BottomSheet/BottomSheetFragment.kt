@@ -20,10 +20,9 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class BottomSheetFragment : BottomSheetDialogFragment() {
+class BottomSheetFragment : BottomSheetDialogFragment(R.layout.fragment_bottom_sheet) {
     private val viewModelBottom: BottomSheetViewModel by viewModel()
     private val viewBinding: FragmentBottomSheetBinding by viewBinding()
-
 
     companion object {
         private const val FOOD = "UUID_FOOD"
@@ -34,26 +33,20 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_bottom_sheet, container, false)
-    }
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         takeFoodInfo()
         initObserve()
-        initView()
+        initViews()
     }
 
-    private fun initView() {
+    private fun initViews() {
         val idFood = arguments?.getString(FOOD)
         val myTimes = arrayOf("15", "20", "25", "30", "35", "40", "45", "50", "55", "60")
         if (idFood != null) {
+            viewLifecycleOwner.lifecycleScope.launch {
             viewModelBottom.observeFood(idFood)
+            }
         }
         with(viewBinding.timePicker) {
             value = myTimes[0].toInt()

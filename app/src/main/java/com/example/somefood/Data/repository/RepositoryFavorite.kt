@@ -22,8 +22,6 @@ class RepositoryFavorite(
         }
     }
 
-    fun checkAllFavorite() = favorite.checkAllFavorite(repositoryUser.userID)
-
     fun observeFavorite() = favorite.observeFavorite()
 
     private suspend fun deleteFavoriteFood(model: FavoriteFoods) =

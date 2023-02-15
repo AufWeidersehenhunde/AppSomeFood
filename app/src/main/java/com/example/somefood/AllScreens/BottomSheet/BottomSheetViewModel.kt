@@ -13,7 +13,7 @@ class BottomSheetViewModel(
     private val repositoryBottomSheet: RepositoryBottomSheet,
     private val repositoryUser: RepositoryUser
 ) : ViewModel() {
-    private val _number = MutableStateFlow<Int>(1)
+    private val _number = MutableStateFlow(1)
     val number: MutableStateFlow<Int> = _number
     private val _food = MutableStateFlow<FoodDb?>(null)
     val food: MutableStateFlow<FoodDb?> = _food
@@ -27,12 +27,10 @@ class BottomSheetViewModel(
     fun plusSome() {
         _number.value = _number.value + 1
     }
-//suspentdfdrwtqretr    234§
-    fun observeFood(it: String) {
+
+    suspend fun observeFood(it: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryBottomSheet.observeFoodForSheet(it).collect {
-                _food.value = it
-            }
+            _food.value = repositoryBottomSheet.observeFoodForSheet(it)
         }
     }
 

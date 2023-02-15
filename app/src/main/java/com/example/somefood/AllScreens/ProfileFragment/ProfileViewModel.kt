@@ -106,32 +106,28 @@ class ProfileViewModel(
             val user: UsersDb?
             val rate: List<Orders>
             val listMarks: List<Double?>
+            val textFeedback:String?
+            val mark: Double?
             if (list != null) {
                 if (element?.isCreator == true) {
                     rate = repositoryOrders.observeRatingForFeedbackByCreator(list.idCreator)
                     user = repositoryUser.getProfileInfo(list.idUser)
                     listMarks = rate.map { it.markForClient }
+                    textFeedback = list.textForCreator
+                    mark = list.markForCreator
                 } else {
                     rate = repositoryOrders.observeRatingForFeedbackByClient(list.idUser)
                     user = repositoryUser.getProfileInfo(list.idCreator)
                     listMarks = rate.map { it.markForCreator }
+                    textFeedback = list.textForClient
+                    mark = list.markForClient
                 }
                 _dataAll.update {
                     it?.copy(
                         feedback = LastFeedback(
                             profile = user,
-                            text =
-                            if (element?.isCreator == true) {
-                                list.textForCreator
-                            } else {
-                                list.textForClient
-                            },
-                            markFeedback =
-                            if (element?.isCreator == true) {
-                                list.markForCreator
-                            } else {
-                                list.markForClient
-                            },
+                            text = textFeedback,
+                            markFeedback = mark,
                             markByFeedback = listMarks.filterNotNull().average()
                         )
                     )

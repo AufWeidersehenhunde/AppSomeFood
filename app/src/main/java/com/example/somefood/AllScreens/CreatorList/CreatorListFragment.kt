@@ -9,7 +9,8 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.appsomefood.R
 import com.example.appsomefood.databinding.FragmentCreatorListBinding
 import com.example.appsomefood.DialogForTakeOrder.DialogForTakeOrderFragment
-import com.example.somefood.Utils.ClickListener.TakeOrder
+import com.example.appsomefood.AllScreens.DialogCancel.DialogFragmentForCancel
+import com.example.somefood.Utils.EnumAndSealed.TakeOrder
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import kotlinx.coroutines.flow.filterNotNull

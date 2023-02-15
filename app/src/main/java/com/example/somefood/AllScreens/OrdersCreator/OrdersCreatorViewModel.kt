@@ -21,11 +21,10 @@ class OrdersCreatorViewModel(
         observeAllOrders()
     }
 
-
     private fun observeAllOrders() {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryUser.userID.let {
-                repositoryOrders.observeInWorkAndDone(it, Status.WORK, Status.DONE).collect {
+            repositoryUser.userID.let { id ->
+                repositoryOrders.observeInWorkAndDone(id, Status.WORK, Status.DONE).collect {
                     _listOrdersForRecycler.value = it
                 }
             }
@@ -35,7 +34,7 @@ class OrdersCreatorViewModel(
     fun orderDone(number: String) {
         viewModelScope.launch(Dispatchers.IO) {
             repositoryUser.userID.let {
-               val model =  repositoryUser.getProfileInfo(it)
+                val model = repositoryUser.getProfileInfo(it)
                 if (model != null) {
                     repositoryOrders.updateOrderDoneForCreator(
                         number,
@@ -44,7 +43,7 @@ class OrdersCreatorViewModel(
                         model.uuid
                     )
                 }
-                }
             }
         }
     }
+}

@@ -7,7 +7,6 @@ import com.example.appsomefood.Orders.Status
 import kotlinx.coroutines.flow.Flow
 
 class RepositoryOrders(
-    private val repositoryUser: RepositoryUser,
     private val order: DaoOrders
 ) {
     fun observeForRV(uuid: String, status: Status): Flow<List<OrdersModel>?> {
@@ -67,6 +66,4 @@ class RepositoryOrders(
             order.observeFeedbackForClient(userID)
         }
     }
-
-
 }

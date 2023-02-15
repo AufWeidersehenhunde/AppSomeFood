@@ -7,9 +7,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.appsomefood.R
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.example.appsomefood.AuthFragment.toastAuth
 import com.example.appsomefood.databinding.FragmentRegistrationBinding
 import com.example.somefood.Services.hideKeyboard
+import com.example.somefood.Utils.EnumAndSealed.ToastAuth
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -28,27 +28,27 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
 
     private fun initObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModelRegistrationFragment.toast.collect {
-                when (it) {
-                    toastAuth.PASS -> Toast.makeText(
+            viewModelRegistrationFragment.toast.collect { toast ->
+                when (toast) {
+                    ToastAuth.PASS -> Toast.makeText(
                         context,
                         "Введите пароль!!!",
                         Toast.LENGTH_SHORT
                     ).show()
 
-                    toastAuth.LOGIN -> Toast.makeText(
+                    ToastAuth.LOGIN -> Toast.makeText(
                         context,
                         "Введите логин",
                         Toast.LENGTH_SHORT
                     ).show()
 
-                    toastAuth.PASSINVALID -> Toast.makeText(
+                    ToastAuth.PASSINVALID -> Toast.makeText(
                         context,
                         "Пароли не совпадают",
                         Toast.LENGTH_SHORT
                     ).show()
 
-                    toastAuth.LOGININVALID -> Toast.makeText(
+                    ToastAuth.LOGININVALID -> Toast.makeText(
                         context,
                         "Email is not valid!!!",
                         Toast.LENGTH_SHORT

@@ -21,7 +21,4 @@ interface DaoFavorite {
 
     @Delete
     suspend fun deleteFavoriteFood(model: FavoriteFoods)
-
-    @Query("SELECT * FROM favorites WHERE idUser=:uuid")
-    fun checkAllFavorite(uuid: String): Flow<List<FavoriteFoods>?>
 }

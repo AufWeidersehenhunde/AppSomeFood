@@ -9,8 +9,8 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.appsomefood.BottomSheet.BottomSheetFragment
 import com.example.appsomefood.R
 import com.example.appsomefood.databinding.FragmentClientListBinding
-import com.example.somefood.Utils.ClickListener.AddToFavorite
-import com.example.somefood.Utils.ClickListener.AddToOrder
+import com.example.somefood.Utils.EnumAndSealed.AddToFavorite
+import com.example.somefood.Utils.EnumAndSealed.AddToOrder
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import kotlinx.coroutines.launch
@@ -60,7 +60,6 @@ class ClientListFragment : Fragment(R.layout.fragment_client_list) {
 
                                 else -> {}
                             }
-
                         }
                     })
                 }

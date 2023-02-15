@@ -17,6 +17,4 @@ class PhotoProfile(
     fun pickPhoto() {
         getContentLauncher.launch("image/*")
     }
-
-
 }

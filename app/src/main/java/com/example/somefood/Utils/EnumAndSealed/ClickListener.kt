@@ -1,4 +1,4 @@
-package com.example.somefood.Utils.ClickListener
+package com.example.somefood.Utils.EnumAndSealed
 
 import com.example.appsomefood.Orders.OrdersModel
 

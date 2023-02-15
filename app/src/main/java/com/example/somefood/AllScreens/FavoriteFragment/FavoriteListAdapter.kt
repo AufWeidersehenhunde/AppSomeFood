@@ -3,13 +3,12 @@ package com.example.appsomefood.FavoriteFragment
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.example.appsomefood.R
 import com.example.appsomefood.databinding.RecyclerItemClientListBinding
-import com.example.somefood.Utils.ClickListener.AddToOrder
-import com.example.somefood.Utils.ClickListener.ClickListener
-import com.example.somefood.Utils.ClickListener.DeleteFavorite
+import com.example.somefood.Utils.EnumAndSealed.AddToOrder
+import com.example.somefood.Utils.EnumAndSealed.ClickListener
+import com.example.somefood.Utils.EnumAndSealed.DeleteFavorite
 import com.mikepenz.fastadapter.binding.AbstractBindingItem
 
 class ListFavoriteItem(

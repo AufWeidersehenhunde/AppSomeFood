@@ -1,6 +1,5 @@
 package com.example.appsomefood.AuthSuccessForNonCreator
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.appsomefood.repository.RepositoryFavorite
@@ -14,12 +13,11 @@ class ClientListViewModel(
     private val repositoryFavorite: RepositoryFavorite,
     private val repositoryFood: RepositoryFood
 ) : ViewModel() {
-
     private val _foods = MutableStateFlow<List<Foods>?>(emptyList())
     val foods: MutableStateFlow<List<Foods>?> = _foods
 
     init {
-        observe()
+        observeFood()
     }
 
     fun putFoodToFavorite(uuid: String) {
@@ -28,9 +26,9 @@ class ClientListViewModel(
         }
     }
 
-    private fun observe() {
-        viewModelScope.launch {
-            repositoryFood.observeFavoriteFoods().collect {
+    private fun observeFood() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repositoryFood.observeFoods().collect {
                 _foods.value = it
             }
         }

@@ -31,7 +31,7 @@ class ContainerFragment : Fragment(R.layout.fragment_container) {
         super.onViewCreated(view, savedInstanceState)
         if (savedInstanceState == null) {
             viewModelContainer.create()
-            takeStatus()
+            observeStatus()
             initView()
         }
     }
@@ -75,7 +75,7 @@ class ContainerFragment : Fragment(R.layout.fragment_container) {
         }
     }
 
-    private fun takeStatus() {
+    private fun observeStatus() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModelContainer.checkAccount()
             viewModelContainer.statusProfile.filterNotNull().collect {
@@ -97,5 +97,4 @@ class ContainerFragment : Fragment(R.layout.fragment_container) {
         navigatorHolder.removeNavigator()
         super.onPause()
     }
-
 }

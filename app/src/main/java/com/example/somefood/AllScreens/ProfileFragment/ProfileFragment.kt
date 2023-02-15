@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -54,26 +55,20 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         with(viewBinding) {
             viewLifecycleOwner.lifecycleScope.launch {
                 initViewUserData()
-                progressBar.isVisible = true
-                progressBarSmall.isVisible = true
-                cardViewForCloud.isVisible = false
-                cardViewName.isVisible = false
-                scrollViewProfile.isVisible = false
-                cardViewGif.isVisible = true
+                loading.isVisible = true
+                groupProfile.isVisible = false
                 Glide
                     .with(gif.context)
                     .load(R.drawable.gif_small_cat)
                     .into(gif)
                 delay(1500)
-                progressBar.isVisible = false
-                progressBarSmall.isVisible = false
-                cardViewForCloud.isVisible = true
-                cardViewName.isVisible = true
-                scrollViewProfile.isVisible = true
-                cardViewGif.isVisible = false
+                loading.isVisible = false
+                groupProfile.isVisible = true
+
             }
         }
     }
+
 
     private fun initViewUserData() {
         with(viewBinding) {
@@ -101,7 +96,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                         .asBitmap()
                         .load(it.user.icon)
                         .centerCrop()
-                        .placeholder(R.drawable.aheg)
+                        .placeholder(R.drawable.foodback)
                         .into(imageViewProfile)
                 }
                 if (user?.isCreator == false) {
@@ -131,7 +126,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
 
             Glide.with(imageViewProfile.context)
-                .load(R.drawable.faceanime)
+                .load(R.drawable.foodback)
                 .into(imageViewProfile)
 
             btnSignOutAcc.setOnClickListener {

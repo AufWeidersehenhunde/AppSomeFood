@@ -18,7 +18,6 @@ class CreatorListViewModel (
         observeAllOrders()
     }
 
-
     private fun observeAllOrders(){
         viewModelScope.launch {
             repositoryOrders.observeAllOrdersFree(Status.FREE).collect{

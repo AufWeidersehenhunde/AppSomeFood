@@ -12,7 +12,7 @@ class MainActivityViewModel(
 
     fun create() {
         repositoryUser.getPreference()
-        if (repositoryUser.userID.isNullOrEmpty()) {
+        if (repositoryUser.userID.isEmpty()) {
             router.newRootScreen(Screens.routeToHomeFragment())
         } else {
             router.newRootScreen(Screens.routeToFragmentContainer())

@@ -1,3 +1,5 @@
+package com.example.appsomefood.AllScreens.DialogCancel
+
 import com.example.appsomefood.databinding.FragmentDialogForCancelBinding
 import android.os.Bundle
 import android.view.LayoutInflater

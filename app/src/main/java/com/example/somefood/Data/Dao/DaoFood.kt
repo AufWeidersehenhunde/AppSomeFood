@@ -9,8 +9,6 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface DaoFood {
-    @Query("SELECT*FROM food")
-    fun observeFood(): Flow<List<FoodDb>>
 
     @Insert
     fun insertFoods(list: List<FoodDb>)
@@ -19,5 +17,5 @@ interface DaoFood {
     fun takeFoodForMustOrder(it: String): FoodDb?
 
     @Query("SELECT * FROM food LEFT JOIN favorites ON food.idFood = favorites.idFoodFavorite and favorites.idUser =:id")
-    fun observeFavoriteFoods(id:String): Flow<List<Foods>?>
+    fun observeFoods(id:String): Flow<List<Foods>?>
 }

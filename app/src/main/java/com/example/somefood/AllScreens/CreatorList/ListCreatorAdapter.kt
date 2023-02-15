@@ -7,8 +7,8 @@ import com.bumptech.glide.Glide
 import com.example.appsomefood.Orders.OrdersModel
 import com.example.appsomefood.R
 import com.example.appsomefood.databinding.RecyclerItemCreatorListBinding
-import com.example.somefood.Utils.ClickListener.ClickListener
-import com.example.somefood.Utils.ClickListener.TakeOrder
+import com.example.somefood.Utils.EnumAndSealed.ClickListener
+import com.example.somefood.Utils.EnumAndSealed.TakeOrder
 import com.mikepenz.fastadapter.binding.AbstractBindingItem
 
 class ListCreatorItem(

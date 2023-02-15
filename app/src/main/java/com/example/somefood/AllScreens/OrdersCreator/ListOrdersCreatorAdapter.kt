@@ -8,9 +8,9 @@ import com.example.appsomefood.Orders.OrdersModel
 import com.example.appsomefood.Orders.Status
 import com.example.appsomefood.R
 import com.example.appsomefood.databinding.RecyclerItemCreatorListBinding
-import com.example.somefood.Utils.ClickListener.ClickListener
-import com.example.somefood.Utils.ClickListener.DoneOrder
-import com.example.somefood.Utils.ClickListener.Order
+import com.example.somefood.Utils.EnumAndSealed.ClickListener
+import com.example.somefood.Utils.EnumAndSealed.DoneOrder
+import com.example.somefood.Utils.EnumAndSealed.Order
 import com.mikepenz.fastadapter.binding.AbstractBindingItem
 
 

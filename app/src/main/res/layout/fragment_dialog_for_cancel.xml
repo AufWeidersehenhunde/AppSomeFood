@@ -29,7 +29,7 @@
                 android:layout_width="280dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="8dp"
-                android:text="Do you want to cancel the order?"
+                android:text="@string/do_you_want_to_cancel_the_order"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -43,7 +43,7 @@
                 android:layout_height="60dp"
                 android:background="@drawable/prozrachnii_krug"
                 android:gravity="center"
-                android:text="No"
+                android:text="@string/no"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_marginStart="10dp"
@@ -58,7 +58,7 @@
                 android:background="@drawable/prozrachnii_krug"
                 android:backgroundTint="@color/white"
                 android:gravity="center"
-                android:text="Yes"
+                android:text="@string/yes"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_marginEnd="10dp"
@@ -67,8 +67,6 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

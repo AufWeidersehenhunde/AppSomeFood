@@ -27,7 +27,7 @@ class FeedbackDialogViewModel(
 
     fun checkStatus() {
         viewModelScope.launch(Dispatchers.IO) {
-                _profile.value = repositoryUser.getProfileInfo(repositoryUser.userID)
-            }
+            _profile.value = repositoryUser.getProfileInfo(repositoryUser.userID)
         }
     }
+}

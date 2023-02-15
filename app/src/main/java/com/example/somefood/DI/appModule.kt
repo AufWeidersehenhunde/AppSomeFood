@@ -59,14 +59,11 @@ val appModule = module {
             .addCallback(object : RoomDatabase.Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
-                    //pre-populate data
                     Executors.newSingleThreadExecutor().execute {
                         get<DaoFood>().insertFoods(getFoods())
                     }
                 }
             }).build()
-
-
     }
 
     single { get<DBprovider>().DaoFood() }
@@ -76,7 +73,7 @@ val appModule = module {
     single { get<DBprovider>().DaoProfileInfo() }
     single { get<DBprovider>().DaoBottomSheet() }
     single { RepositoryUser(get(), get(), get()) }
-    single { RepositoryOrders(get(), get()) }
+    single { RepositoryOrders(get()) }
     single { RepositoryProfileData(get()) }
     single { RepositoryFavorite(get(), get()) }
     single { RepositoryBottomSheet(get()) }

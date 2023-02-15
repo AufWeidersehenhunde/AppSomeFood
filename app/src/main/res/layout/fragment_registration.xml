@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.appsomefood.RegistrationFragment.RegistrationFragment">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -26,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="120dp"
                 android:ems="10"
-                android:hint="Email"
+                android:hint="@string/email"
                 android:inputType="textPersonName"
                 android:textColorHint="@color/black"
                 android:textColorLink="@color/black"
@@ -79,7 +80,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:ems="10"
-            android:hint="Second password"
+            android:hint="@string/second_password"
             android:inputType="textPassword"
             app:layout_constraintBottom_toBottomOf="@+id/second_password_text_input_layout"
             app:layout_constraintTop_toTopOf="@+id/second_password_text_input_layout"
@@ -90,7 +91,7 @@
             android:id="@+id/btnAccept"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Accept"
+            android:text="@string/accept"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.95"
@@ -102,7 +103,7 @@
             android:id="@+id/btnBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Back"
+            android:text="@string/back"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnAccept"
             app:layout_constraintHorizontal_bias="0.1"

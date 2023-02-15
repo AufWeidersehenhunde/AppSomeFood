@@ -7,6 +7,7 @@ import com.example.somefood.Navigation.Screens
 import com.example.appsomefood.repository.Reference
 import com.example.appsomefood.repository.RepositoryProfileData
 import com.example.appsomefood.repository.RepositoryUser
+import com.example.somefood.Utils.EnumAndSealed.ToastAuth
 import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +22,7 @@ class AuthViewModel(
 ) : ViewModel() {
     private val _auth = MutableStateFlow<Boolean?>(null)
     val auth: MutableStateFlow<Boolean?> = _auth
-    var toast = MutableStateFlow<toastAuth?>(null)
+    var toast = MutableStateFlow<ToastAuth?>(null)
 
     fun routeToBack() {
         router.backTo(Screens.routeToHomeFragment())
@@ -50,13 +51,13 @@ class AuthViewModel(
 
     fun checkInput(login: String, password: String, status: Boolean) {
         if (password.isEmpty()) {
-            toast.value = toastAuth.PASS
+            toast.value = ToastAuth.PASS
 
         } else if (login.isEmpty()) {
-            toast.value = toastAuth.LOGIN
+            toast.value = ToastAuth.LOGIN
 
         } else if (!isEmailValid(login)) {
-            toast.value = toastAuth.LOGININVALID
+            toast.value = ToastAuth.LOGININVALID
 
         } else {
             authentication(login, password, status)
@@ -69,11 +70,4 @@ class AuthViewModel(
         val matcher = pattern.matcher(email);
         return matcher.matches()
     }
-}
-
-enum class toastAuth {
-    PASS,
-    LOGIN,
-    LOGININVALID,
-    PASSINVALID
 }

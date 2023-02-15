@@ -27,5 +27,4 @@ class AuthAndRegFragment : Fragment(R.layout.fragment_auth_and_reg) {
             }
         }
     }
-
 }

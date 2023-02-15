@@ -12,9 +12,8 @@ import kotlinx.coroutines.flow.Flow
 interface DaoBottomSheet {
 
     @Query("SELECT*FROM food WHERE idFood=:it")
-    fun observeFoodForId(it: String): Flow<FoodDb>
+    suspend fun observeFoodForId(it: String): FoodDb
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addFoodToOrder(model: Orders)
-
 }

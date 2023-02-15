@@ -42,5 +42,4 @@ class MainActivity : AppCompatActivity() {
         navigatorHolder.removeNavigator()
         super.onPause()
     }
-
 }

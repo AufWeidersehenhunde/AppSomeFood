@@ -10,6 +10,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.appsomefood.R
 import com.example.appsomefood.databinding.FragmentAuthBinding
 import com.example.somefood.Services.hideKeyboard
+import com.example.somefood.Utils.EnumAndSealed.ToastAuth
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -20,30 +21,29 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
     private val viewBinding: FragmentAuthBinding by viewBinding()
     private val viewModelAuth: AuthViewModel by viewModel()
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView()
+        initViews()
         initObservers()
     }
 
     private fun initObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModelAuth.toast.collect {
-                when (it) {
-                    toastAuth.PASS -> Toast.makeText(
+            viewModelAuth.toast.collect { toast ->
+                when (toast) {
+                    ToastAuth.PASS -> Toast.makeText(
                         context,
                         "Введите пароль!!!",
                         Toast.LENGTH_SHORT
                     ).show()
 
-                    toastAuth.LOGIN -> Toast.makeText(
+                    ToastAuth.LOGIN -> Toast.makeText(
                         context,
                         "Введите логин!!!",
                         Toast.LENGTH_SHORT
                     ).show()
 
-                    toastAuth.LOGININVALID -> Toast.makeText(
+                    ToastAuth.LOGININVALID -> Toast.makeText(
                         context,
                         "Email is not valid!!!",
                         Toast.LENGTH_SHORT
@@ -63,7 +63,7 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
         }
     }
 
-    private fun initView() {
+    private fun initViews() {
         with(viewBinding) {
             btnPerson.setOnCheckedChangeListener { _, it ->
                 if (it) {
