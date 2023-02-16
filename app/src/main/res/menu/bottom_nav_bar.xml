@@ -4,14 +4,22 @@
 
     <item android:title="Home"
         android:id="@+id/btnHome"
+        android:importantForAccessibility="auto"
+        android:contentDescription="@string/button_navigation_home"
         android:icon="@drawable/ic_baseline_home_24"/>
     <item android:title="Favorite"
         android:id="@+id/btnFavorite"
+        android:importantForAccessibility="auto"
+        android:contentDescription="@string/button_navigation_favorite"
         android:icon="@drawable/ic_baseline_favorite_24"/>
     <item android:title="Order"
         android:id="@+id/btnOrder"
+        android:importantForAccessibility="auto"
+        android:contentDescription="@string/button_navigation_order_list"
         android:icon="@drawable/ic_baseline_shopping_bag_24"/>
     <item android:title="Profile"
         android:id="@+id/profile"
+        android:importantForAccessibility="auto"
+        android:contentDescription="@string/button_navigation_profile"
         android:icon="@drawable/ic_baseline_account_circle_24"/>
 </menu>

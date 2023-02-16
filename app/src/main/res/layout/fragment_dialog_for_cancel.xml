@@ -1,34 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewAcceptDel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/card_view_cancel_order"
+        android:importantForAccessibility="auto"
         app:cardCornerRadius="22dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="300dp"
             android:layout_height="130dp"
+            android:background="@drawable/rounded_corners"
+            android:importantForAccessibility="no"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:background="@drawable/rounded_corners">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:layout_width="280dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="8dp"
+                android:contentDescription="@string/do_you_want_to_cancel_the_order"
+                android:importantForAccessibility="auto"
                 android:text="@string/do_you_want_to_cancel_the_order"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -41,13 +46,15 @@
                 android:id="@+id/btnCancelDel"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/prozrachnii_krug"
+                android:contentDescription="@string/button_no"
                 android:gravity="center"
+                android:importantForAccessibility="auto"
                 android:text="@string/no"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:layout_marginStart="10dp"
-                android:layout_marginBottom="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
@@ -55,15 +62,17 @@
                 android:id="@+id/btnDelOrder"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/prozrachnii_krug"
                 android:backgroundTint="@color/white"
+                android:contentDescription="@string/button_yes"
                 android:gravity="center"
+                android:importantForAccessibility="auto"
                 android:text="@string/yes"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginBottom="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 

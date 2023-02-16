@@ -4,8 +4,8 @@
     android:id="@+id/identificatorCreator"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="2dp"
-    android:clipToPadding="false">
+    android:clipToPadding="false"
+    android:padding="2dp">
 
 
     <androidx.cardview.widget.CardView
@@ -13,6 +13,7 @@
         android:layout_height="200dp"
         android:backgroundTint="@color/my"
         android:elevation="8dp"
+        android:importantForAccessibility="no"
         app:cardCornerRadius="20dp"
         app:cardElevation="11dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,27 +26,30 @@
             android:layout_width="160dp"
             android:layout_height="80dp"
             android:layout_marginLeft="170dp"
-            android:layout_marginRight="70dp"
             android:layout_marginTop="60dp"
+            android:layout_marginRight="70dp"
             android:layout_marginBottom="30dp"
-            android:visibility="gone"
+            android:background="@drawable/prozrachnii_krug"
+            android:contentDescription="@string/please_wait_confirm_order"
             android:gravity="center"
-            app:layout_constraintTop_toTopOf="parent"
+            android:importantForAccessibility="auto"
+            android:text="@string/please_wait_confirm_order"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:background="@drawable/prozrachnii_krug"
-            android:textColor="@color/white"
-            android:text="@string/please_wait_confirm_order"
-            android:textSize="30sp"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/nameFood"
             android:layout_width="160dp"
             android:layout_height="45dp"
             android:layout_marginStart="180dp"
-            android:gravity="top"
             android:layout_marginTop="10dp"
+            android:contentDescription="@string/name_food"
+            android:gravity="top"
+            android:importantForAccessibility="auto"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -54,12 +58,14 @@
             android:id="@+id/descriptionFood"
             android:layout_width="160dp"
             android:layout_height="90dp"
-            android:paddingRight="5dp"
             android:layout_marginStart="180dp"
             android:layout_marginTop="60dp"
-            android:textSize="14sp"
+            android:contentDescription="@string/description_food"
             android:ellipsize="end"
+            android:importantForAccessibility="auto"
             android:maxLines="5"
+            android:paddingRight="5dp"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
 
@@ -68,10 +74,12 @@
             android:layout_width="160dp"
             android:layout_height="30dp"
             android:layout_marginStart="180dp"
-            android:gravity="bottom"
-            android:text="@string/creator_is_not_founded_yet"
-            android:layout_marginBottom="5dp"
             android:layout_marginTop="165dp"
+            android:layout_marginBottom="5dp"
+            android:contentDescription="@string/status_of_your_order"
+            android:gravity="bottom"
+            android:importantForAccessibility="auto"
+            android:text="@string/creator_is_not_founded_yet"
             android:textSize="14sp"
             android:textStyle="bold" />
 
@@ -83,7 +91,9 @@
             android:layout_marginTop="5dp"
             android:layout_marginRight="5dp"
             android:backgroundTint="@color/yellow"
+            android:contentDescription="@string/button_cancel_order"
             android:elevation="4dp"
+            android:importantForAccessibility="auto"
             app:cardCornerRadius="80dp"
             app:cardElevation="8dp">
 
@@ -92,6 +102,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:importantForAccessibility="no"
                 android:src="@drawable/krest" />
         </androidx.cardview.widget.CardView>
 
@@ -102,7 +113,9 @@
             android:layout_gravity="end|center"
             android:layout_marginRight="5dp"
             android:backgroundTint="@color/blue"
+            android:contentDescription="@string/time_of_order"
             android:elevation="4dp"
+            android:importantForAccessibility="auto"
             app:cardCornerRadius="80dp"
             app:cardElevation="8dp">
 
@@ -112,26 +125,27 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|center"
                 android:layout_marginTop="10dp"
-                android:textSize="18sp"
-                android:textStyle="bold"
+                android:importantForAccessibility="no"
                 android:text=""
-                />
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/timerSecond"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textSize="16sp"
+                android:importantForAccessibility="no"
                 android:text=""
-                />
+                android:textSize="16sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center"
                 android:layout_marginBottom="5dp"
-                android:src="@drawable/ic_baseline_access_time_24"
-                />
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_baseline_access_time_24" />
 
         </androidx.cardview.widget.CardView>
 
@@ -143,7 +157,9 @@
             android:layout_marginRight="5dp"
             android:layout_marginBottom="5dp"
             android:backgroundTint="@color/yellow"
+            android:contentDescription="@string/button_accept"
             android:elevation="4dp"
+            android:importantForAccessibility="auto"
             app:cardCornerRadius="80dp"
             app:cardElevation="8dp">
 
@@ -151,11 +167,12 @@
                 android:layout_width="31dp"
                 android:layout_height="32dp"
                 android:layout_gravity="center"
+                android:importantForAccessibility="no"
                 android:src="@drawable/ic_baseline_done_24" />
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView2"
+            android:id="@+id/cardViewImageFoodInOrder"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_gravity="start"
@@ -164,6 +181,7 @@
             android:layout_marginBottom="10dp"
             android:backgroundTint="@color/yellow"
             android:elevation="15dp"
+            android:importantForAccessibility="no"
             android:translationZ="1dp"
             app:cardCornerRadius="80dp"
             app:cardElevation="20dp">
@@ -173,6 +191,8 @@
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_gravity="center"
+                android:contentDescription="@string/image_of_food"
+                android:importantForAccessibility="auto"
                 app:civ_border_color="@color/white"
                 app:civ_border_width="2dp" />
         </androidx.cardview.widget.CardView>
@@ -181,30 +201,34 @@
             android:layout_width="140dp"
             android:layout_height="30dp"
             android:layout_gravity="bottom"
-            android:elevation="15dp"
-            app:cardMaxElevation="25dp"
             android:layout_marginStart="15dp"
             android:layout_marginBottom="5dp"
+            android:backgroundTint="@color/blue"
+            android:contentDescription="@string/card_view_volume_food"
+            android:elevation="15dp"
+            android:importantForAccessibility="auto"
             app:cardCornerRadius="20dp"
-            android:backgroundTint="@color/blue">
+            app:cardMaxElevation="25dp">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/krest"
                 android:layout_marginStart="40dp"
                 android:layout_marginTop="3dp"
-                />
+                android:background="@drawable/krest"
+                android:importantForAccessibility="no" />
+
             <TextView
                 android:id="@+id/volumeOrderCreator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="65dp"
-                android:text=""
-                android:textStyle="bold"
-                android:textSize="20dp"
                 android:layout_marginTop="1dp"
-                />
+                android:contentDescription="@string/volume_food_order"
+                android:importantForAccessibility="auto"
+                android:text=""
+                android:textSize="20dp"
+                android:textStyle="bold" />
 
 
         </androidx.cardview.widget.CardView>

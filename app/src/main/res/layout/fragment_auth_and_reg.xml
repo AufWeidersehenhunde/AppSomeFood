@@ -5,31 +5,36 @@
     android:id="@+id/pngFace"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:contentDescription="@string/home_screen"
+    android:importantForAccessibility="yes"
     tools:context="com.example.appsomefood.AuthAndAuthorize.AuthAndRegFragment">
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="20dp"
-        android:elevation="30dp"
-        app:cardElevation="50dp"
-        app:layout_constraintVertical_bias="0.5"
         android:backgroundTint="@color/blue"
-        app:layout_constraintStart_toStartOf="parent"
+        android:contentDescription="@string/sign_in"
+        android:elevation="30dp"
+        android:importantForAccessibility="yes"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintVertical_bias="0.5">
 
         <TextView
             android:id="@+id/btnSignIn"
             android:layout_width="140dp"
             android:layout_height="60dp"
-            android:text="@string/sign_in"
+            android:background="@drawable/prozrachnii_krug"
             android:gravity="center"
+            android:importantForAccessibility="no"
+            android:text="@string/sign_in"
+            android:textColor="@color/black"
             android:textSize="30dp"
             android:textStyle="bold"
-            android:background="@drawable/prozrachnii_krug"
-            android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -41,32 +46,35 @@
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="20dp"
-        android:elevation="30dp"
-        app:cardElevation="50dp"
-        app:layout_constraintVertical_bias="0.60"
         android:backgroundTint="@color/blue"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-    <TextView
-        android:id="@+id/btnRegistration"
-        android:layout_width="110dp"
-        android:layout_height="50dp"
-        android:text="@string/registration"
-        android:gravity="center"
-        android:textSize="18dp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:background="@drawable/prozrachnii_krug"
+        android:contentDescription="@string/registration"
+        android:elevation="30dp"
+        android:importantForAccessibility="auto"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnSignIn"
-        app:layout_constraintVertical_bias="0.286" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.60">
+
+        <TextView
+            android:id="@+id/btnRegistration"
+            android:layout_width="110dp"
+            android:layout_height="50dp"
+            android:background="@drawable/prozrachnii_krug"
+            android:gravity="center"
+            android:importantForAccessibility="no"
+            android:text="@string/registration"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnSignIn"
+            app:layout_constraintVertical_bias="0.286" />
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
