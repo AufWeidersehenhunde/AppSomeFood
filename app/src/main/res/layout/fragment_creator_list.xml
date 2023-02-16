@@ -10,19 +10,22 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="-10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:importantForAccessibility="no"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerViewCreator"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerViewCreator">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/open_orders"
-            android:textSize="32sp"
-            android:gravity="center"
             android:background="@color/black"
-            android:textColor="@color/white" />
+            android:contentDescription="@string/open_orders"
+            android:gravity="center"
+            android:importantForAccessibility="auto"
+            android:text="@string/open_orders"
+            android:textColor="@color/white"
+            android:textSize="32sp" />
     </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -30,9 +33,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="60dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="50dp"
-        android:layout_marginTop="60dp"
+        android:contentDescription="@string/model_list_foods"
+        android:importantForAccessibility="auto"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
