@@ -10,8 +10,9 @@
 
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="400dp"
         android:backgroundTint="@color/my"
         android:contentDescription="@string/card_view_one_of_last_order"
         android:importantForAccessibility="auto"
@@ -23,8 +24,10 @@
 
         <TextView
             android:id="@+id/nameFoodLast"
-            android:layout_width="270dp"
-            android:layout_height="35dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="35dp"
+            android:minWidth="270dp"
             android:layout_marginStart="102dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/rounded_corners"
@@ -37,8 +40,10 @@
 
         <TextView
             android:id="@+id/creatorOrClientFood"
-            android:layout_width="270dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="35dp"
+            android:minWidth="270dp"
             android:layout_marginStart="102dp"
             android:layout_marginTop="55dp"
             android:layout_marginBottom="5dp"
