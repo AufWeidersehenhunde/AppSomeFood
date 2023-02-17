@@ -28,15 +28,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
-                android:text="Name"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="20sp"
                 android:gravity="center"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                android:text="@string/name"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/imageForOrderBottomSheet"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/imageForOrderBottomSheet"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -44,41 +44,55 @@
                 android:layout_width="180dp"
                 android:layout_height="180dp"
                 android:layout_marginTop="5dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/nameSheetFood"
-                app:layout_constraintEnd_toEndOf="parent"/>
-
-            <TextView
-                android:id="@+id/descriptionFoodForOrder"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginTop="5dp"
-                android:textSize="16sp"
-                android:text="dsflalgak9248t394k9rgew[rgkqrg-0qi4r2194t-org-043ir1249t1k4f=-1024"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/imageForOrderBottomSheet"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nameSheetFood" />
+
+            <ScrollView
+                android:id="@+id/descriptionScroll"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imageForOrderBottomSheet">
+
+                <TextView
+                    android:id="@+id/descriptionFoodForOrder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:text=""
+                    android:textSize="18sp"
+                    />
+
+            </ScrollView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/volumeCard"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
-                android:layout_marginTop="0dp"
+                android:layout_marginTop="20dp"
                 android:elevation="20dp"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="60dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/descriptionFoodForOrder">
+                app:layout_constraintBottom_toTopOf="@id/ii1"
+                app:layout_constraintTop_toBottomOf="@+id/descriptionScroll">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:background="@color/black"
                     android:gravity="center"
-                    android:text="Volume"
+                    android:text="@string/volume"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 
@@ -89,7 +103,7 @@
                     android:layout_marginLeft="190dp"
                     android:layout_marginTop="35dp"
                     android:gravity="center"
-                    android:text="1"
+                    android:text="@string/string_one_int"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -118,7 +132,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/ii1"
                 android:layout_width="match_parent"
-                android:layout_height="170dp"
+                android:layout_height="150dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="40dp"
                 android:elevation="20dp"
@@ -133,7 +147,7 @@
                     android:layout_height="30dp"
                     android:background="@color/black"
                     android:gravity="center"
-                    android:text="Time"
+                    android:text="@string/time"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 
@@ -141,11 +155,11 @@
                     android:id="@+id/timePicker"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:layout_gravity="center_horizontal"
-                    android:orientation="vertical"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="24dp"
                     android:width="100dp"
-                    android:layout_marginBottom="24dp" />
+                    android:orientation="vertical" />
 
             </androidx.cardview.widget.CardView>
 
@@ -160,8 +174,8 @@
                     android:id="@+id/acceptOrder"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_marginTop="15dp"
                     android:layout_marginLeft="360dp"
+                    android:layout_marginTop="15dp"
                     android:background="@drawable/ic_baseline_done_24"
                     android:src="@drawable/prozrachnii_krug" />
 
@@ -169,8 +183,8 @@
                     android:id="@+id/hideSheet"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_marginTop="15dp"
                     android:layout_marginLeft="20dp"
+                    android:layout_marginTop="15dp"
                     android:background="@drawable/krest"
                     android:src="@drawable/prozrachnii_krug" />
 

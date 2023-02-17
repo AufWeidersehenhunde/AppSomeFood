@@ -8,8 +8,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="my">#6D68EF</color>
-    <color name="mocha">#DCC009</color>
+    <color name="yellow">#DCC009</color>
     <color name="grey">#41635C5C</color>
     <color name="blue">#5E7CD8</color>
     <color name="white_light">#7EFFFFFF</color>
+    <color name="def">#00000000</color>
 </resources>

@@ -18,13 +18,13 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Open orders"
+            android:text="@string/open_orders"
             android:textSize="32sp"
             android:gravity="center"
             android:background="@color/black"
             android:textColor="@color/white" />
-
     </androidx.cardview.widget.CardView>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewCreator"
         android:layout_width="match_parent"
@@ -37,7 +37,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
