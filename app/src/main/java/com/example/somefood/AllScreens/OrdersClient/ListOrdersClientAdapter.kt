@@ -32,8 +32,12 @@ class ListOrdersClientItem(
             nameFood.text = item.name
             volumeOrder.text = item.volume.toString()
             timerMinutes.text = item.time
-            creatorFood.text = item.nameCreator
             descriptionFood.text = item.description
+            if (item.nameCreator.isNullOrEmpty()){
+                creatorFood.text = "Creator is not founded"
+            } else{
+                creatorFood.text = item.nameCreator
+            }
             Glide.with(imageViewFavorite.context)
                 .load(item.image)
                 .into(imageViewFavorite)
